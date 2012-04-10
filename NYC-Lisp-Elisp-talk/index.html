@@ -205,7 +205,7 @@
 A (large) Emacs Lisp program uses modules from many places. Some
 modules reside inside and some outside.
 
-<p><em>Example</em>: the linking or mechanisms might be such things.
+<p><em>Example</em>: location positioning might be such a thing.
       </div>
     </div>
 
@@ -259,7 +259,7 @@ versus:
       <div id="slide-content">
         <h2>load-path is evil</h2>
 	<div class="slide-content">
-	  <p>In Emacs Lisp we have list <tt>load-path</tt> which is consulted in <tt>load</tt> and <tt>require</tt>.</p>
+	  <p>In Emacs Lisp we have <tt>load-path</tt> which is consulted in <tt>load()</tt> and <tt>require()</tt>.</p>
 	  <p>Problems with <tt>load-path</tt>
 	    <ul>
 	      <li>It is insecure</li>
@@ -271,27 +271,27 @@ versus:
       </div>
     </div>
 
-    <div id="load-relative" class="step slide" data-x="35000" data-y="0"
-	 data-scale="3">
-      <div id="slide-content">
-        <h2>load-relative</h2>
-	<div class="slide-content">
-	  <p>I wrote <a href="http://github.com/rocky/emacs-load-relative">emacs-load-relative</a> for internal linking. In its simplest form:</p>
+<!--     <div id="load-relative" class="step slide" data-x="35000" data-y="0" -->
+<!-- 	 data-scale="3"> -->
+<!--       <div id="slide-content"> -->
+<!--         <h2>load-relative</h2> -->
+<!-- 	<div class="slide-content"> -->
+<!-- 	  <p>I wrote <a href="http://github.com/rocky/emacs-load-relative">emacs-load-relative</a> for internal linking. In its simplest form:</p> -->
 	    
-<table class="CodeRay"><tr>
-  <td class="code"><pre>(<span class="keyword">require</span> 'load-relative) <span class="comment">; pull in (load-relative)</span>
-(load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span>)
-(load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">./my-module</span><span class="delimiter">&quot;</span></span>) <span class="comment">; same thing</span>
-</pre></td>
-</tr></table>
-	</div>
-      </div>
-    </div>
+<!-- <table class="CodeRay"><tr> -->
+<!--   <td class="code"><pre>(<span class="keyword">require</span> 'load-relative) <span class="comment">; pull in (load-relative)</span> -->
+<!-- (load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span>) -->
+<!-- (load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">./my-module</span><span class="delimiter">&quot;</span></span>) <span class="comment">; same thing</span> -->
+<!-- </pre></td> -->
+<!-- </tr></table> -->
+<!-- 	</div> -->
+<!--       </div> -->
+<!--     </div> -->
 
     <div id="load-relative2" class="step slide" data-x="40000" data-y="0"
 	 data-scale="3">
       <div id="slide-content">
-        <h2>load-relative cont</h2>
+        <h2>load-relative</h2>
 	<div class="slide-content">
 	  <p>I wrote <a href="http://github.com/rocky/emacs-load-relative">emacs-load-relative</a> for internal linking. In its simplest form:</p>
 	    
