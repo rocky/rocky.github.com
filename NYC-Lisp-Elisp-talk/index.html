@@ -315,8 +315,9 @@ versus:
         <h3>Testing</h3>
 	Relatively Recent Schools of Testing
     	  <ul class="lv0_indent">
-	    <li>Test Driven Development (TDD).</li>
-	    <li>Behavior Driven Development (BDD)</li>
+	    <li>Test Driven Development (<a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a>).
+	    </li>
+	    <li>Behavior Driven Development (<a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>)</li>
 	  </ul>
 	  <p>Some Test frameworks. See <a href="http://www.emacswiki.org/emacs/UnitTesting">http://www.emacswiki.org/emacs/UnitTesting:</a>
     	  <ul class="lv0_indent">
@@ -331,7 +332,7 @@ versus:
 	 data-scale="3">
       <div class="slide-content">
         <h3>Emacs Test Unit</h3>
-	  <p>I have 39 tests for over 90 Emacs Lisp files. This is more than Emacs 24 using <em>elr</em>. 
+	  <p>I have <a href="https://github.com/rocky/emacs-dbgr/tree/master/test">39 tests for over 90 Emacs Lisp</a> files. This is more than Emacs 24 using <em>elr</em>. 
 	  <p>Let's now dive into a test from <em>emacs-dbgr</em>, specifically one for testing <em>gdb</em> regular expressions: 
 	    <a href="https://github.com/rocky/emacs-dbgr/blob/master/test/test-regexp-gdb.el">https://github.com/rocky/emacs-dbgr/blob/master/test/test-regexp-gdb.el</a>
       </div>
@@ -341,9 +342,7 @@ versus:
 	 data-scale="3">
       <div class="slide-content">
         <h3>Emacs Test Unit Example</h3>
-	  <p>I have 39 tests for over 90 Emacs Lisp files. This is more than Emacs 24 using <em>elr</em>. 
-	  <p>Let's now dive into a test from <em>emacs-dbgr</em>, specifically one for testing <em>gdb</em> regular expressions: 
-	    <a href="https://github.com/rocky/emacs-dbgr/blob/master/test/test-regexp-gdb.el">https://github.com/rocky/emacs-dbgr/blob/master/test/test-regexp-gdb.el</a>
+	  <p><a href="https://github.com/rocky/emacs-dbgr/blob/master/test/test-regexp-gdb.el">Testing <em>gdb</em> regular expressions</a>:
 
 
 <table class="CodeRay"><tr>
@@ -352,6 +351,9 @@ versus:
 (<span class="keyword">load-file</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">../dbgr/debugger/gdb/init.el</span><span class="delimiter">&quot;</span></span>)
 ...
 (test-unit-clear-contexts)
+...
+(specify <span class="string"><span class="delimiter">&quot;</span><span class="content">basic location</span><span class="delimiter">&quot;</span></span>
+  (assert-t (numberp (loc-match text))))
 ...
 (test-unit <span class="string"><span class="delimiter">&quot;</span><span class="content">regexp-gdb</span><span class="delimiter">&quot;</span></span>)
 
