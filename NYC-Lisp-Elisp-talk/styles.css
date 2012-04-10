@@ -1,0 +1,67 @@
+.no-support-message { display:none; }
+.impress-not-supported .no-support-message { display:block; }
+
+/* additional styles just to make things look a bit nicer */
+body { background:#EBEBEB; font:16px/24px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; color:#333; }
+.step { width:940px; margin:0 auto 24px auto; text-align:center; }
+
+.slide-content{
+    /*height: 473px;*/    
+    /*font-size: 30pt;*/
+    /*line-height: 40pt;*/
+    /*padding: 15px 40px;*/
+    text-align: justify;
+}
+
+.lv0_indent{
+    margin-left: 30px;
+    line-height: 20pt;
+    text-align: justify;
+}
+
+.lv1_indent{
+    margin-left: 60px;
+}
+
+.lv2_indent{
+    margin-left: 120px;
+}
+
+.CodeRay {
+  background-color: hsl(0,0%,95%);
+  border: 1px solid silver;
+  color: black;
+}
+.CodeRay pre {
+  margin: 0px;
+}
+
+span.CodeRay { white-space: pre; border: 0px; padding: 2px; }
+
+table.CodeRay { border-collapse: collapse; width: 100%; padding: 2px; }
+table.CodeRay td { padding: 2px 4px; vertical-align: top; }
+
+.CodeRay {
+  background-color: hsl(0,0%,95%);
+  border: 1px solid silver;
+  color: black;
+}
+.CodeRay pre {
+  margin: 0px;
+}
+
+.CodeRay .line-numbers a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+span.CodeRay { white-space: pre; border: 0px; padding: 2px; }
+
+.CodeRay .char .content { color:#D20 }
+.CodeRay .comment { color:#777 }
+.CodeRay .delimiter { color:#710 }
+.CodeRay .include { color:#B44; font-weight:bold }
+.CodeRay .keyword { color:#080; font-weight:bold }
+.CodeRay .preprocessor { color:#579 }
+.CodeRay .pseudo-class { color:#00C; font-weight:bold }
+.CodeRay .string { color: #b0b }
