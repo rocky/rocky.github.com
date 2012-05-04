@@ -358,9 +358,12 @@ versus:
 ...
 (test-unit-clear-contexts)
 ...
-(specify <span class="string"><span class="delimiter">&quot;</span><span class="content">basic location</span><span class="delimiter">&quot;</span></span>
-  (assert-t (numberp (loc-match text))))
+(context  <span class="string"><span class="delimiter">&quot;</span><span class="content">traceback location matching</span><span class="delimiter">&quot;</span></span>
+   (tag regexp-gdb)
+   (specify <span class="string"><span class="delimiter">&quot;</span><span class="content">basic location</span><span class="delimiter">&quot;</span></span>
+     (assert-t (numberp (loc-match text))))
 ...
+)
 (test-unit <span class="string"><span class="delimiter">&quot;</span><span class="content">regexp-gdb</span><span class="delimiter">&quot;</span></span>)
 
 </pre></td>
