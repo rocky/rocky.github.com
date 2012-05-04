@@ -1,8 +1,10 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <title>Large-Scale Software Development with Elisp</title>
 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
     <meta name="description" 
 	  content="Large-Scale Software Development with Elisp">
     <meta name="author" content="Rocky Bernstein" />
@@ -10,7 +12,8 @@
     <link href="styles.css" rel="stylesheet" />
 
   </head>
-  <body>
+<body>
+
     <div id="impress">
       <div class="no-support-message">
 	Your browser doesn't support impress.js.  Try Chrome or Safari.
@@ -44,6 +47,15 @@
 	    </li>
 	  </ul>
 	</div>
+	<div class="hint">
+	  <p>Use a spacebar or arrow keys to navigate</p>
+	</div>
+	<script>
+	  if ("ontouchstart" in document.documentElement) { 
+	  document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
+	  }
+	</script>
+
       </div>
       
       <div id="talk-overview" class="step slide" data-x="5000" data-scale="3">
