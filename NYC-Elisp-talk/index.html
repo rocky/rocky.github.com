@@ -66,7 +66,7 @@
 	  <section>
             <h3>From Emacs C Source</h3>
             <pre><code contenteditable>
-DEFUN("buffer-live-p", ... doc: /* non-nil if buffer OBJECT has not been killed... */) 
+DEFUN("buffer-live-p", ... 1, 1, 0, doc: /* non-nil if buffer OBJECT has not been killed... */) 
 (Lisp_Object object)
 {
   return ((BUFFERP (object) && ! NILP (BVAR (XBUFFER (object), name)))
