@@ -79,7 +79,7 @@ Lisp_Object buffer-live-p(Lisp_Object object) { ...
    add_docstring("non nil if buffer OBJECT ...");
    ...
 	    </code></pre>
-	    <p class="fragment">Macro inforces remembering the doc string</p>
+	    <p class="fragment">Macro enforces remembering the doc string</p>
           </section>
 	  <section>
 	    <h4>C code reads like Lisp code!</h4>
@@ -124,7 +124,7 @@ DEFUN ("buffer-list", Fbuffer_list, Sbuffer_list, 0, 0, 0,
         <section>
 	  <section>
 	    <h4>gud-def macro</h4>
-	    <p><tt>gud</tt> uses a macro to translate it's debugger command into a string sent to a real debugger.</p>
+	    <p><tt>gud</tt> uses a macro to translate its debugger command into a string sent to a real debugger.</p>
 	    <p>For example, for <em>gdb</em>:</p> 
             <pre><code contenteditable>
 	      (gud-def gud-remove "clear %f:%l" "\C-d" "Remove breakpoint at current line")
@@ -215,7 +215,7 @@ want to save the values that were seen/requested originally."
    bp-list ...
   )
           </pre></code>
-	  One writes: 
+	  we write: 
           <pre><code contenteditable>
 (dbgr-cmdbuf-info-bp-list dbgr-cmdbuf-info)
           </pre></code>
