@@ -311,7 +311,8 @@ versus:
   <td class="code"><pre>(<span class="keyword">require</span> 'load-relative) <span class="comment">; pull in (load-relative)</span>
 (load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span>)
 (load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">./my-module</span><span class="delimiter">&quot;</span></span>) <span class="comment">; same as above</span>
-(load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span> 'dbgr) <span class="comment">; find under 'dbgr
+(load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span> 'dbgr) <span class="comment">; find under 'dbgr</span>
+(require-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span> 'dbgr) <span class="comment">; use require instead of load</span>
 </pre></td>
 </tr></table>
 
