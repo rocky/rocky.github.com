@@ -1,0 +1,311 @@
+<!doctype html>  
+<html lang="en">
+        
+  <head>
+    <meta charset="utf-8">
+    
+		
+    <title>What Makes Really Good (Emacs Lisp) Code?</title>
+    
+    <meta name="description" content="Slide Presentation to the Emacs NYC meetup group.">
+    <meta name="author" content="Rocky Bernstein">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
+    
+    <link rel="stylesheet" href="lib/zenburn.css">
+  </head>
+  
+  <body>
+    
+    <div id="reveal">
+      
+      <!-- Used to fade in a background when a specific slide state is reached -->
+      <div class="state-background"></div>
+      
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+	<section>
+          <section>
+            <h3>What makes Good ELisp Code?</h3>
+            Rocky Bernstein: <tt>rocky@gnu.org</tt>
+	    <h3></h3>
+	    <small>
+	      <p>slides: 
+		<a href="http://rocky.github.com/NYC-Elisp-talk/index.html">
+		  http://rocky.github.com/NYC-Elisp-talk/index.html</a>
+	      </p><p>
+		text: 
+		<a href="http://github.com/rocky.github.com/wiki/NYC-Elisp-talk/talk">https://github.com/rocky.github.com/wiki/NYC-Elisp-talk/talk</a>
+	    </small>
+            <script>
+              // Delicously hacky. Look away.
+              if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
+            </script>
+          </section>
+	  <section>
+            <h3>Glib Answer: Good Code</h3>
+	    <p>A full answer would be long. Here I want to focus on:
+	      <ul>
+		<li>It has short functions/methods</li>
+		<li class="fragent">It sometimes creates its own logical world if the surrounding environment is deficient</li>
+		<li class="fragment">
+	      <em>But don't get creative unnecessarily.</em>
+		</li>
+              </ul>
+            </p>
+          </section>
+	</section>
+        <section>
+	  <section>
+            <h3>From Emacs C Source</h3>
+            <pre><code contenteditable>
+DEFUN("buffer-live-p", ... doc: /* non-nil if buffer OBJECT has not been killed... */) 
+(Lisp_Object object)
+{
+  return ((BUFFERP (object) && ! NILP (BVAR (XBUFFER (object), name)))
+	  ? Qt : Qnil);
+}
+	    </code></pre>
+	  rather than say the more normal C:
+            <pre><code contenteditable>
+Lisp_Object buffer-live-p(Lisp_Object object) { ...
+   add_docstring("non nil if buffer OBJECT ...");
+   ...
+	    </code></pre>
+	    <p class="fragment">Macro inforces remembering the doc string</p>
+          </section>
+	  <section>
+	    <h4>C code reads like Lisp code!</h4>
+	    <p class="fragment">
+            <pre><code contenteditable>
+return ((BUFFERP (object) && ! NILP (BVAR (XBUFFER (object), name)))
+         ? Qt : Qnil);
+	    </code></pre>
+	  is roughly in Emacs Lisp:
+            <pre><code contenteditable>
+(if (and (bufferp object) (not (null (BVAR object name))))
+     t 
+   nil)
+	    </code></pre>
+which could be shortened if C were more Lisp-like: 
+            <pre><code contenteditable>
+(and (bufferp object) (BVAR object name))
+	    </code></pre>
+	  </section>
+          <section>
+	    <h4>Lisp-like code from Emacs 18.59</h4>
+            <pre><code contenteditable>
+DEFUN ("buffer-list", Fbuffer_list, Sbuffer_list, 0, 0, 0,
+  "Return a list of all buffers.")
+  ()
+{
+  return Fmapcar (Qcdr, Vbuffer_alist);
+}
+	    </pre></code>
+<p>and the next function <em>get_buffer</em> after that:
+            <pre><code contenteditable>
+... return Fcdr (Fassoc (name, Vbuffer_alist));
+            </pre></code>
+	    <p class="fragment">
+	      Done this way for efficiency?<br>
+	      <small>
+	      <em>Show fundamental-mode from simple.el in Emacs 18.59</em>
+	      </small>
+	    </section>
+	  </section>
+        </section>
+        <section>
+	  <section>
+	    <h4>gud-def macro</h4>
+	    <p><tt>gud</tt> uses a macro to translate it's debugger command into a string sent to a real debugger.</p>
+	    <p>For example, for <em>gdb</em>:</p> 
+            <pre><code contenteditable>
+	      (gud-def gud-remove "clear %f:%l" "\C-d" "Remove breakpoint at current line")
+            </pre></code>
+	    expands to:
+            <pre><code contenteditable>
+(progn
+   (defalias gud-remove 
+     (lambda (arg) '("Remove breakpoint at current line")
+       (interactive "p")
+       (if (not gud-running) (gud-call "clear %f:l" arg))))
+   (local-set-key "\C-c\C-d" 'gud-remove)
+   (global-set-key (vconcat gud-key-prefix "\C-d") 'gud-remove))
+            </pre></code>
+	  </section>
+	  <section>
+	    <p>I suspect a macro isn't needed here.</p>
+	  </section>
+	</section>
+        <section>
+	  <section>
+            <h4>gud-last-frame</h4>
+            This epitomizes a big problem with gud.el:
+            <pre><code contenteditable>
+;; Where gud-display-frame should put the debugging arrow; a cons of
+;; (filename . line-number).  Set by the marker-filter, which scans
+;;; the debugger output for indications of the current program counter.
+(defvar gud-last-frame nil)
+
+;; Used by gud-refresh, which should cause gud-display-frame to redisplay
+;; the last frame, even if it's been called before and gud-last-frame has
+;; been set to nil.
+(defvar gud-last-last-frame nil)
+            </pre></code>
+          </section>
+	  <section>
+	    <h4>Problems with gud-last-frame</h4>
+	    <ul>
+	      <li>
+		The name <em>frame</em> is weird.</li>
+	      <li class="fragment">
+		No encapsulation: a bare <em>cons</em> node is used.</li>
+	      <li class="fragment">
+		<em>gud-last-last-frame</em> suggests hackery.
+	      <li class="fragment">
+		Is a global variable.
+		<ul class="fragment">
+		  <li>Only one program can be debugged at a time</li>
+		</ul>
+	    </ul>
+	  </section>
+        </section>
+        <section>
+          <h2>emacs-dbgr location</h2>
+          <pre><code contenteditable>
+(defstruct dbgr-loc
+"Our own location type. Even though a mark contains a
+file-name (via a buffer) and a line number (via an offset), we
+want to save the values that were seen/requested originally."
+   num           ;; If there is a number such as a breakpoint or frame
+                 ;; number associated with this location this is set.
+                 ;; Nil otherwise.
+   filename  
+   line-number
+   column-number ;; Column offset within line
+   marker        ;; Position in source code
+   cmd-marker    ;; Position in command process buffer
+)
+          </pre></code>
+        </section>
+        
+        <section>
+	  <section>
+            <h4>Elisp Structure Issues</h4>
+            <ul>
+              <li>Doesn't support Common Lisp :print hook
+		<ul class="fragment">
+		  <li>Add <em>describe</em> methods <em>Show that</em></li>
+		</ul>
+              <li class="fragment">Access is clumsy</li>
+            </ul>
+          </section>
+          <section>
+	    <h4>Elisp struct access</h4>
+	    <p>To access a field in <em>dbgr-cmdbuf-info</em>
+          <pre><code contenteditable>
+(defstruct dbgr-cmdbuf-info
+   bp-list ...
+  )
+          </pre></code>
+	  One writes: 
+          <pre><code contenteditable>
+(dbgr-cmdbuf-info-bp-list dbgr-cmdbuf-info)
+          </pre></code>
+	    <p class="fragement">I have a macro to write instead:
+              <pre><code contenteditable>
+(dbgr-sget 'cmdbuf-info 'bp)
+              </pre></code>
+	    <p>
+	  </section>
+        </section>
+	<section>
+	  <h4>Summary</h4>
+	  <ul>
+	    <li>Small functions
+	      <ul class="fragment"><li>those that fit on a slide</li></ul>
+	    <li class="fragment">Break out of the shackles of the environment...
+	      <ul>
+		<li class="fragment">when "tasteful"</li>
+		<li class="fragment">Sometimes macros are useful here...</li>
+		<li class="fragment">But don't overuse</li>
+	      </ul>
+	  </ul>
+	  <p class="fragment">... That's all folks!</p>
+	</section>
+      </div>
+      
+      <!-- The navigational controls UI -->
+      <aside class="controls">
+        <a class="left" href="#">&#x25C4;</a>
+        <a class="right" href="#">&#x25BA;</a>
+        <a class="up" href="#">&#x25B2;</a>
+        <a class="down" href="#">&#x25BC;</a>
+      </aside>
+      
+      <!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
+      <div class="progress"><span></span></div>
+      
+    </div>
+    
+    <script src="js/reveal.js"></script>
+    
+    <!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
+    <script src="lib/highlight.js"></script>
+    <script src="lib/classList.js"></script>
+    
+    <script>
+      // Parse the query string into a key/value object
+      var query = {};
+      location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
+      query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
+      } );
+      
+      // Fires when a slide with data-state=customevent is activated
+      Reveal.addEventListener( 'customevent', function() {
+      alert( '"customevent" has fired' );
+      } );
+      
+      // Fires each time a new slide is activated
+      Reveal.addEventListener( 'slidechanged', function( event ) {
+      // event.indexh & event.indexv
+      } );
+      
+      Reveal.initialize({
+      // Display controls in the bottom right corner
+      controls: true,
+      
+      // Display a presentation progress bar
+      progress: true,
+      
+      // If true; each slide will be pushed to the browser history
+      history: true,
+      
+      // Loops the presentation, defaults to false
+      loop: false,
+      
+      // Flags if mouse wheel navigation should be enabled
+      mouseWheel: true,
+      
+      // Apply a 3D roll to links on hover
+      rollingLinks: true,
+      
+      // UI style
+      theme: query.theme || 'default', // default/neon
+      
+      // Transition style
+      transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
+      });
+      
+      hljs.initHighlightingOnLoad();
+    </script>
+    
+  </body>
+</html>
