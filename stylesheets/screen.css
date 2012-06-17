@@ -1,0 +1,293 @@
+body {
+	background: #FFFFFF ;
+	color: #565034; 
+}
+
+a {
+	color: #80764e; 
+}
+
+a:hover {
+	color: #ffb861; 
+}
+
+#container {
+	background: url(../images/background.png) repeat;
+	margin: 0px -8px 0px;
+}
+	
+#fixcontainer {
+	margin: -8px auto;
+	padding-top: 10px;
+	width: 750px;
+}
+
+#logo {
+	margin-bottom: 8px;
+	width: 202px;
+	height: 43px;
+}
+
+#content {
+	float: right;
+	width: 540px;
+}
+
+#center, #topcenter, #centercontent {
+	width: 393px;
+}
+
+#topcenter {
+	height: 7px;
+	background: url(../images/topcenterborder.gif) no-repeat;
+}
+
+#centercontent {
+	background: url(../images/centerbackground.gif) repeat-y;
+}
+
+#mainimage, #articles {
+	width: 383px;
+}
+
+#mainimage {
+	height: 162px;
+	margin-left: 3px;
+	background: url(../images/main-1.jpg) no-repeat;
+}
+
+#articles {
+	margin-left: 10px;
+	padding-right: 10px;
+	min-height: 250px;
+  width: 375px;
+	padding-bottom: 20px;
+	line-height: 1.6;
+}
+#pricingform ul{
+	margin-left: 0;
+	padding-left: 0;
+}
+#pricingform ul li{
+	margin-bottom: 5px;
+	list-style-type: none;
+}
+
+.title, .smallertext, .date {
+	font-family: "Trebuchet MS", sans-serif;
+}
+
+.smallertext {
+	font-size: .8em;
+}
+
+.blogposttitle {
+	margin-bottom: 0px;	
+	font-size: 1.1em;
+	font-family: Arial, serif;
+}
+
+.date {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 0.6em;
+}
+.pricing {
+	width: 370px;
+	font-size: .9em;
+	font-family: "Trebuchet MS", sans-serif;
+}
+
+.pricing ul {
+	list-style-type: none;
+	margin: 0 0 0 0;
+	padding: 0 0 0 ;
+}
+
+.pricing ul li {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.synopsis, .quote, .service {
+	width: 370px;
+}
+
+.service ul li {
+	font-size: .9em;
+	font-family: "Trebuchet MS", sans-serif;
+}
+
+.synopsis  {
+	margin-top: 10px;
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: .8em;
+}
+
+.quote {
+	text-align: center;
+	font-size: .9em;
+	font-family: "Trebuchet MS", sans-serif;
+	font-weight: bold;
+}
+
+.red { 
+        color: #FF0000;
+}
+
+.service {
+	font-family: "Trebuchet MS", sans-serif;
+}
+
+.service h5{
+	margin: 0 0 0 0;
+	font-family: Arial, serif;
+}
+
+.service p{
+	margin: 0 0 10px 0;
+	font-size: .8em;
+}
+
+.site {
+	font-size: .8em;
+	font-family: "Trebuchet MS", sans-serif;
+	margin-bottom: 50px;
+}
+
+.site img {
+	border: 1px solid #565034;
+}
+
+#contact {
+	width: 370px;
+	font-family: Arial, serif;
+	font-size: 0.8em;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-top: 1px solid #565034;
+	border-bottom: 1px solid #565034;
+}
+
+#contact th{
+	text-align: right;
+}
+
+#right {
+	float: right;
+	text-align: right;
+	font-family: Arial, serif;
+	font-size: .9em;
+	color: #fff;
+	width: 190px;
+}
+
+#right ul {
+	list-style-type: none;
+	margin: 0 0 10px 0;
+}
+
+.rightoption {
+	font-weight: bold;
+}
+
+#menu {
+	width: 201px;
+}
+
+#topmenu {
+	width: 201px;
+	height: 6px;
+	background: url(../images/topmenuborder.gif) no-repeat;
+	margin-bottom: -1em;
+}
+
+#essentialmenu {
+	width: 201px;	
+	height: 276px;
+	background: url(../images/menubackgroundborder.gif) repeat-y;
+}
+
+#menuback {
+	width: 192px;
+	height: 276px;
+	margin-left: 3px;
+	background: url(../images/menubackground.gif) 0px 0px repeat-x;
+}
+
+#nav {
+	padding-left: 10px;
+	padding-top: 5px 0 0 10px;
+	list-style-type: none;
+}
+
+#nav li {
+	margin: 0 0 0 0;
+	padding-top: 10px;
+	padding-left: 10px;
+	border-bottom: 1px solid #dcf0f3;
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: 1.3em;
+}
+
+#nav li a {
+	text-decoration: none;
+	color: #565034;
+}
+
+#nav li a:hover {
+	text-decoration: none;
+	color: #80764e;
+
+}
+	
+#lattermenu {
+	width: 201px;
+	height: 50px;
+	background: url(../images/menubackgroundborder.gif) repeat-y;
+}
+
+#bottommenu {
+	width: 201px;
+	height: 3px;
+	background: url(../images/bottommenuborder.gif) no-repeat;
+}
+
+#infooter {
+	clear: both;
+	margin: 0px -8px 0px;
+	height: 30px;
+	background: #fff url(../images/orangeborder.gif) bottom repeat-x;
+	text-align: center;
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: .75em;
+}
+
+#infooter ul {
+	line-height: 30px;
+	list-style-type: none;
+	display: inline;
+	margin-left: 5em;
+}
+
+#infooter ul li {
+	display: inline;
+	
+}
+
+#endfooter {
+	margin: 0px -8px -8px;
+	height: 30px;
+}
+
+.clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+/* End hide from IE-mac */

@@ -1,0 +1,16 @@
+A look at gud.el for two reasons:
+  * This is what I am replacing
+  * It represents a kind of older and frowned upon school of Elisp writing: 
+   - a large single emacs program 
+   - no tests
+   - global state
+   - little or or ineffective Lisp data structures
+
+As for the new code, I described some programming features of it previously: modularity and testing. In addition here I'll discuss
+
+   - Using buffer-local variables to reduce global state
+   - Using Lisp Data Structures
+
+Probably here I'll drill down into the debugger "command buffer" structure which is a low-level kind of thing. Then I could switch to other end which shows how to add another debugger. This consists customizing "init" (characterizing debugger output regular expressions) and mapping Emacs debugger command functions to the actual string to run the debugger command. 
+
+I don't have a front-end to pdb, the stock Python debugger. I could add that on the spot. (I like the idea of having something permanent in the code as a result of a meeting or talk.)
