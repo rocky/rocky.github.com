@@ -1,0 +1,221 @@
+<!doctype html>  
+<html lang="en">
+        
+  <head>
+    <meta charset="utf-8">
+    
+		
+    <title>Ruby debuggers</title>
+    
+    <meta name="description" content="Slide Presentation to the Emacs NYC meetup group.">
+    <meta name="author" content="Rocky Bernstein">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
+    
+    <link rel="stylesheet" href="lib/zenburn.css">
+  </head>
+  
+  <body>
+    
+    <div id="reveal">
+      
+      <!-- Used to fade in a background when a specific slide state is reached -->
+      <div class="state-background"></div>
+      
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Ruby Debuggers</h4>
+          Rocky Bernstein: <tt>rocky@gnu.org</tt>
+	  <small>
+	    <p>slides: 
+	      <a href="http://rocky.github.com/Bandung-2012">
+		http://rocky.github.com/Bandung-2012</a>
+	    </p><p>
+	      text: 
+	      <a href="https://github.com/rocky/rocky.github.com/wiki/Bandung-2012">https://github.com/rocky/rocky.github.com/wiki/Bandung-2012</a>
+	  </small>
+          <script>
+            // Delicously hacky. Look away.
+            if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
+          </script>
+        </section>
+
+	<section>
+          <h1>When a Debugger?</h1>
+          <p>Some people don't know what a debugger is.</p>
+          <p class="fragment">These books don't say much about debuggers...
+	    <div class="fragment">
+	      <image src="matz-ruby.gif"/>
+	      <image src="rails-book.png"/>
+	      <image src="pickaxe.jpg"/>
+	    </div></p>
+		    
+	</section>
+	<section>
+          <h1>Scenario</h1>
+	      <ul>
+		<li>Monday start a new job. YAY!</li>
+		<li class="fragment">Job has computer already set up; there is a nice plant on desk...
+		<div class="fragment">because it belongs to a guy who was fired Friday</em></li>
+		<li class="fragment">Boss says fix website code written by this guy</li>
+		<li class="fragment">It is written in Rails4</li>
+		<li class="fragment">I don't know Rails4 :-(</li>
+              </ul>
+          </section>
+ 	 <section>
+           <h1>http://localhost:3000/posts</h1>
+	   <image src="bandung-posts.png">
+        </section>
+ 	 <section>
+           <h1>Rails log:</h1>
+	   <pre><code contenteditable>
+Started GET "/posts" for 127.0.0.1 at 2012-06-19 11:32:16 -0400
+  Processing by PostsController#index as HTML
+  Post Load (0.4ms)  SELECT "posts".* FROM "posts"
+Rendered <font color="#FFAAAA"><em><b>posts/index.html.erb</b></em></font> within layouts/application (11.9ms)
+	  </code></pre>
+        </section>
+ 	<section>
+          <h1>Rails code posts/index.html.erb</h1>
+	  <pre><code class="ruby" contenteditable>
+&lt;% @posts.each do |post| %&gt;
+  &lt;tr&gt;
+...
+    &lt;td&gt;<%= post.user %&gt;&lt;/div&gt;
+    &lt;td&gt;<%= post.text %&gt;
+    &lt;td&gt;&lt;%= link_to 'Show', post %&gt;
+	  </code></pre>
+        </section>
+ 	 <section>
+           <h1>Rails Console</h1>
+	   <pre><code class="ruby" contenteditable>
+$ rails console
+Loading development environment (Rails 3.0.9)
+:001 > post = Post.find(:first)
+ => #&lt;Post id: 1, user: "rocky", text: "hallo semua!"...&gt;
+:002 > post.text
+ => "hallo semua!" 
+:003 > link_to('Show', post)
+<em>NoMethodError: undefined method `link_to' for main:Object</em>
+	  </code class="ruby"></pre>
+        </section>
+ 	<section>
+          <h1>Adding debugger call from code</h1>
+	  <pre><code class="ruby" contenteditable>
+&lt;% @posts.each do |post| %&gt;
+  &lt;tr&gt;
+...
+    &lt;td&gt;<%= post.user %&gt;&lt;/div&gt;
+    &lt;td&gt;<%= post.text %&gt;
+    &lt;td&gt;&lt;%= <font foregcolor="#FFFFFF"><b><em>debugger;</em></b></font> link_to ... %&gt;
+	  </code></pre>
+	  <p class='fragment'>And <code>link_to</code> can be found</p>
+	  <p class='fragment'>and stepped into</p>
+        </section>
+ 	<section>
+          <h1>Novel ruby-debug commands</h1>
+	  <p>Some of these originated with <tt>ruby-debug</tt>
+	  <ul>
+	    <li class="fragment">set autoeval on</li>
+	    <li class="fragment">set display</li>
+	    <li class="fragment">set different on</li>
+	    <li class="fragment">set autolist on</li>
+	    <li class="fragment">debugger <em>if</em>...</li>
+	  </dd>
+        </section>
+ 	<section>
+          <h1>trepanning debugger features</h1>
+	  <p>Note if you have <tt>ruby-debug</tt> installed you can also install <tt>trepan8</tt>
+	  <ul>
+	    <li class="fragment"><font color=cyan>S</font><font color=yellow>yntax</font> <font color=magenta>H</font><font color=yellow>ighlighting</font> -- <tt>set hightlight</tt></li>
+	    <li class="fragment">Debugger command ... <div class="fragment">completion (se => set, server)</div>
+	    <li class="fragment"><em>eval</em> and <em>eval?</em>
+	    <li class="fragment">Better handling of <em>eval</em>, and <em>return</em>
+	    <li class="fragment">Low-level stuff: (disassembly, stepping by VM instruction)
+	  </ul>
+        </section>
+ 	<section>
+          <h1>A debugger doesn't replace...</h1>
+	  <ul>
+	    <li class="fragment">Writing Tests (rspec, test/unit, cucumber)</li>
+	    <li class="fragment">Writing Documentation for your code (rdoc)</li>
+	    <li class="fragment">Writing Modular Code</li>
+	  </ul>
+	  <p class="fragment">Terima Kasih</p>
+        </section>
+      </div>
+      <!-- The navigational controls UI -->
+      <aside class="controls">
+        <a class="left" href="#">&#x25C4;</a>
+        <a class="right" href="#">&#x25BA;</a>
+        <a class="up" href="#">&#x25B2;</a>
+        <a class="down" href="#">&#x25BC;</a>
+      </aside>
+      
+      <!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
+      <div class="progress"><span></span></div>
+      
+    </div>
+    
+    <script src="js/reveal.js"></script>
+    
+    <!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
+    <script src="lib/highlight.js"></script>
+    <script src="lib/classList.js"></script>
+    
+    <script>
+      // Parse the query string into a key/value object
+      var query = {};
+      location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
+      query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
+      } );
+      
+      // Fires when a slide with data-state=customevent is activated
+      Reveal.addEventListener( 'customevent', function() {
+      alert( '"customevent" has fired' );
+      } );
+      
+      // Fires each time a new slide is activated
+      Reveal.addEventListener( 'slidechanged', function( event ) {
+      // event.indexh & event.indexv
+      } );
+      
+      Reveal.initialize({
+      // Display controls in the bottom right corner
+      controls: true,
+      
+      // Display a presentation progress bar
+      progress: true,
+      
+      // If true; each slide will be pushed to the browser history
+      history: true,
+      
+      // Loops the presentation, defaults to false
+      loop: false,
+      
+      // Flags if mouse wheel navigation should be enabled
+      mouseWheel: true,
+      
+      // Apply a 3D roll to links on hover
+      rollingLinks: true,
+      
+      // UI style
+      theme: query.theme || 'default', // default/neon
+      
+      // Transition style
+      transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
+      });
+      
+      hljs.initHighlightingOnLoad();
+    </script>
+    
+  </body>
+</html>
