@@ -1,0 +1,1 @@
+I'll talk about when a debugger might be useful and show out it is similar and different from rails/console or irb. Then I will give some features of ruby-debug that are often overlooked. I will followed this with features my rewrite of ruby-debug (trepanning and rb8-trepanning) that are not in ruby-debug.
