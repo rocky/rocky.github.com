@@ -34,14 +34,13 @@
         <section>
           <h1>Ruby Debuggers</h1>
           Rocky Bernstein: <tt>rocky@gnu.org</tt>
-	  <small>
-	    <p>slides: 
-	      <a href="http://rocky.github.com/Bandung-2012">
-		http://rocky.github.com/Bandung-2012</a>
-	    </p><p>
-	      text: 
-	      <a href="https://github.com/rocky/rocky.github.com/wiki/Bandung-2012">https://github.com/rocky/rocky.github.com/wiki/Bandung-2012</a>
-	  </small>
+	  <dl>
+	    <dt>slides</dt>
+	    <dd><a href="http://rocky.github.com/Bandung-2012">
+		http://rocky.github.com/Bandung-2012</a></dt>
+	    <dt>text</dt>
+	    <dd><font color="#13D9EB">https://github.com/rocky/rocky.github.com/wiki/Bandung-2012</a></font></dd>
+	    <dl>
           <script>
             // Delicously hacky. Look away.
             if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) ) document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
@@ -75,7 +74,7 @@
 		    
 	</section>
 	<section>
-          <h1>Scenario</h1>
+          <h1>A Story</h1>
 	      <ul>
 		<li>Monday start a new job. YAY!</li>
 		<li class="fragment">Job has computer already set up; there is a nice plant on desk...
@@ -133,9 +132,10 @@ Loading development environment (Rails 3.0.9)
     &lt;td&gt;&lt;%= <font foregcolor="#FFFFFF"><b><em>debugger;</em></b></font> link_to ... %&gt;
 	  </code></pre>
 	  <p class='fragment'>And <code>link_to</code> can be found</p>
-	  <p class='fragment'>and stepped into</p>
+	  <p class='fragment'>and stepped into: <em>show this</em></p>
         </section>
  	<section>
+	  <section>
           <h1>Novel ruby-debug commands</h1>
 	  <p>Some of these originated with <tt>ruby-debug</tt>
 	  <ul>
@@ -148,7 +148,7 @@ Loading development environment (Rails 3.0.9)
         </section>
  	<section>
           <h1>trepanning debugger features</h1>
-	  <p>Note if you have <tt>ruby-debug</tt> installed you can also install <tt>trepan8</tt>
+	  <p>Note: if you have <tt>ruby-debug</tt> installed you can also install <tt>trepan8</tt>
 	  <ul>
 	    <li class="fragment"><font color=cyan>S</font><font color=yellow>yntax</font> <font color=magenta>H</font><font color=yellow>ighlighting</font> -- <tt>set hightlight</tt></li>
 	    <li class="fragment">Debugger command ... <div class="fragment">completion (se => set, server)</div>
@@ -157,6 +157,7 @@ Loading development environment (Rails 3.0.9)
 	    <li class="fragment">Low-level stuff: (disassembly, stepping by VM instruction)
 	  </ul>
         </section>
+	</section>
  	<section>
           <h1>A debugger doesn't replace...</h1>
 	  <ul>
