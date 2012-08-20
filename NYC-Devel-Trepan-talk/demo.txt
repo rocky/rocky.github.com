@@ -1,0 +1,246 @@
+My thanks to David Golden setting this up and MediaMath for hosting. 
+
+I'd like to show off a gdb like debugger I've written for Perl and
+mostly I'll show features that aren't in the stock perl debugger. So
+let's begin...
+
+First off there is front-end command to invoke the debugger, trepan.pl
+
+   trepan.pl gcd.pl 3 5
+
+What differences do folks notice?  - - - 
+
+Show off breakpoint events, one-time breakpoints 
+
+In perl, you invoke the debugger
+"perl -d". What are the advantages and disadvantages? - - -
+
+One advantage of having a front-end script, trepan.pl, is that you can
+pass options in the usual way. In perl5db passing options is done
+via environment variables.
+
+By the way, there is nothing that prevents someone from writing a
+front-end script to invoke perl5db and I encourage someone to do
+that. You could probably take the trepan.pl script I wrote and modify
+that accordingly. 
+
+
+One option I have on trepan.pl is POSIX-like "set -x" tracing. 
+
+  trepan.pl -x gcd.pl 3 5 
+
+Inside the debugger, you can turn on or off tracing with "set trace print"
+
+  trepan.pl gcd.pl 3 5 
+  set trace print
+  break 11
+  continue
+  continue
+
+A disadvantage of using a front-end script to invoke debugging a Perl
+script is that from the program standpoint is that $0 by default will
+be say 'trepan.pl' rather than your program, like say gcd.pl. In the
+code I wrote, I save and adjust $0 accordingly. 
+
+In this regard let me show a bug that perl5db currently has in *not*
+saving $0.
+
+  perl -d fool-restart.pl
+  x $0
+
+So far so good. Now 
+
+  s
+  R
+
+No good. Now try with trepan.pl
+
+  trepan.pl fool-restart.pl
+  $0  # This is a lie
+  s
+  R
+
+So another difference between Devel::Trepan and perl5db.pl is the
+Devel::Trepan sometimes lies more in order to make things less
+surprising for the programmer using it and debugging his/her Perl
+code. I will show another example of this soon.  In trepan.pl I don't
+have to specify a full path name to debug if that's in the path
+already. Let's first try with perl5db:
+
+   perl -d trepan.pl
+
+Nope. But 
+
+   trepan.pl trepan.pl
+
+Yep. So now let me show another of Devel::Trepan's lies. Let's
+evaluate this line:
+
+   eval __FILE__
+
+This looks correct. Let's try with perl5db:
+
+  perl -d `which trepan.pl`
+
+  x __FILE__
+
+And this doesn't look right. I am in trepan.pl not eval or perl5db!
+Again, it is Devel::Trepan that is lying here. Or rather it is fixing
+up the eval environment to make things look the way they would be in
+that debugger weren't really there.
+
+Let's come back to the trepan.pl front end.  Since it
+is a command like any other command, we can now provide a
+--help option. 
+
+help.
+   trepan.pl --help | less
+
+In general, I've put a lot of work into giving useful context sensitive help.
+So let's go back in and explore help a little bit.
+
+   trepan.pl ./gdb.pl 3 5 
+   help
+
+The top-level display looks like what you get in gdb. One thing I did add since this is Perl and perl is great with regular expresions is the ability to use regexps in searching for help commands. For example
+
+   help [a-c].*
+
+But since I find .* very common, I allow * to match everything at the top level.
+
+   help *
+
+Notice how the commands are nicely arranged in columns. This is done
+via the Array::Columnize module I wrote or rather ported from Python
+via Ruby.
+
+Help works not just with the inital command but with subcommands as of
+those commands. For example:
+
+  help set
+
+And 
+  help set *
+
+Let me go back now to that one-offness criticism mentioned before.  In
+the perl debugger, it is not just the way you invoke the debugger how
+you have to pass options, but also this one-offness persists once you
+get into the Perl debugger. How many other debuggers use capital T
+for backtrace? In this debugger we use the gdb command names.
+
+But aren't the long names cumbersome? Well no for serveral reasons. I
+have short aliases for many of the commands:
+
+   alias
+
+So you see T in there. And what is that? 
+
+   alias T
+
+Backtrace! But the gdb shorthand is bt, and that works as well.
+
+   alias bt
+
+You can define or your own aliases, or remove the default aliases that
+come with the debugger.
+
+But the other reason I don't think this is cumbersome is that there is
+also command completion and a mode where you need only give the
+minimum needed characters that make distinguish the command.
+
+So you can also type: 
+
+ba<tab>
+
+Or just "ba" since that's unique.
+- - - -
+
+I've in invoking the debugger from the outset here. However that's not
+how I normally get into the debugger. Instead I put a direct call to
+the debugger someplace where I want to stop.
+
+Let me show this. 
+Edit gcd-dbg.pl
+
+Also I'm going to use do this from the emacs front-end interface I wrote.
+
+M-x shell
+  gcd-dbg.pl 3 5
+
+And because this is just Perl code you can make the condition for
+stopping arbitrarily precise. 
+   Enbugger->stop if a == 1;
+
+You can even put all of this in a signal handler. Show loop.
+
+- - - - -
+
+Now I'd like to go into a little bit of expressions are evaluated in
+Devel::Trepan.
+
+The key thing about Perl evaluation is that there are two "contexts"
+in which an expression can be evaluated: in an array context and in a
+scalar context. In perl's debugger you need to write your expression
+to accomodate that. In Devel::Trepan we make an effort to figure it
+out and provide shorthands for making the context explicit. 
+
+trepan.pl gcd.pl 3 5
+
+eval @ARGV
+
+Ok. So what do you notice here? A couple important things, first it got the fact that @ARGV was an array. How did it figure this out? Well pretty simple here the expression started out with @ so that's a giveaway. 
+
+The second thing to notice is the output is coming via Data::Printer.
+I think the concensus is that this is the coolest way to show
+data. But if there are any Data::Dumper::perltidy bigots in the
+audience we can switch to that output.
+
+   set display eval tidy
+   eval @ARGV
+
+We also support Data::Dumper output because that pulls in the least
+number of dependencies and we want this debugger to work in somewhat
+primitive and hostile environments.
+
+I've been typing in "eval" here, but you really don't have to. By
+default anything you type that doesn't seem to be a debugger command
+is evaluated. So 
+
+   @ARGV
+
+also works. But what if the expression is a scalar but starts with @? For example
+
+  @ARGV == 2
+
+For that use, eval$ which has an alias of $.
+  
+  $ @ARGV == 2
+
+By the way, notice that we save prior values in the @DB:D array you
+can pick up an old value at any time.
+
+Another variant of eval is running that without any parameters. Let me get to the next line to show that.
+
+  next
+  eval	
+
+Due to technical difficulties, since there is a "my" here we don't see
+the effect of the "my". However there is an expression version of
+eval? which tries to find an expressions inside the statement and runs
+just that:
+
+ eval? 
+
+Since picking out the expression is a bit heuristic, the debugger
+shows what it picked out.
+
+To finish, I'm going to show a couple more novel features put into eval.
+
+Since we have someone else here expresed interst in Emacs. I'll do it
+inside the Emacs font-end interface that I wrote.
+
+The Emacs front end allows see and the source code easier. In a terminal window you might try "set autolist on" to see more context of the source code.
+
+debug
+set autolist
+
