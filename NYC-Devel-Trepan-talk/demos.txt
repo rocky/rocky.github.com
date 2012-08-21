@@ -1,0 +1,108 @@
+events 
+  trepan.pl gcd.pl 3 5 
+  See '--'
+  info program
+  list gcd
+  continue gcd
+  see x1
+  break 11
+  list .
+  continue
+  disable 2
+  finish
+  info return
+  set return 120
+  continue
+  
+tracing
+  trepan.pl -x gcd.pl 3 5 
+  
+  trepan.pl gcd.pl 3 5 
+  set trace print on
+  break 11
+  condition 1 $a == 1
+  info break
+
+set auto list
+
+  trepan.pl gcd.pl 3 5 
+  set autolist
+  step
+  step
+  step
+  
+help
+  command completion
+  help [a-c].*
+  help running
+
+command completion
+  se<tab>
+  set base<tab>
+  set basename <tab>
+  break 1<tab>
+  break main::g<tab>
+  
+
+eval
+  eval @ARGV
+  @ARGV
+  @ @ARGV
+  $ @ARGV
+
+  step  
+  eval
+  eval? 
+  
+  @DB::D
+
+  set display eval tidy
+  @ARGV
+
+Enbugger
+   trepan.pl gcd-dbg.pl 3 5 
+   # show use and stop lines
+   move Enbugger->stop to appropriate place with "if ..."
+   set basename on
+   bt
+
+In signal handler...
+   Edit to show loop.pl
+   perl loop.pl
+   split windows
+   rename-uniquely
+   kill -HUP <pid>
+   
+   Edit to loop.pl to comment out sig.
+   trepan.pl loop.pl
+   continue
+   split windows
+   kill -HUP <pid>
+
+Remote execution 
+   in window with kill shell:
+      perl --server gcd.pl 3 5
+   in trepan.pl mode window:
+      perl --client
+      step
+   Show server and client windows
+      continue
+      R
+        
+$0 bug
+    perl -d fool-restart.pl
+    s 
+    R
+
+__FILE__ __LINE_ bug
+
+   perl -d trepan.pl # doesn't work
+   trepan.pl trepan.pl # does work
+   eval? 
+   __FILE__
+   __LINE__
+
+   perl -d `which trepan.pl`
+   x __FILE__
+   x __LINE__
+    
