@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use rlib '../lib';
-use Enbugger 'trepan';
+use Enbugger; # 'trepan';
 # GCD. We assume positive numbers
 sub gcd($$);
 sub gcd($$) 

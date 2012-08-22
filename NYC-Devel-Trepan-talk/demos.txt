@@ -32,9 +32,10 @@ set auto list
   step
   
 help
-  command completion
-  help [a-c].*
+  help
   help running
+  help [a-c].*
+  help *
 
 command completion
   se<tab>
@@ -51,13 +52,13 @@ eval
   $ @ARGV
 
   step  
-  eval
+  eval@
   eval? 
   
   @DB::D
-
-  set display eval tidy
+  set display eval <tab>tidy
   @ARGV
+
 
 Enbugger
    trepan.pl gcd-dbg.pl 3 5 
@@ -81,14 +82,20 @@ In signal handler...
 
 Remote execution 
    in window with kill shell:
-      perl --server gcd.pl 3 5
+      trepan.pl --server gcd.pl 3 5
    in trepan.pl mode window:
-      perl --client
+      trepan.pl --client
       step
    Show server and client windows
       continue
       R
         
+Eval String
+     
+    M-x trepan.pl eval.pl
+    
+   
+
 $0 bug
     perl -d fool-restart.pl
     s 
@@ -106,3 +113,5 @@ __FILE__ __LINE_ bug
    x __FILE__
    x __LINE__
     
+debug
+
