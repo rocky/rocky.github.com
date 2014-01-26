@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Cross-Stack Topics</title>
+
+    <meta name="description" content="Miscellaneous thoughts on some Cross-Development Stacks">
+    <meta name="author" content="Rocky Bernstein">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+	<section>
+	  <h1>Cross-Stack Topics</h1>
+	  <p>
+	    <small><a href="https://masterbranch.com/rocky.bernstein">Rocky Bernstein</a> / <a href="mailto://rocky@gnu.org">rocky@gnu.org</a></small>
+	  </p>
+	  <aside class="notes">
+	    Notes 2.
+	  </aside>
+	</section>
+
+	<section>
+	  <h3>Components of A Full-Stack Development System</h3>
+	  <p>
+	  <ul>
+	    <li><font color="#774400">Editor</font></li>
+	    <li color="grey"><font color="#774400"><i>Documentation System</font></i></li>
+	    <li><font color="#774400">Debugger, Profiler (sometimes mine)</font></li>
+	    <li><font color="#774400"><i>Test System</font></i></li>
+	    <li><font color="#774400">REPL (Read/Eval/Print loop)</font></li>
+	    <li><font color="#774400"><i>Version Control</font></i></li>
+	    <li>A Virtual environment (e.g. rvm, pythonbrew, perlbrew)</li>
+	    <li>Virtual servers (VMPlayer, virtualbox, Xen, AWS, Google App, Heroku)</li>
+	    </ul>
+	  </p>
+	  <p align="left">
+	    Some of the above are covered in an <font color="#774400">IDE</font>. Some are covered in <i>Project hosting</i></p>
+
+	  <aside class="notes">
+	    Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+	  </aside>
+	</section>
+
+	<section>
+	  <h3>Smallish things I'm going to briefly cover</h3>
+	  <ul class="fragment">
+	    <li>Project Hosting</li>
+	    <li class="fragment">Continuous Testing</li>
+	    <li class="fragment">REPL (Read/Eval/Print loop)</li>
+	    <li class="fragment">Virtual Environment</li>
+	    </ul>
+	</section>
+
+	<section>
+	  <h3>Project Hosting: <a href="http://github.com/rocky/remake">Github</a></h3>
+	  <ul class="fragment">
+	    <li>The Gold Standard &mdash; for git</li>
+	    <li class="fragment">Constantly Improving</li>
+	    <li class="fragment">Social rating via: stars, follow, and fork</li>
+	    <li class="fragment">Service hooks</li>
+	    <li class="fragment">Private repositories</li>
+	    </ul>
+	</section>
+
+	<section>
+	  <h3>Project Hosting: <a href="https://code.google.com/p/pydbgr/">http://code.google.com</a></h3>
+	  <ul>
+	    <li class="fragment">Hg, Subversion, or git</li>
+	    <li class="fragment"><a href="https://code.google.com/p/pydbgr/downloads/list">Downloads Section</a></li>
+	    <li class="fragment">Can request <a href="https://code.google.com/p/pydbgr/source/checkout">source-code review</a></li>
+	    </ul>
+	</section>
+
+	<section>
+	  <h3>Project Hosting:<br><a href="https://sourceforge.net/projects/bashdb/">sourceforge.net</a></h3>
+	  <ul>
+	    <li class="fragment">One of the first</li>
+	    <li class="fragment">git, hg, or svn</li>
+	    <li class="fragment">Downloads Section and <a href="http://sourceforge.net/projects/bashdb/files/stats/timeline?dates=2013-01-20+to+2014-01-26">Stats</a></li>
+	    <li class="fragment">Import from code.google.com</li>
+	  </ul>
+	  <p>Fun fact: is part of slashdot, thinkgeek, and now dice</p>
+	  <p class="fragment">
+	  But what about <em>private</em> repositories?</p>
+	</section>
+
+	<section>
+	  <h3>Project Hosting:<br><a href="https://bitbucket.org/rockybernstein/computer-inventory/">bitbucket.org</a></h3>
+	  <ul>
+	    <li class="fragment">Unlimited private repositories</li>
+	    <li class="fragment">Pay to make public</li>
+	    <li class="fragment">Same folks as Jira</li>
+	  </ul>
+	</section>
+
+	<section>
+	  <h3>Continuous Integration: <a href="https://travis-ci.org/rocky/p5-Term-ReadLine-Perl5/">travis.org</a></h3>
+	  <ul>
+	    <li class="fragment">Hooks into github</li>
+	    <li class="fragment">Multiple Versions of a Programming-Languages</li>
+	    <li class="fragment">For some things, can be <a href="https://github.com/rocky/p5-Term-ReadLine-Perl5/blob/master/.travis.yml">real simple</a></li>
+	  </ul>
+	  <p class="fragment">
+	  But what about for <em>code.google.com</em>?</p>
+	</section>
+
+	<section>
+	  <h3>Continuous Integration: <a href="https://drone.io/">drone.io</a></h3>
+	  <ul>
+	    <li class="fragment">Use with <code>code.google.com</code></li>
+	    <li class="fragment">deploy hook on successful testing
+	    See <a href="http://docs.drone.io/">http://docs.drone.io/</a </li>
+	  </ul>
+	  <p class="fragment">
+	  And bitbucket?</p>
+	</section>
+
+	<section>
+	  <h3>Continuous Integration</h3>
+	  <ul>
+	    <li>Bitbucket: <a href="https://confluence.atlassian.com/display/BITBUCKET/Bamboo+hook+management">bamboo</a></li>
+	    <li>Rest: <a href="https://jenkins-ci.org/">Jenkins</a></li>
+	  </ul>
+	  <p class="fragment">
+	</section>
+
+
+	<section>
+	  <h3>REPLs and Debuggers</h3>
+	  <p>REPL &mdash; Read, Eval, Print, Loop</p>
+	  <p>Debuggers often contain a REPL. Debugger is a REPL with context set up</p>
+	</section>
+
+
+	<section>
+	  <h3>REPL Examples</h3>
+	  <ul>
+	    <li class="fragment">Python: <code>python</code> ...
+	    <div class="fragment">or <code>ipython</code></div></li>
+	    <li class="fragment">Ruby: <code>irb</code></li>
+	    <li class="fragment">Perl: <code>perl -e '...'</code>...
+	    <div class="fragment">try <code>re.pl</code> &mdash; <a href="https://metacpan.org/pod/Devel::REPL">Devel::Repl</a></div></li>
+	    <li class="fragment">And for bash, zsh,...?
+	    <div class="fragment"><code>bash</code>, <code>zsh</code></div></li>
+	  </ul>
+	</section>
+
+	<section>
+	  <h3>non Pogramming Languages REPLs</h3>
+	  <ul>
+	    <li class="fragment">Rails: <code>rails console</code></li>
+	    <li class="fragment">Mysql: <code>mysql</code></li>
+	    <li class="fragment">Mongo: <code>mongo</code></li>
+	  </ul>
+	  <p class="fragment">
+	  But what about <em>Go</em>?</p>
+	</section>
+
+	<section>
+	  <h3>Go-like REPLs</h3>
+	  <ul>
+	    <li class="fragment"><a href="http://play.golang.org/p/3VsQMI4Rx5">Go Playground</a></li>
+	    <li class="fragment"><a href="http://localhost:3998/">go-play</a> (my version)</li>
+	    <li class="fragment">Carl Chatfield's <a href="github.com/0xfaded/eval">eval</a> used in my projects...
+	    <ul>
+	      <li class="fragment"><a href="github.com/rocky/go-fish">go-fish</a></li>
+	      <li class="fragment"><a href="github.com/rocky/ssa-interp">gub debugger</a></li>
+	    </ul></li>
+	  </ul>
+	</section>
+
+	<section>
+	  <h3>Virtual Environments</h3>
+	  <ul>
+	    <li>Ruby: <a href="http://rvm.io">rvm</a> and Bundler</li>
+	    <li>Python: <a href="http://github.com/yyuu/pyenv">pyenv</a> and pyenv-virtualenv</li>
+	    <li>Perl: <a href="http://perlbrew.pl/">perlbrew</a></li>
+	  </ul>
+	  <p class="fragment" align="left">
+	  But what about a virtual environment for Databases, e.g. mysql, postgres?</p>
+	</section>
+
+	<section>
+	  <h1>Thanks!</h1>
+	</section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+      // Parallax scrolling
+      // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+      // parallaxBackgroundSize: '2100px 900px',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+      { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+      });
+
+    </script>
+
+  </body>
+</html>
