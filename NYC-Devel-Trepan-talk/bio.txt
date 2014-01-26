@@ -1,0 +1,5 @@
+Rocky has been writing open-source code for close to two decades and has been using Perl for about as long.  Chances are that code he wrote or contributed to is on your computer, especially if it is Unix-derived. Rocky makes lots of mistakes so he has worked on a number of debugger, including an exotic one for GNU Make.
+
+In this talk, Rocky will show off a gdb-like debugger he wrote for Perl, Devel::Trepan. It includes extensive on-line help, debugger command completion and source-code colorization. It has other features that are not in the venerable stock debugger for Perl, perl5db, but you may also come away knowing a little more about perl5db. 
+
+
