@@ -1,5 +1,4 @@
 Hi everybody!
-
 In the past we've had people talk about their specific stacks. For me this has been very interesting. But I think any full stack engineer has to be able to change the stack on demand. I often work across different stacks.
 
 So today I'd talk a little on common areas that cut across stacks. But since I'm giving the talk, it will be a bit personal.
@@ -19,13 +18,13 @@ and virtual environments. The last item is there just so I can suggest a project
 [slide]
 Again, Project hosting covers things like repository management, documentation wikis, issue trackers, and possibly other things.
 
-The gold standard for project hosting nowadays is probably github. I am always impressed by how it constantly improves in a thoughtful way. 
+The gold standard for project hosting nowadays is probably github. I am always impressed by how it constantly improves in a thoughtful way.
 It has a social rating component where people can star projects, follow the project, or easily fork the code. Within the last year or so they also added git service service hook to lots of outside projects. And finally, although using github for public repositories is free, it does allow private repositories which you pay for.
 
 [slide]
-Another project hosting site I use is code.google.com. I guess just because it's google, I have my Python and Go projects there. I don't think there's anything all that special about it though. In contrast to github, you can use mercurial, or subversion instead of git. In fact when it started out, subversion was the primary version-control system. Since mercurial is written in Python, I guess that was also a natural.
+Another project hosting site I use is code.google.com. I don't have much to say to recommend this over the next option. I have my Python and Go projects there. In contrast to github, you can use mercurial, or subversion instead of git.
 
-One thing I like about code.google.com is the fact that there is a download section of released code. github has a way of creating a zip file on demand, and I think there may be other ways, but this aspect generally isn't used in git. I got notice that google was phasing out the download section for security reasons.
+One thing I like about code.google.com is the fact that there is a download section of released code. github has a way of creating a zip file of the source file on demand, but notice in google you can download python eggs, or Debian packages. I got notice that google was phasing out the download section for security reasons.
 
 Finally one can request a source-code review which is pretty neat. I've never used this though.
 
