@@ -2,15 +2,17 @@
 use strict;
 use warnings;
 use rlib '../lib';
-use Enbugger; # 'trepan';
+use Enbugger "trepan"; #
 # GCD. We assume positive numbers
 sub gcd($$);
 sub gcd($$) 
 { 
-    Enbugger->stop;
     my ($a, $b) = @_;
     # Make: a <= b
     ($a, $b) = ($b, $a) if ($a > $b);
+    if ($a == 1) {
+	Enbugger->stop; 
+    }
 
     return undef if $a <= 0;
     return $a if ($a == 1) or ($b-$a == 0);
