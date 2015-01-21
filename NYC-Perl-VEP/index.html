@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Perl Bottleneck Removal Process</title>
+
+		<meta name="description" content="Removing a Perl Bottleck with Devel::NYTProf, Benchmark and Inline::CL">
+		<meta name="author" content="Rocky Bernstein">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h2>Bottleneck Removal Process in 6 Steps</h1>
+					<h3><i>with...</i></h3>
+					<ul>
+					<li class="fragment"><a href="https://metacpan.org/pod/Devel::NYTProf">Devel::NYTProf</a></li>
+					<li class="fragment"><a href="https://metacpan.org/pod/Benchmark">Benchmark</a></li>
+					<li class="fragment"><a href="https://metacpan.org/pod/distribution/Inline-C/lib/Inline/C.pod">Inline::C</a></li>
+				</section>
+
+				<section>
+					<h2>The program:</h2>
+					<p>
+						Varient Effect Prediction (VEP) is a Genomics program for analyzing nucleotide mutations.
+					</p>
+				</section>
+
+				<section>
+					<h2>VEP Stats (via Perl <a href="http://cloc.sourceforge.net/">cloc</a>)</h2>
+					<ul>
+						<li>1,431 files</li>
+						<li> 400K lines of code</li>
+						<li>50 minutes for human chromosomes on a 4-core server</li>
+						<li>compare with a 5 minutes for roughly similar Java program</li>
+						<ul>
+				</section>
+
+				<section>
+					<section>
+					<h2>Step1. Profile using <a href="https://metacpan.org/pod/Devel::NYTProf">NYTProf</a></h2>
+					<img data-src="VEP-prof-5000.png">
+						<a href="#" class="navigate-down">
+						</a>
+					</section>
+					<section>
+						<h2>Perl Hot Spots</h2>
+						<img data-src="VEP-prof-5000-circled.png">
+					</section>
+				</section>
+
+
+				<section>
+					<section>
+					<h2>Slow Functions</a></h2>
+					<img data-src="Hot-fns.png">
+						<a href="#" class="navigate-down">
+						</a>
+					</section>
+					<section>
+						<img data-src="Hot-fns-circled.png"/>
+					</section>
+				</section>
+
+				<section>
+					<h2>Step 2. Analyze Code</h2>
+					<pre><code data-trim contenteditable>
+sub subseq {
+   ...
+   $data =~ s/\n//g;
+   $data =~ s/\r//g;
+   ...
+}
+</code></pre>
+				</section>
+
+        <section data-transition="slide" style="text-align: left;">
+					<h2>Step 3. Come up with Ideas</h2>
+					<pre><code data-trim contenteditable>
+sub subseq {
+   ...
+   $data =~ s/\n//g;
+}
+</code></pre>
+					<ul alight="left">
+					<li class="fragment">Compile re</a></li>
+					<li class="fragment">Recode in C</li>
+				</section>
+
+				<section>
+					<h2>Step 4. Benchmark</h2>
+					<section>
+					<pre><code data-trim contenteditable>
+use Benchmark qw(cmpthese);
+
+cmpthese($iterations, {
+	 'orig' => sub { ... },
+	 're_comp' => sub { ... },
+	 'C' => sub { ... },
+	 });
+...
+}
+</code></pre>
+          </section>
+          <section data-background="#dddddd">
+					<h3>Benchmark Results</h3>
+<pre><code>
+perl bench.pl
+          Rate re_comp    orig       C
+re_comp  800/s      --     -4%    -87%
+orig     835/s      4%      --    -86%
+C       5952/s    644%    613%      --
+</code></pre>
+
+					</section>
+        </section>
+
+        <section>
+					<h2>Step 5. Put in Code</h2>
+					<pre><code data-trim contenteditable>
+sub strip_crnl {
+    $_ = shift; s/$nl//g; s/$cr//g;
+    return $_;
+}
+
+eval q{
+    use Inline C  => <<'END_OF_C_CODE';
+    char* strip_crnl(char* str) {
+        char *s;
+        char *s2 = str;
+        for (s = str; *s; *s++) {
+	    if (*s != '\n' && *s != '\r') {
+              *s2++ = *s;
+	    }
+        }
+        *s2 = '\0';
+        return str;
+    }
+END_OF_C_CODE
+</code></pre>
+				</section>
+
+				<section>
+					<h2>Step 6 Run NYTProf again</h2>
+					<ul>
+						<li>7.76s -> 2.23s, -5.3s (350% speedup)
+						<li>223s  ->  195s, -28s (15% speedup)
+						<ul>
+				</section>
+
+				<section style="text-align: left;">
+					<h1>Profit!</h1>
+					<p>This change is now in <a href="https://metacpan.org/pod/Bio::Perl">Bio::Perl</a>.
+					<h2>THE END - Thanks</h1>
+					<p>
+						- <a href="https://rocky.github.io/NYC-Perl-VEP/">slides: https://rocky.github.io/NYC-Perl-VEP/</a><br>
+						- <a href="mailto://rocky@github.com">rocky@github.com</a>
+					</p>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
+<!--
+Local Variables:
+tab-width: 2
+End:
+->
