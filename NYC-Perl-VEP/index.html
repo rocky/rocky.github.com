@@ -62,20 +62,21 @@
 						<li>1,431 files</li>
 						<li> 400K lines of code</li>
 						<li>50 minutes for human chromosomes on a 4-core server</li>
-						<li>compare with a 5 minutes for roughly similar Java program</li>
+						<li>compare with a 5 minutes for roughly similar <a href="http://snpeff.sourceforge.net/">Java program</a></li>
 						<ul>
 				</section>
 
 				<section>
 					<section>
-					<h2>Step1. Profile using <a href="https://metacpan.org/pod/Devel::NYTProf">NYTProf</a></h2>
+					<h2>Step 1. Profile using <a href="https://metacpan.org/pod/Devel::NYTProf">NYTProf</a></h2>
 					<img data-src="VEP-prof-5000.png">
-						<a href="#" class="navigate-down">
-						</a>
 					</section>
 					<section>
 						<h2>Perl Hot Spots</h2>
 						<img data-src="VEP-prof-5000-circled.png">
+						<small>Full results are <a href="http://dustyfeet.com:8001/">here</a>.</small>
+						<a href="#" class="navigate-down">
+						</a>
 					</section>
 				</section>
 
@@ -84,8 +85,6 @@
 					<section>
 					<h2>Slow Functions</a></h2>
 					<img data-src="Hot-fns.png">
-						<a href="#" class="navigate-down">
-						</a>
 					</section>
 					<section>
 						<img data-src="Hot-fns-circled.png"/>
@@ -94,7 +93,7 @@
 
 				<section>
 					<h2>Step 2. Analyze Code</h2>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim contenteditable class="perl">
 sub subseq {
    ...
    $data =~ s/\n//g;
@@ -106,7 +105,7 @@ sub subseq {
 
         <section data-transition="slide" style="text-align: left;">
 					<h2>Step 3. Come up with Ideas</h2>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim contenteditable class="perl">
 sub subseq {
    ...
    $data =~ s/\n//g;
@@ -115,12 +114,13 @@ sub subseq {
 					<ul alight="left">
 					<li class="fragment">Compile re</a></li>
 					<li class="fragment">Recode in C</li>
+					<li class="fragment">...</li>
 				</section>
 
 				<section>
 					<h2>Step 4. Benchmark</h2>
 					<section>
-					<pre><code data-trim contenteditable>
+					<pre><code data-trim contenteditable class="perl">
 use Benchmark qw(cmpthese);
 
 cmpthese($iterations, {
@@ -131,6 +131,7 @@ cmpthese($iterations, {
 ...
 }
 </code></pre>
+<p><small>A full list ideas and benchmarks is <a href="https://gist.github.com/rocky/61f929d58a286189a758">here.</a></small></p>
           </section>
           <section data-background="#dddddd">
 					<h3>Benchmark Results</h3>
@@ -142,12 +143,14 @@ orig     835/s      4%      --    -86%
 C       5952/s    644%    613%      --
 </code></pre>
 
+<p><small><i>Note:</i> results are strongly influenced by <i>input data</i>.</small></p>
 					</section>
         </section>
 
         <section>
 					<h2>Step 5. Put in Code</h2>
-					<pre><code data-trim contenteditable>
+					<pre><code class="perl">
+my $nl = qr/\n/; my $cr = qr/\r/;
 sub strip_crnl {
     $_ = shift; s/$nl//g; s/$cr//g;
     return $_;
@@ -155,6 +158,8 @@ sub strip_crnl {
 
 eval q{
     use Inline C  => <<'END_OF_C_CODE';
+</code></pre>
+<pre><code class="C">
     char* strip_crnl(char* str) {
         char *s;
         char *s2 = str;
@@ -167,20 +172,21 @@ eval q{
         return str;
     }
 END_OF_C_CODE
+}
 </code></pre>
 				</section>
 
 				<section>
 					<h2>Step 6 Run NYTProf again</h2>
-					<ul>
-						<li>7.76s -> 2.23s, -5.3s (350% speedup)
-						<li>223s  ->  195s, -28s (15% speedup)
-						<ul>
+					<dl>
+						<dt>specific code:</dt><dd>7.76s => 2.23s, -5.3s (350% speedup)</dt>
+						<dt>overall:</dt><dd>223s  =>  195s, -28s (15% speedup)</dd>
+						</dl>
 				</section>
 
 				<section style="text-align: left;">
 					<h1>Profit!</h1>
-					<p>This change is now in <a href="https://metacpan.org/pod/Bio::Perl">Bio::Perl</a>.
+					<p>This <a href="https://github.com/bioperl/bioperl-live/commit/8f5c723ff943ab0ca2f15466e4eb41df075f5087">change</a> is now in <a href="https://metacpan.org/pod/Bio::Perl">Bio::Perl</a>.
 					<h2>THE END - Thanks</h1>
 					<p>
 						- <a href="https://rocky.github.io/NYC-Perl-VEP/">slides: https://rocky.github.io/NYC-Perl-VEP/</a><br>
