@@ -73,8 +73,9 @@
 					</section>
 					<section>
 						<h2>Perl Hot Spots</h2>
+						<p>
 						<img data-src="VEP-prof-5000-circled.png">
-						<small>Full results are <a href="http://dustyfeet.com:8001/">here</a>.</small>
+						<small>Full results are <a href="http://dustyfeet.com:8001/VEP-prof-5000">here</a>.</small>
 						<a href="#" class="navigate-down">
 						</a>
 					</section>
@@ -111,10 +112,10 @@ sub subseq {
    $data =~ s/\n//g;
 }
 </code></pre>
-					<ul alight="left">
+					<ul align="left">
 					<li class="fragment">Compile re</a></li>
 					<li class="fragment">Recode in C</li>
-					<li class="fragment">...</li>
+					<li class="fragment">... <em>o flag in re</em>....</li>
 				</section>
 
 				<section>
@@ -128,8 +129,7 @@ cmpthese($iterations, {
 	 're_comp' => sub { ... },
 	 'C' => sub { ... },
 	 });
-...
-}
+};
 </code></pre>
 <p><small>A full list ideas and benchmarks is <a href="https://gist.github.com/rocky/61f929d58a286189a758">here.</a></small></p>
           </section>
@@ -172,16 +172,19 @@ eval q{
         return str;
     }
 END_OF_C_CODE
-}
+};
 </code></pre>
 				</section>
 
-				<section>
-					<h2>Step 6 Run NYTProf again</h2>
+				<section style="text-align: left;">
+					<h2>Step 6. Run NYTProf again</h2>
+					<p>
 					<dl>
 						<dt>specific code:</dt><dd>7.76s => 2.23s, -5.3s (350% speedup)</dt>
 						<dt>overall:</dt><dd>223s  =>  195s, -28s (15% speedup)</dd>
-						</dl>
+          </dl>
+          </p><p>
+					<small>Full results for modified program are <a href="http://dustyfeet.com:8001/VEP-prof-5000-Inline-C/">here</a>.</small></p>
 				</section>
 
 				<section style="text-align: left;">
