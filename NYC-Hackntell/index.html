@@ -172,6 +172,8 @@ higher-level combinations do wind up in pretty much the same place.</p>.
 
 <section>
 
+<h3>Bytecode Assembly Parse</h3>
+
 <pre><code>stmts (4)
   ...
   1. stmt
@@ -238,7 +240,7 @@ simply is:
   20 POP_TOP None
 </code></pre>
 
-marked up becomes:
+when parsed up becomes:
 
 <pre><code>    0. expr
        binary_subscr (3)
@@ -273,6 +275,8 @@ At offset 18:
 prev[prev[0]]
 -------------
 </code></pre>
+
+<p>This comes from the tree structure in the parse.
 
 </section>
 
@@ -343,10 +347,13 @@ fn_exprs (2)
       2. bin_op
           4  QUO
     1. opt_discard
-  1.
-    5  RETURN
+  ...
 ```
+
+Note the similarity in parse structure with previous examples
 </textarea></section>
+
+
 </section></section>
 
 <section style="text-align: left;">
