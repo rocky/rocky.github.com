@@ -88,12 +88,12 @@ prev[prev[0]]
 compiles to:
 
 <pre><code>
-  2       10 LOAD_NAME           0          prev
-          12 LOAD_NAME           0          prev
-          14 LOAD_CONST          1          0
-          16 BINARY_SUBSCR       None
-          18 BINARY_SUBSCR       None
-          20 POP_TOP             None
+  2       10 LOAD_NAME           prev
+          12 LOAD_NAME           prev
+          14 LOAD_CONST          0
+          16 BINARY_SUBSCR
+          18 BINARY_SUBSCR
+          20 POP_TOP
 </code></pre>
 
 
@@ -186,7 +186,7 @@ higher-level combinations do wind up in pretty much the same place.</p>.
             0. expr
                         12  LOAD_NAME 'prev'
             1. expr
-                        14  LOAD_CONST 0  ''
+                        14  LOAD_CONST 0
             2.          16  BINARY_SUBSCR
         2.          18  BINARY_SUBSCR
     1.          20  POP_TOP
@@ -250,7 +250,7 @@ when parsed becomes:
             0. expr
                         12  LOAD_NAME 'prev'
             1. expr
-                        14  LOAD_CONST 0  ''
+                        14  LOAD_CONST 0
             2.          16  BINARY_SUBSCR
          2.          18  BINARY_SUBSCR
 ...
