@@ -43,7 +43,8 @@
 <section>
     <h2>Where am I now &mdash; Really?</h2>
     <h3>Decompilation for Precise Program Location Information</h3>
-    <center><img data-src="waldo.jpg", height=350, width=450></center><br/>
+		<small>(enter "s" to see presenter text for slides)</small></br>
+    <center><img data-src="waldo.jpg", height=342, width=442></center><br/>
 		<aside class="notes">
 <p>I make a lot of mistakes, and always have. I even make mistakes in
 finding my mistakes.</p>
@@ -65,11 +66,11 @@ enough. But sometimes it isn't...</p>
 x = prev[prev[0]]                      # which prev ?
 y = a / b / c                          # which divide is invalid?
 [x[0] for i in d[j] if got[i] == e[i]] # lots going on here
-exec("a=x; b=y")                       # code created at runtime
+exec("a=%s; b=y" % z)                  # code created at runtime
 </code></pre>
 
 <aside class="notes">
-<p>If I get an error in subscripting "prev", which "prev" access are we talking about?  If I get a divide error in the next line, which divide are we talking about?</p>
+<p>If I get an error in subscripting "prev", which "prev" access are we talking about?  If I get a divide error in the next line, which divide are we talking about? And what about code generated at runtime?</p>
 
 <p>Here, I'll show my hack for Python which can disambiguate.</p>
 </aside>
