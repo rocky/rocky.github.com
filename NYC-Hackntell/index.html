@@ -150,14 +150,14 @@ higher-level combinations do wind up in pretty much the same place.</p>.
 &#8220;I ate the mango&#8221;
 
 <pre><code>
-    sentence (4)
+    sentence
      0. subject
         pronoun, first person
           I
      1. verb, past tense
           ate
      2. object
-          noun phrase (2)
+          noun phrase
           0. definite article
              the
           1. noun
@@ -179,11 +179,11 @@ higher-level combinations do wind up in pretty much the same place.</p>.
   ...
   1. stmt
     0. expr
-       binary_subscr (3)
+       binary_subscr
          0. expr
             L.   2      10  LOAD_NAME 'prev'
          1. expr
-            binary_subscr (3)
+            binary_subscr
             0. expr
                         12  LOAD_NAME 'prev'
             1. expr
@@ -243,11 +243,11 @@ simply is:
 when parsed becomes:
 
 <pre><code>    0. expr
-       binary_subscr (3)
+       binary_subscr
          0. expr
             L.   2      10  LOAD_NAME 'prev'
          1. expr
-            binary_subscr (3)
+            binary_subscr
             0. expr
                         12  LOAD_NAME 'prev'
             1. expr
@@ -328,14 +328,14 @@ gives:
 deparses:
 
 ```
-fn_exprs (2)
-  0. expr (2)
-    0. binary_expr (3)
+fn_exprs
+  0. expr
+    0. binary_expr
       0. expr
         name_expr
           0  VARREF     a
       1. expr
-        binary_expr (3)
+        binary_expr
           0. expr
             name_expr
               1  VARREF     b
