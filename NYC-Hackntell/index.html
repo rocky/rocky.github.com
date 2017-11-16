@@ -114,10 +114,11 @@ instructions repeated, like <code>LOAD_NAME</code>
 or <code>BINARY_SUBSCR</code>, but with different offsets. In Python
 2.7 everything looks the same except for those offset numbers.<p>
 
-<p>In the assembly listing, the "2" means that any instruction from
-offset 10 to 20 comes from something on line 2. And you'll see that
-this is vague, because <em>any</em> of the instructions above are on
-line 2 and we might hit an error on any one of those instructions.</p>
+<p>In the assembly listing, the "2" at the top left means that any
+instruction from offset 10 to 20 comes from something on line 2. And
+you'll see that this is vague, because <em>any</em> of the
+instructions above are on line 2 and we might hit an error on any one
+of those instructions.</p>
 
 <p>So now let me describe a little bit about parsing and
 compiling. This is what transformed the first Python text into the
