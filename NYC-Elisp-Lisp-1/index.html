@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Intro to Emacs Lisp and Bytecode</title>
+
+    <meta name="description" content="Part 1 of Emacs Lisp and Bytecode Internals">
+    <meta name="author" content="Rocky Bernstein">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/beige.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+
+<section>
+    <h2>Emacs Lisp Assembly and Bytecode &mdash; Part 1</h2>
+		<small>(enter "s" to see presenter text for slides)</small></br>
+		<aside class="notes">
+			<p>There's a lot of information I'd like to get out there but in this first part I'd
+				like to motivate why I am doing this and why this useful. I also going to start
+				with zero knowledge of Emacs Lisp and LAPcode - Lisp Assembly Code.
+				So some of this might be review for non novices
+			</p>
+		</aside>
+</section>
+
+<section>
+<h3>The Way Emacs Works - Comparison with a Firefox</h3>
+
+<section>
+	<ul>
+		<li> Components render, DOM model, js, plugins, ...</li>
+		<li> Firefox 53.0.3 is 5 times bigger than emacs 25.3</li>
+		<li> About equal C, C++ and Javascript
+   </ul>
+
+<pre>
+$ cloc --match-f='\.(js|c|cpp|html|py|css)$' firefox-53.0.3
+   89156 text files.
+   86240 unique files.
+    1512 files ignored.
+
+cloc v 1.60  T=244.20 s (353.2 files/s, 56012.8 lines/s)
+-------------------------------------------------------------
+Language                     files     comment           code
+-------------------------------------------------------------
+C++                           7267      418019        3057110
+Javascript                   25855      532629        2859451
+HTML                         45311      120520        2209067
+C                             3482      400594        1664666
+</pre>
+</section>
+
+<section>
+	<ul>
+		<li> Components: buffer, frame, window, face, LISP....</li>
+		<li> An order of magnitude is written Lisp in than C</li>
+   </ul>
+
+	<pre>
+$ cloc emacs-25.3.tar.xz
+    3346 text files.
+    3251 unique files.
+    1130 files ignored.
+
+cloc 1.60  T=13.85 s (160.1 files/s, 154670.7 lines/s)
+-------------------------------------------------------------------
+Language                      files     comment           code
+--------------------------------------------------------------
+Lisp                           1616      200820        1270511
+C                               255       66169         256314
+C/C++ Header                    176       11505          34891
+</pre>
+</section>
+
+<aside class="notes">
+	<p>Let's compare emacs with Firefox as they are large projects and comparable in
+		complexity. Firefox is written at its base in C++ while Emacs uses C.
+		With C/C++ they implement a number of primatives. For Firefox you have the DOM
+		and rendering engine, and in C++ JavaScript is implemented. Notice though that
+		there is as much C/C++ in Firefox as there is Javascript.
+	</p>
+
+  <p>Now consdier Emacs. It's primatves are editing buffers, windows, frames,
+		font, etc. In C it implements a kind of Lisp. But notice that there is way more
+		of Emacs implemented in Lisp, that its Firefox counterpart.
+	</p>
+
+  <p>The takeaway is that if you want to really use the E part of emacs "extensible",
+		learning a little Emacs Lisp will go a longer way than say JavaScript for extending
+		Firefox. But of course any serious web developer must know JavaScript. And so it is
+		(I believe) with Emacs.
+</aside>
+
+</section>
+
+<section>
+<h3>3-4 Ways to Run Lisp Interactively</h3>
+
+<ul>
+	<li><code>M-ESC :></code> or <code>eval-expression</code></li>
+	<li><code>C-x C-e></code> or <code>eval-last-sexp</code></li>
+	<li><code>*scratch*</code> buffer</li>
+	<li><code>ielm</code></li>
+</ul>
+
+
+<aside class="notes">
+	<p>Emacs has 3 ways run emacs code interactively. The simplest run
+		<code>M-ESC :></code> or <code>eval-expression</code>.</p>
+	<p>If you have something more complex you might want to use the
+		<code>*scratch*</code> buffer. But for those of you
+		who are fans of Pytons IPython, or Ruby's IRB, the coolest thing out there
+		is <code>ielm</code>. Show that off?
+</aside>
+</section>
+
+<section>
+<h3>Emacs Lisp Bytecode &mdash; What is it?</h3>
+
+<ul>
+	<li>Lisp is not fast</li>
+	<li>LAPcode = Lisp Assembler Program code</li>
+	<li>LAPcode runs about 2.5 times faster than LISP</li>
+</ul>
+
+
+<pre><code>
+(defun silly-loop (n)
+       "Return the time, in seconds, to run N iterations of a loop."
+       (let ((t1 (float-time)))
+         (while (> (setq n (1- n)) 0))
+         (- (float-time) t1)))
+
+(setq t1 (silly-loop 5000000))
+(byte-compile 'silly-loop)
+(setq t2 (silly-loop 5000000))
+(message "lisp %f vs lap %f = %g faster"
+</code></pre>
+
+<aside class="notes">
+<p>Here is a parse of a simple sentence I provide for later comparison:<p>
+</aside>
+
+</section>
+
+<section>
+<h3>Emacs LAP Properties</h3>
+
+<ul>
+	<li>Stack oriented - reverse polish notation like bytecode for
+		HP calculators, Forth, Python Bytecode, Postscript</li>
+	<li>Custom to Lisp. Knows about car, cdr, and Emacs Lisp primatives
+</li>
+
+	<pre><code>stmts (4)
+byte code for fib:
+  args: (n)
+0	varref	  n
+1	constant  1
+2	lss
+3	goto-if-nil 1
+6	constant  1
+7	return
+8:1	constant  fib
+9	varref	  n
+10	sub1
+11	call	  1
+12	constant  fib
+13	varref	  n
+14	constant  2
+15	diff
+16	call	  1
+17	plus
+18	return
+</code></pre>
+<aside class="notes">
+<p>And how the corresponding idea applies to byte-code instructions</p>
+</aside>
+</section>
+<aside class="notes">
+Compilers do something similar. A compiler takes a flow of characters
+and transforms that into a flow of tokens. A token is something like
+"identifier with value prev" or "binary operator of the divide
+kind". And then from that a compiler forms a larger conceptual unit
+called a Python "expression" and from that it creates the Python
+"statement," and then the "function" or "module," and so on.</p>
+
+<p>The reverse process done by a "decompiler" works similarly. A
+decompiler is still a compiler of sorts. But here we start with
+"instructions" rather than characters. From that we eventually we get
+an "expression". From there, understanding the rest is the same as the
+compiler. This is similar to how the process works for verbal versus
+written communication.</p>
+</aside>
+</section>
+
+<section style="text-align: left;">
+  <h3>Links...</h3>
+
+  <ul>
+    <li><a href="http://nullprogram.com/blog/2014/01/04/">Emacs Byte-code Internals</a></li>
+    <li><a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Speed-of-Byte_002dCode.html">Silly Loop Example. See also Profiling tools and General Bytecode discussion</a></li>
+    <li><a href="mailto://rocky@gnu.org">rocky@gnu.org</a></li>
+  </ul>
+	<br/><br/><br/><br/><br/><small>- end</small>
+</section>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+  // Full list of configuration options available at:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+  transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+  { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+  { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+  { src: 'plugin/zoom-js/zoom.js', async: true },
+  { src: 'plugin/notes/notes.js', async: true }
+  ]
+  });
+
+</script>
+
+</body>
+</html>
+<!--
+Local Variables:
+tab-width: 2
+End:
+->
