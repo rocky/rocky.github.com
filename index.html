@@ -1,63 +1,879 @@
-<!DOCTYPE html PUBLIC
-          "-//W3C//DTD XHTML 1.0 Transitional//EN"
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!doctype html>
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="Content-Language" content="en-us" />
-    <meta name="description" content="Rocky's space on github.com" />
-    <title>Rocky's space on github</title>
-    <link rel="stylesheet" type="text/css" href="stylesheets/screen.css" media="screen" />
+    <meta charset="utf-8">
+
+    <title>Decompilation, Translation and Debugging</title>
+
+    <meta name="description" content="Decompilation for Precise Program Location Information">
+    <meta name="author" content="Rocky Bernstein">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/beige.css" id="theme">
+    <link rel="stylesheet" href="css/theme/rocky-adds.css" id="rocky">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
   </head>
+
   <body>
-    <div id="container" class="clearfix">
-      <div id="fixcontainer">
-        <div id="content">
-          <div id="center">
-            <div id="topcenter"></div>
-            <div id="centercontent">
-              <div id="mainimage"></div>
-              <div id="articles">
-                <div class="item">
-                  <p class="synopsis">A collection of rocky's talks</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="left">
-          <div id="menu">
-            <div id="topmenu"></div>
-            <div id="essentialmenu">
-              <div id="menuback">
-                <ul id="nav">
-                  <li><a href="http://rocky.github.com/Bandung-2012/">Bandung 2012 talk</a></li>
-                  <li><a href="http://rocky.github.com/NYC-Lisp-Elisp-talk">Slides for a joint NYC Lisp/Emacs meetup</a></li>
-                  <li><a href="http://rocky.github.com/NYC-Elisp-talk">Slides for an NYC Emacs meetup</a></li>
-                  <li><a href="http://rocky.github.com/NYC-Stack/slides">Slides NYC Full-Stack Engineering Meetup</a></li>
-                  <li><a href="http://rocky.github.com/NYC-Perl-VEP">NYC Perl Meetup Lightning Talk</a></li>
-                  <li><a href="http://rocky.github.com/NYC-Hackntell">NYC Hack && Tell Sept 2017 Meetup Lightning Talk</a></li>
-                </ul>
-              </div>
-            </div>
-            <div id="lattermenu"></div>
-            <div id="bottommenu"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="footer">
-      <div id="infooter">
-      </div>
-      <div id="endfooter"></div>
-    </div>
-    <script type="text/javascript">
-      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
-      var pageTracker = _gat._getTracker("UA-7390295-2");
-      pageTracker._trackPageview();
-    </script>
-  </body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+
+	<section>
+		<h2>Decompilation, Translation, and Debugging</h2>
+		<h3>Where am I now &mdash; Really?</h3>
+    <center><img data-src="waldo.jpg", height=342, width=442></center><br/>
+		<aside class="notes">
+			<p>Hi I am rocky bernstein.</p>
+			<p>This talk is in two parts. The first part describes
+				decompilation; and then the second part to demoes it from a
+				debugger.</p>
+
+			<p>I make a lot of mistakes, and always have. I even make mistakes in
+				finding my mistakes.</p>
+
+			<p>So when I do, I'd like to know exactly where I am at. Computers
+				generally excel at giving detailed information involving lots of
+				calculation. But in this one area, just about all of the programming
+				languages could do better at giving more precise and useful
+				information. Let's look at a Python error...
+			</p>
+		</aside>
+	</section>
+
+	<section>
+		<h3>A Python Error</h3>
+
+		<p><pre><code class="python">
+Traceback (most recent call last):
+  File "bug.py", line 2, in &lt;module&gt;
+    i / j / k
+ZeroDivisionError: integer division or modulo by zero
+		</code></pre></p>
+
+		<p class="fragment roll-in">Was <code>j</code> zero, or
+			was <code>k</code> zero?</p>
+
+		<aside class="notes">
+			<p>The message gives the file name "bug.py" and the line number of
+				the error, line two. It even gives the text of line two. This is
+				great!  But there are <i>two</i> divisions on line two.</p>
+
+			<p><b>[next]</b> Which one are we talking about?
+  			Was <code>j</code> zero, or was <code>k</code> zero?</p>
+
+			<p>Here, are some other examples...</p>
+		</aside>
+	</section>
+
+	<section>
+		<h3>More errors where line numbers are not good enough</h3>
+
+		<pre><code class="python">
+x = prev[prev[0]]                      # which prev ?
+		</code></pre>
+		<pre class="fragment roll-in"><code class="python">
+[e[0] for i in d[j] if got[i] == e[i]] # lots going on here
+		</code></pre>
+		<pre class="fragment roll-in"><code class="python">
+exec(some_code % 10, namespace)        # code created at runtime
+		</code></pre>
+
+		<aside class="notes">
+			<p>If I get an error in subscripting "prev", which "prev" access
+			are we talking about?</p>
+
+			<p><b>[next]</b> In the second example there are several different array
+				accesses, and even if you know which say that the value of the
+				index is of 0, you still wouldn't know which list was being
+				accessed.  I will show how we can disambiguate these.</p>
+
+			<p><b>[next]</b> The last example I think is particularly interesting, because
+				it shows that in Python you can run code that is created at
+				runtime and the source code doesn't sit in a file somewhere.</p>
+
+			<p>Here is an	error message you can get from running that...</p>
+		</aside>
+
+	</section>
+
+	<section>
+		<h3>An Error where no file exists</h3>
+
+		<pre><code class="python">
+exec(some_code)
+		</code></pre>
+
+		<pre><code>
+Traceback (most recent call last):
+  File "bug-exec.py", line 3, in &lt;module&gt;
+    exec(template % 10, namespace)
+  File "&lt;string&gt;", line 1, in &ltmodule&gt;
+NameError: name 'bad' is not defined
+		</code></pre>
+
+		<p>File <code>"&lt;string&gt;"</code>?</p>
+
+		<aside class="notes">
+			<p>Woah! File <code>"&lt;string&gt;"</code>? And where in the word
+				is "bad" located in that?  In Python you can run code that is
+				created at runtime and the source code doesn't sit in a file
+				somewhere.</p>
+
+			<p>Let's see how we do better. But to show how, we need to take a
+				little detour to understand how the computer "sees" the program
+				compared to how we see it.... <b>next</b></p>
+
+		</aside>
+	</section>
+
+	<section>
+		<h3>Programmer vs. Computer</h3>
+
+		<p>A programmer may write:
+			<pre><code class="python">
+  x + y
+		</code></pre></p>
+
+		<aside class="notes">
+			<p>In the C Python implementation, the code you write gets
+				translated into something called Bytecode. when I write in
+				Python <code>x+y</code>,
+				<b>next</b> the computer
+				sees...
+				<b>next</b></p>
+
+			<p>The above is for C Python implementation, and the
+				instructions are called Bytecode. The above
+				bytecode is for Python 3.6.</p>
+
+			<p>The "2" on the first line means that the following
+				instructions come from line two, until there is another line
+				number given.  But since there are no other line numbers
+				given, the Python interpreter assumes that all of the
+				three instructions have something to do with line 2.</p>
+
+			<p>The numbers 8, 10, and 12 are the instruction addresses, or
+				really instruction offsets from where the function or module
+				starts.  So being more precise about what is associated with
+				line 2, the answer is instructions at offsets 8, 10, and
+				12. In Python versions before 3.6, the instruction size for
+				`LOAD_NAME` is 3 bytes instead of 2, so the offsets would be
+				8, 11, and 14.</p>
+
+			<p>And this (or a more obstruse binary-encoded version of that)
+				is what the computer "sees" and runs.</p>
+
+			<p>In this simple example, it looks like a single token in the
+				source-code gets converted to a single line in the
+				bytecode. However the order is a little bit different: the
+				"add" comes at the end rather than in the middle.</p>
+
+			<p>Compare that with... <b>next</b></p>
+		</p></aside>
+
+		<p class="fragment roll-in">but the computer sees:
+			<pre class="fragment roll-in"><code>
+  2:  8 LOAD_NAME    x
+     10 LOAD_NAME    y
+     12 BINARY_ADD
+		</code></pre></p>
+
+	</section>
+
+	<section>
+		<h3>Spanish to English</h3>
+
+		<p>A person says in Spanish: &#8220;mango fragante&#8221;</br>
+		might translate in English to: &#8220;fragrant mango&#8221;</p>
+
+		<aside class="notes">
+			<p> 'mango fragante" vs "fragant mango".</p>
+
+ 			<p>This is pretty simple: you just switch the order of the words
+				around and make some small spelling changes. That happens in
+				bytecode translation too. Now consider: <b>next</b>
+			</p>
+			<p>Entiendo/I understand.<p>
+
+			<p>Here, one Spanish word becomes two English words. That too
+				happens in Python translation to bytecode. <b>next</b></p>
+
+			<p>Finally consider... <b>next</b> templado</p>
+
+			<p>In the last example, Which part of "templado" is "not hot" and
+				which part is "and not cold"? The fact is that there is no
+				simple English equivalent.</p>
+
+			<p>This kind of thing <i>never</i> happens in Python translation to
+				bytecode. <b>next</b></p>
+
+			<p>And intentionally. Fortunately for us,
+				the bytecode and the source code were designed to know about
+				the same kinds of concepts.</p>
+
+			<p>So how do we make sense of this? Let me suggest an answer by
+				pointing out that you've probably already seen examples of
+				this kind matching problem when you read a side-by-side
+				translation:</p>
+		</aside>
+
+		<p class="fragment roll-in">A person says in Spanish:
+		&#8220;Entiendo&#8221;</br> might translate in English to:
+		&#8220;I understand&#8221;.</p>
+
+		<div class="fragment roll-in">
+		<p class="fragment strike">A person says in Spanish:
+			&#8220;templado&#8221;</br> might translate in English to:
+			&#8220;not hot and not cold&#8221;</p></div>
+	</section>
+
+	<section>
+		<h3>Side-by-side Translation</h3>
+
+
+		<p>1: Whose woods these are I think I know.<br>
+			 2: His house is in the village though</p>
+
+		<p>1: A quién pertenece este bosque creo que sé<br>
+			 2: Aunque su casa en el pueblo está</p>
+
+		<aside class="notes">
+			<p>You can assume that the first line of the English is roughly like the
+				first line of the Spanish, and the second line of the English is like
+				the second line of the Spanish. And possibly the words at the
+				beginning or end of the sentence roughly go with words at the
+				beginning of the corresponding translation. "His house" at the
+				beginning of line two is almost the same position as "su casa." But
+				not exactly, and sometimes the position doesn't match at all. For
+				example, see the positions of "is" versus "está" on line two.
+				Also "though" versus "Aunque".</p>
+
+			<p>And this is sort of like what goes on when you get the error message
+				that we saw above when it said the error was on line 2.</p>
+
+			<p>So let's do a side-by-side translation in Python...</p>
+
+		</aside>
+	</section>
+
+	<section>
+		<h3>Side-by-side Python translation</h3>
+
+			<pre><code class="python">
+  x = 1  # line 1
+  y = 2  # line 2
+		</code></pre>
+
+		<pre><code>
+  1: 0 LOAD_CONST  1
+     2 STORE_NAME  x
+
+  2: 4 LOAD_CONST  2
+     6 STORE_NAME  y
+    </code></pre>
+
+		<aside class="notes">
+			<p>Notice again that the order of the variable name and
+				constants have been reversed as they were in the example
+				with addition. The mathematical name for this kind of ordering
+				is called "reverse polish notation". English adjectives are
+				like that.</p>
+
+			<p>Now that we have seen how this resembles a human-language
+				translation problem, rather than a programmer-versus-computer
+				problem, we can ask: how would we get more detail in the
+				correspondences between the two translations?</p>
+
+			<p>I'm sure many of you already know the answer: you break down the
+				sentence into its grammar parts. So... <b>next</b></p>
+
+	</section>
+	<section>
+		<section>
+			<h3>English Sentence Parse</h3>
+			<aside class="notes">
+				<p>Here is a parse of a simple English sentence.. <b>down</b></p>
+			</aside>
+
+
+			&#8220;I eat tripe.&#8221;
+
+			<center><img data-src="eat-tripe.png", height=342, width=442></center><br/>
+		</section>
+		<section>
+			<aside class="notes">
+				<p>This is how it would look rendered in text only. <b>next</b></p>
+			</aside>
+
+			&#8220;I eat tripe.&#8221;
+
+			<pre>
+    sentence
+      0. subject
+        pronoun
+          I
+      1. predicate
+         0. verb
+            eat
+         1. object
+            tripe
+			</pre>
+
+		</section>
+
+	</section>
+	<section>
+		<section>
+			<h3>Spanish Sentence Parse</h3>
+
+			&#8220;Como mondongo.&#8221;
+
+
+			<center><img data-src="como-mondongo.png", height=342, width=442></center><br/>
+		<aside class="notes">
+			<p>And here is one translation of it in Spanish.</p>
+
+			<p>At the top levels of the grammar they are the same: a
+				sentence is a <i>subject</i> and a <i>predicate</i>.  In
+				Spanish the subject is empty while in English it is
+				required.  <b>back and forth</b>
+
+				<p>I have simplified the example by removing grammar
+				concepts like "noun phrase," "verb phrase," "noun," and so
+				on. Adding these doesn't substantially change things other
+				than to make the slide harder to read.
+				</p>
+
+			<p>At the top levels of the grammar they are the same: a
+				sentence is a subject and a predicate.  In Spanish the subject
+				is empty while in English it is not optional in this case.
+			</p>
+			<p>Now let's see how this applies to Python translation to bytecode</p>
+		</aside>
+
+		</section>
+		<section>
+
+			&#8220;Como mondongo.&#8221;
+
+			<pre>
+    sentence
+    0. subject
+         I
+      1. predicate
+         0. verb
+            eat
+         1. object
+            mondongo
+		</pre>
+
+		</section>
+	</section>
+
+	<section>
+		<section>
+			<h3>Bytecode Parse</h3>
+			<aside class="notes">
+				<p>First is the python code. Next is the Abstract Syntax Tree
+					that Python uses as its internal representation before
+					producing bytecode. It is "Abstract" in the sense that some
+					of the symbols from the Python have been removed. Here,
+					there are no square brackets represented in this tree.
+					<b>down</b>
+			</aside>
+
+			<pre><code> prev[prev[0]]</code></pre>
+
+			<center><img data-src="prev-ast.png", height=342, width=342></center>
+
+
+			<p>translates to:...</p>
+		</section>
+		<section>
+			<aside class="notes">
+				<p>Next is the bytecode, and finally a reconstituted parse
+					tree from just the instructions.  The tree structure is
+					roughly the same, with a little bit of rename "Name" and
+					"Load" are both called "Expr" in the reconstructed tree.
+					<b>up and down</b></p>
+
+				<p>And as we saw with "Entiendo" versus "I understand",
+					there is an extra instruction: "SUBSCR". </p>
+
+				<p>Notice how all of the leaves of the parse tree are the
+					bytecode instructions.  It might be hard to see that because the
+					leaves are at different tree depths. But as you will see, the
+					different depths will become important a little later.</p>
+
+				<p>The fact that all instructions are in this reconstructed tree
+					is a difference between it and the "abstract" syntax tree.
+					<b>down</b></p>
+			</aside>
+
+
+			<pre><small><code>
+2  6 LOAD_NAME "prev"
+   8 LOAD_NAME "prev"
+  10 LOAD_CONST 0
+  12 BINARY_SUBSCR
+  14 BINARY_SUBSCR
+				</code></small></pre>
+
+			<center><img data-src="prev.png", height=376, width=500></center>
+		</section>
+		<section>
+			<aside class="notes">
+				<p>The non-graphical ASCII representation is more compact than
+					the diagram even if the diagram is prettier.</p>
+
+				<p>Now we are in a position to show correspondences between
+					offsets and where we are in the program.</p>
+			</aside>
+
+			<p>In listing form:
+
+			<pre><code>
+       Subscript
+         0. Expr
+            L.   2       6  LOAD_NAME 'prev'
+         1. Expr
+            Subscript
+            0. Expr
+                         8  LOAD_NAME 'prev'
+            1. Expr
+                        10  LOAD_CONST 0
+            2.          12  BINARY_SUBSCR
+         2.          14  BINARY_SUBSCR
+...
+			</code></pre>
+		</section>
+	</section>
+
+	<section>
+		<section>
+			<h3>Parse to Text</h3>
+			<aside class="notes">
+				<p>Here we'll show how to reconstruct the source text from
+					this tree.</p>
+
+				<p>Recall the intructions are the leaves. they are the things
+					that have offset numbers, 6, 8, ...  In addition to that
+					offset value, each Python bytecode instruction must have an
+					operand value for some instructions. And for other
+					instructions there will never be a value. Both "NAME" and
+					"CONST" have an operand value. In our example both "NAME" at
+					offset 6 and 8 both have the value "prev" for its
+					operand. The "CONST" has a value 0 in our example. In
+					contrast, "SUBSCR" never has an operand.</p>
+
+					<p>One other thing to note here is that there only two
+					different node types: Expr and Subscript. <b>down</b>
+			</aside>
+
+
+			<center><img data-src="prev.png",
+									 height=376, width=486></center>
+		</section>
+    <section>
+			<aside class="notes">
+				<p>In this tree, I've take the operand values of the
+					instruction, when there is one, and shown that instead of
+					the instruction name and offset.</p>
+
+				<p>For the other nodes, recall they are either <i>Expr</i> or
+					<i>Subscript</i>.  For Expr, just copy the value from its
+					child below; for <i>Subscript</i>, take the value from the
+					first child and the surround the value of the second child
+					in square brackets and finally ignore the last child which
+					here is always "SUBSCR". Now are are in a position to
+					show where we are at each of the instructions...
+					<b>next</b></p>
+			</aside>
+			<center><img data-src="prev-text.png",
+									 height=500, width=500></center>
+		</section>
+	</section>
+
+	<section>
+		<section>
+			<h3>Parse at offset 12</h3>
+			<aside class="notes">
+				<p>Whenever we are at a <code>SUBSCR</code> node we just
+					use the text information from the parent shown in
+					blue. Here is how it looks in a program. <b>down</b></p>
+			</aside>
+			<center><img data-src="prev12.png", height=500,
+									 width=500></center>
+		</section>
+		<section>
+			<h3>Parse at offset 12 Display</h3>
+			<aside class="notes">
+				<b>up and next</b>
+			</aside>
+
+				<pre><code>instruction      12  BINARY_SUBSCR
+
+prev[prev[0]]
+     -------
+				</code></pre>
+		</section>
+	</section>
+
+	<section>
+		<section>
+			<aside class="notes">
+				<p>At offset 14 the paren is the whole tree. And again
+					how it looks from a program.
+					<b>down</b></p>
+			</aside>
+			<h3>Parse at offset 14</h3>
+			<aside class="notes">
+				<b>up and next</b>
+			</aside>
+			<center><img data-src="prev14.png",
+									 height=500, width=500></center>
+		</section>
+		<section>
+			<h3>Parse at offset 14 Text display</h3>
+			<pre><code>instruction      14  BINARY_SUBSCR
+
+prev[prev[0]]
+-------------
+		  </code></pre>
+		</section>
+	</section>
+
+	<section>
+		<center><img data-src="intermission.jpg"></center>
+		<aside class="notes">You have now sucessfully completed the
+			first part of the talk. Relax. The rest of the talk will
+			just be showing off a debugger that makes use of decompilation
+			and position information you can get from that..</aside>
+	</section>
+
+	<section>
+		<h4>trepan2 help</h4>
+		<video controls width="600">
+			<source src="video/help.webm" type="video/webm" />
+			<aside class="notes">
+				<p>I have written two debuggers for Python that use the deparse
+					and decompile featues I have been talking about the one for
+					Python 2 is called trepan2.</p>
+
+				<p>It has command completion. So I can type "he" TAB to compete the "help" command.</p>
+
+				<p>There are a lot of commands and option. The command
+					structure follows gdb which is also large. But since the
+					commands are roughly the same learning one will help you
+					learn the other.</p>
+				<p>To get a list of commands type <code>help *</code>
+					Notice how this is formatted to the particular window size I
+					have.</p>
+
+				<p>You can also get completion on just the commands that start "de".</p>
+
+				<p>Now I list the full syntax of the deparse commmand we are
+					going to use. At the bottom are examples.</p>
+
+				<p>This is accessible as a web page and it looks about the
+					same since one is generated from the other</p>
+				</aside>
+
+	</section>
+
+	<section>
+		<h4>deparsing comprehension errors</h4>
+		<video controls width="600"
+					 source src="video/comp.webm" type="video/webm" />
+			<aside class="notes"><p>Now let's look at the error message we
+					saw before and how we can get better error position
+					information.  We will use the list comprehension example
+					error from before.</p>
+
+
+				<p>trepan uses pygments to do syntax highlighting. And so it knows about
+					all the styles that pygments has. So if you don't like the default
+					theme you can change that.</p>
+
+				<p>Now let's get to work. "continue" just runs the program.... and we hit
+					an error.<p>
+
+				<p>The deparse -p is the command I always use. It show not just the
+					location of the error but the location of the parent.</p>
+
+				<p>Now let's try where the error is at a different place in the same line.
+					Notice the location is changed now.</p>
+
+				<p>And let's try a 3rd location for the error.
+					Not only has the error location changed, but also the parent has changed.</p>
+
+	</section>
+
+	<section>
+		<h4>Debugging code created at runtime</h4>
+		<aside class="notes"><p>This example is now probably the toughest
+				for any debugger.. debugging code generated at runtime. In
+				general, writing code that modifies itself at runtime, is
+				frowned upon. For example there are security concerns. But I'm
+				going to show you that in fact it happens a bit more than
+				people admit. I'm going to do this using one of Python
+				standard library routines, namedtuple.</p>
+
+			<p>This class creates a tuple, where you can give names to the
+				integer index elements. Here is a typical use...</p>
+
+			<p>First I'll try debugging it with pdb. Where I really want to
+			get to see is how creating the Point() class works, and how
+			repr() is implemented. So I'll set a breakpoint.</p>
+
+			<p>We see that in fact the Point class as generated somewhow at
+			runtime. And so I can't see the source code to this with a
+			"list" command. The position though seems to be line 8 of some
+			unnamed string. That's helpful! (not). That then we go to line
+			10 of some unnamed string. And then we return from that.</p>
+
+			<p> The same thing seems to be true of the <i>__repr__</i>
+				function.</p>
+
+			<p>So let's try with the Python3 version of trepan called
+				trepan3k. I'll although it is not clear here that trepan3k
+				does detect a dark background and tries to make adjustment
+				here.</p>
+
+			<p>However I dont' think it tries hard enough. So I'll adjust to
+				another pygments style.</p>
+
+			<p>Note that I can do a "break followed by a continue" in one
+			command by giving a number after continue. The @31 is the
+			instruction offset when I am stopped. And now I can list lines
+			of the funciton. The (1, 14) at the end just says line 1 of this
+			file maps to line 14 in whatever source this originally came
+			from. This si probably wrong since pdb said it was line 8. I
+			don't know whihc one was right.
+			</p>
+
+			<p>But now that I can see what is in that function, I can start
+				to query values in it. And I see in what part of that one line
+				function I am about to run.  It looks like I've just am
+				loading up the name of the function that I am about to
+				call. Code to evaluate the parameters like _cls, x, or y,
+				would come later.</p>.
+
+			<p>I'll ask for help on <i>_tuple</i>. Ah it is the internal
+			name for <code>tuple</code>. After a couple of steps I see that
+			although I am on the same line, deparse tells me at this point I
+			have evaluated everything on the line.</p>
+
+			<p>And we can do the same thing when we step
+			into <code>__repr__</code> in running <code>print</code></p>
+
+			<p>Those of you how use Jetbrains, or some other debugger, I am
+			curious how well those do in this kind of situation.</p>
+
+		</aside>
+		<video controls width="600"
+					 source src="video/exec.webm" type="video/webm" />
+	</section>
+
+	<section>
+		<h4>Debugging code when there is no no source</h4>
+		<aside class="notes"><p>The last example I am going to show is
+				debugging bytecode when there is no source code at all! Just
+				the bytecode file. Reverse enginer: pay attention.</p>
+
+			<p>There is a command-line program I wrote that will disassemble
+			bytecode. It has a <code>--header</code> option to give meta
+			information about a bytecode file. Like the version interpreter
+			version that magic number of the bytecode and what file it
+			thinks it was generated from. Filename "exec" is pretty
+			meaningless.</p>
+
+			<p>Not that even though I don't have the source code, I can
+				still run the program.</p>
+
+			<p>What I try to run using the <code>pdb</code> module, I get
+				gibberish. Python thinks the bytecode is text!</p>
+
+			<p>I've been running this inside Emacs, and I also I'm going to
+			show an emacs package I wrote which interfaces not just to this
+			debugger, trepan3k, but also to about a dozen others including
+			pdb, and ipdb. The package is called realgud.</p>
+
+			<p>The emacs package tracks the location for me. The green
+			orange and brown arrows in the fringe indicate where the program
+			is where has been. The realgud track all the places you've
+			stopped.</p>
+
+			<p>And you might expect in a debugger front-end, you highlight a
+			region and have that evaluated. Or from the command-line there
+			is a command that evaluates the line to be executed, or here,
+			since the entire line isn't a complete statement, it picks out
+			the probably like runnable part. For this "if expression"
+			fragment, it the "expression" part.</p>
+		</aside>
+
+		<video controls width="600">
+			<source src="video/gcd.webm" type="video/webm" />
+	</section>
+
+	<section>
+		<section>
+			<h3>There is more to do...</h3>
+			<aside class="notes">
+				<p>Through anology with human-language translation, I've shown
+				a little bit of the challanges a decompiler faces, and also a
+				this novel idea of how to get pretty precisely where a program
+				is at runtime.</p>
+
+				<p>I have also this working for Perl already, and I've looked
+					at doing it in Emacs Lisp bytecode. The idea seems to be
+					pretty general and can be applied to other languages. I hope
+					others will help out in extending this to other
+					languages.</p>
+			</aside>
+
+			Emacs Lisp:
+
+			<pre><code class="lisp">
+(/ a (/ b c)))
+			</code></pre>
+
+
+gives:
+
+			<pre><code>
+0	varref	  a
+1	varref	  b
+2	varref	  c
+3	quo
+4	quo
+5	return
+			</code></pre>
+
+	</section>
+
+	<section>
+		<section data-markdown> <textarea data-template>
+deparses:
+
+```
+fn_exprs
+  0. expr
+    0. binary_expr
+      0. expr
+        name_expr
+          0  VARREF     a
+      1. expr
+        binary_expr
+          0. expr
+            name_expr
+              1  VARREF     b
+          1. expr
+              name_expr
+              2  VARREF     c
+          2. bin_op
+              3  QUO
+      2. bin_op
+          4  QUO
+    1. opt_discard
+  ...
+```
+
+Note the similarity in parse structure with previous examples
+		</textarea></section>
+
+
+	</section></section>
+
+	<section>
+
+
+		<h3>Links...</h3>
+		<aside class="notes">
+			<p>The wiki for the Python decompiler
+				https://github.com/rocky/python-uncompyle6/wiki has a lot of
+				information on how the code works, and there is even a more
+				technical and research-oriented version of this paper for
+				those who would like to carry this idea to other
+				languages. Again, I encourage you to do this.</p>
+			<p>Muchas gracias.</p>
+		</aside>
+
+		<small>
+		<ul>
+			<li><a href="https://pypi.python.org/pypi/uncompyle6/">Python Decompiler: https://pypi.python.org/pypi/uncompyle6/</a></li>
+			<li><a href="https://pypi.python.org/pypi/xdis/">Python Bytecode Library: https://pypi.python.org/pypi/xdis/</a></li>
+			<li><a href="https://pypi.python.org/pypi/trepan3k/">Python 3 Debugger: https://pypi.python.org/pypi/trepan3k/</a></li>
+			<li><a href="http://python2-trepan.readthedocs.io/en/latest/">trepan2 Documentation: http://python2-trepan.readthedocs.io/en/latest/</a></li>
+			<li><a href="https://github.com/realgud/realgud">Emacs Interface: http://github.com/realgud/realgud/</a></li>
+			<li><a href="https://rocky.github.io/Deparsing-Paper/">Research Paper: https://rocky.github.io/Deparsing-Paper.pdf</a></li>
+			<li><a href="https://rocky.github.io/pycon2018.co/">this presentation: https://rocky.github.io/pycon2018.co/</a></li>
+			<li>
+				<a href="mailto://rocky@gnu.org">rocky@gnu.org,</a>
+				<a href="https://github.com/rocky">https://github.com/rocky</a></li>
+		</ul>
+		</small>
+	</section>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+  // Full list of configuration options available at:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+	slideNumber: true,
+
+  transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+  { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+  { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+  { src: 'plugin/zoom-js/zoom.js', async: true },
+  { src: 'plugin/notes/notes.js', async: true }
+  ]
+  });
+
+</script>
+
+</body>
 </html>
+<!--
+Local Variables:
+tab-width: 2
+End:
+->
