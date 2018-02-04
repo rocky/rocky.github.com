@@ -1,0 +1,16 @@
+/* Rocky's customizations */
+/* I want all slide text text to be left aligned */
+.reveal p {
+    text-align: left;
+    margin-right: 60px;
+    margin-left: 60px;
+}
+
+.reveal pre {
+    margin-right: 60px;
+    margin-left: 60px;
+}
+
+.reveal small {
+    display: block;
+}
