@@ -242,7 +242,7 @@ NameError: name 'bad' is not defined
 
 		<p class="fragment roll-in">A person says in Spanish:
 		&#8220;Entiendo&#8221;</br> might translate in English to:
-		&#8220;I understand&#8221;.</p>
+		&#8220;I understand&#8221;</p>
 
 		<div class="fragment roll-in">
 		<p class="fragment strike">A person says in Spanish:
@@ -406,7 +406,6 @@ NameError: name 'bad' is not defined
 			</aside>
 
 			<pre><code> prev[prev[0]]</code></pre>
-
 			<center><img data-src="prev-ast.png", height=342, width=342></center>
 
 
@@ -415,21 +414,8 @@ NameError: name 'bad' is not defined
 		<section>
 			<aside class="notes">
 				<p>Next is the bytecode, and finally a reconstituted parse
-					tree from just the instructions.  The tree structure is
-					roughly the same, with a little bit of rename "Name" and
-					"Load" are both called "Expr" in the reconstructed tree.
-					<b>up and down</b></p>
-
-				<p>And as we saw with "Entiendo" versus "I understand",
-					there is an extra instruction: "SUBSCR". </p>
-
-				<p>Notice how all of the leaves of the parse tree are the
-					bytecode instructions.  It might be hard to see that because the
-					leaves are at different tree depths. But as you will see, the
-					different depths will become important a little later.</p>
-
-				<p>The fact that all instructions are in this reconstructed tree
-					is a difference between it and the "abstract" syntax tree.
+					tree from just the instructions which is created by
+					my decompiler <i>uncompyle6</i>.
 					<b>down</b></p>
 			</aside>
 
@@ -442,7 +428,36 @@ NameError: name 'bad' is not defined
   14 BINARY_SUBSCR
 				</code></small></pre>
 
-			<center><img data-src="prev.png", height=376, width=500></center>
+			<p>deparses to...
+				<center><img data-src="prev.png", height=376, width=500></center></p>
+		</section>
+    <section>
+			<aside class="notes">
+				<p>The tree structure is
+					roughly the same, but rename "Name" and
+					"Load" are both called "Expr" in the reconstructed tree.
+					The name change isn't important. The main thing is that
+					in either case they alway have only one child, and they can
+					derived from and also derive a "sucbscript".
+				</p>
+
+				<p>Notice how all of the leaves of the parse tree are the
+					bytecode instructions.  It might be hard to see that because the
+					leaves are at different tree depths. But as you will see, the
+					different depths will become important a little later.</p>
+
+				<p>And as we saw with "Entiendo" versus "I understand",
+					there is an extra instruction: "SUBSCR". </p>
+
+				<p>The fact that all instructions are in this reconstructed tree
+					is a difference between it and the "abstract" syntax tree.
+					<b>down</b></p>
+			</aside>
+
+				<img id="lr" data-src="prev-ast.png",
+						 height=300, width=320>
+				<img id="lr" data-src="prev.png",
+						 height=300, width=320>
 		</section>
 		<section>
 			<aside class="notes">
@@ -492,7 +507,6 @@ NameError: name 'bad' is not defined
 					<p>One other thing to note here is that there only two
 					different node types: Expr and Subscript. <b>down</b>
 			</aside>
-
 
 			<center><img data-src="prev.png",
 									 height=376, width=486></center>
