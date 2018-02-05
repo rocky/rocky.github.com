@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/beige.css" id="theme">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
     <link rel="stylesheet" href="css/theme/rocky-adds.css" id="rocky">
 
     <!-- Code syntax highlighting -->
@@ -702,20 +702,23 @@ prev[prev[0]]
 		<h4>Debugging code when there is no no source</h4>
 		<aside class="notes"><p>The last example I am going to show is
 				debugging bytecode when there is no source code at all! Just
-				the bytecode file. Reverse enginer: pay attention.</p>
+				the bytecode file. Reverse engineers: pay attention.</p>
 
 			<p>There is a command-line program I wrote that will disassemble
 			bytecode. It has a <code>--header</code> option to give meta
-			information about a bytecode file. Like the version interpreter
-			version that magic number of the bytecode and what file it
-			thinks it was generated from. Filename "exec" is pretty
-			meaningless.</p>
+			information about a bytecode file. In particular, the version
+			interpreter version and the magic number of the for the bytecode
+			file. Alos it shows the file that was used to create it.
+			Filename "exec" is pretty meaningless.</p>
 
-			<p>Not that even though I don't have the source code, I can
-				still run the program.</p>
+			<p>Even though I don't have the source code, I can still run the
+				program Python.</p>
 
-			<p>What I try to run using the <code>pdb</code> module, I get
-				gibberish. Python thinks the bytecode is text!</p>
+			<p>But what if I try to debug it using the <code>pdb</code>
+				module, I get gibberish. Python thinks the bytecode is
+				text. I can't even issue a quit command or Ctrl-d to get out.
+				I have to suspend and kill it.
+			</p>
 
 			<p>I've been running this inside Emacs, and I also I'm going to
 			show an emacs package I wrote which interfaces not just to this
@@ -723,20 +726,20 @@ prev[prev[0]]
 			pdb, and ipdb. The package is called realgud.</p>
 
 			<p>The emacs package tracks the location for me. The green
-			orange and brown arrows in the fringe indicate where the program
-			is where has been. The realgud track all the places you've
-			stopped.</p>
+				orange and brown arrows in the fringe indicate where the program
+				is where has been. The realgud track all the places you've
+				stopped.</p>
 
-			<p>And you might expect in a debugger front-end, you highlight a
-			region and have that evaluated. Or from the command-line there
-			is a command that evaluates the line to be executed, or here,
-			since the entire line isn't a complete statement, it picks out
-			the probably like runnable part. For this "if expression"
-			fragment, it the "expression" part.</p>
+			Notice that in function <i>fib()</i> there are <i>two</i>
+			recursive calls. And again deparse can show you which one was
+			called.
+
+			<p>And as you might expect in a debugger front-end, you highlight a
+			region and have that evaluated. </p>
 		</aside>
 
 		<video controls width="600">
-			<source src="video/gcd.webm" type="video/webm" />
+			<source src="video/fib.webm" type="video/webm" />
 	</section>
 
 	<section>
@@ -745,10 +748,10 @@ prev[prev[0]]
 			<aside class="notes">
 				<p>Through anology with human-language translation, I've shown
 				a little bit of the challanges a decompiler faces, and also a
-				this novel idea of how to get pretty precisely where a program
-				is at runtime.</p>
+				this novel idea of how to get pretty precisely location
+				information as a program runs.</p>
 
-				<p>I have also this working for Perl already, and I've looked
+				<p>I also have this working for Perl, and I've looked
 					at doing it in Emacs Lisp bytecode. The idea seems to be
 					pretty general and can be applied to other languages. I hope
 					others will help out in extending this to other
