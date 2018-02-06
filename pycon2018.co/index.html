@@ -150,7 +150,7 @@ NameError: name 'bad' is not defined
 	</section>
 
 	<section>
-		<h3>Programmer vs. Computer</h3>
+		<h3>Programmer to Computer</h3>
 
 		<p>A programmer may write:
 			<pre><code class="python">
@@ -194,7 +194,7 @@ NameError: name 'bad' is not defined
 			<p>Compare that with... <b>next</b></p>
 		</p></aside>
 
-		<p class="fragment roll-in">but the computer sees:
+		<p class="fragment roll-in">but the Python interpreter sees:
 			<pre class="fragment roll-in"><code>
   2:  8 LOAD_NAME    x
      10 LOAD_NAME    y
@@ -223,9 +223,9 @@ NameError: name 'bad' is not defined
 
 			<p>Finally consider... <b>next</b> templado</p>
 
-			<p>In the last example, Which part of "templado" is "not hot" and
-				which part is "and not cold"? The fact is that there is no
-				simple English equivalent.</p>
+			<p>In the last example, Which part of "templado" is "not hot"
+				and which part is "and not cold"? The concepts are mismatched:
+				there is no simple English equivalent.</p>
 
 			<p>This kind of thing <i>never</i> happens in Python translation to
 				bytecode. <b>next</b></p>
@@ -593,27 +593,35 @@ prev[prev[0]]
 		<video controls width="600">
 			<source src="video/help.webm" type="video/webm" />
 			<aside class="notes">
-				<p>I have written two debuggers for Python that use the deparse
-					and decompile featues I have been talking about the one for
-					Python 2 is called trepan2.</p>
+				<p>I have written two debuggers for Python that use the
+					deparse and decompile featues that I have been talking
+					about.  The one for Python 2 is called trepan2.</p>
 
-				<p>It has command completion. So I can type "he" TAB to compete the "help" command.</p>
+				<p>It has command completion. So I can type "he" TAB to
+				compete the "help" command.</p>
 
 				<p>There are a lot of commands and option. The command
 					structure follows gdb which is also large. But since the
 					commands are roughly the same learning one will help you
 					learn the other.</p>
+
 				<p>To get a list of commands type <code>help *</code>
 					Notice how this is formatted to the particular window size I
 					have.</p>
 
-				<p>You can also get completion on just the commands that start "de".</p>
+				<p>You can also get completion on just the commands that start
+				"de".</p>
 
 				<p>Now I list the full syntax of the deparse commmand we are
 					going to use. At the bottom are examples.</p>
 
-				<p>This is accessible as a web page and it looks about the
-					same since one is generated from the other</p>
+				<p>This is accessible as a web page on the Internet. It is
+					about as the help from the terminal. One is generated from
+					the other.</p>
+
+				<p>The command we will be using a lot is the deparse command
+					with the <code>-p</code> or "parent" option.
+				</p>
 				</aside>
 
 	</section>
@@ -628,33 +636,40 @@ prev[prev[0]]
 					error from before.</p>
 
 
-				<p>trepan uses pygments to do syntax highlighting. And so it knows about
-					all the styles that pygments has. So if you don't like the default
-					theme you can change that.</p>
+				<p>trepan uses pygments to do syntax highlighting. And so it
+					knows about all the styles that pygments has. So if you
+					don't like the default theme you can change that.</p>
 
-				<p>Now let's get to work. "continue" just runs the program.... and we hit
-					an error.<p>
+				<p>Now let's get to work. "continue" just runs the
+					program.... and we hit an error.<p>
 
-				<p>The deparse -p is the command I always use. It show not just the
-					location of the error but the location of the parent.</p>
+				<p>The <i>deparse -p</i> is the command I always use. It show
+					not just the location of the error but the location of the
+					parent.</p>
 
-				<p>Now let's try where the error is at a different place in the same line.
-					Notice the location is changed now.</p>
+				<p>Now we are going to run two more times where the error is
+					at a different place in the same line.  Notice the location
+					is changed now.</p>
 
-				<p>And let's try a 3rd location for the error.
-					Not only has the error location changed, but also the parent has changed.</p>
+				<p>And let's try a 3rd location for the error.  Not only has
+					the error location changed, but also the parent has
+					changed.</p>
 
 	</section>
 
 	<section>
 		<h4>Debugging code created at runtime</h4>
 		<aside class="notes"><p>This example is now probably the toughest
-				for any debugger.. debugging code generated at runtime. In
-				general, writing code that modifies itself at runtime, is
-				frowned upon. For example there are security concerns. But I'm
-				going to show you that in fact it happens a bit more than
-				people admit. I'm going to do this using one of Python
-				standard library routines, namedtuple.</p>
+				for any debugger.. debugging code generated at runtime.</p>
+
+			<p>I encourage people who use other debuggers and IDEs to see
+				how well this works there.</p>
+
+			<p>Although in general, writing code that modifies itself at
+				runtime, is frowned upon. For example there are security
+				concerns. But I'm going to show you that in fact it happens a
+				bit more than people admit. I'm going to do this using one of
+				Python standard library routines, namedtuple.</p>
 
 			<p>This class creates a tuple, where you can give names to the
 				integer index elements. Here is a typical use...</p>
@@ -669,32 +684,29 @@ prev[prev[0]]
 			unnamed string. That's helpful! (not). That then we go to line
 			10 of some unnamed string. And then we return from that.</p>
 
-			<p> The same thing seems to be true of the <i>__repr__</i>
-				function.</p>
+			<p> I step into Point's <i>__repr__</i> function, and I have
+				the same problem.</p>
 
 			<p>So let's try with the Python3 version of trepan called
-				trepan3k. I'll although it is not clear here that trepan3k
-				does detect a dark background and tries to make adjustment
-				here.</p>
-
-			<p>However I dont' think it tries hard enough. So I'll adjust to
-				another pygments style.</p>
+				trepan3k. And I am going to adjust the highlighting style.
+				However trepan3k did detect there was a dark background
+				and made an adjustment for that.</p>
 
 			<p>Note that I can do a "break followed by a continue" in one
 			command by giving a number after continue. The @31 is the
 			instruction offset when I am stopped. And now I can list lines
-			of the funciton. The (1, 14) at the end just says line 1 of this
+			of the function. The (1, 14) at the end just says line 1 of this
 			file maps to line 14 in whatever source this originally came
 			from. This si probably wrong since pdb said it was line 8. I
-			don't know whihc one was right.
+			don't know which one was right.
 			</p>
 
 			<p>But now that I can see what is in that function, I can start
-				to query values in it. And I see in what part of that one line
-				function I am about to run.  It looks like I've just am
-				loading up the name of the function that I am about to
-				call. Code to evaluate the parameters like _cls, x, or y,
-				would come later.</p>.
+				to do something meaningful. I can inspect value, and I see in
+				what part of that one line function I am about to run.  It
+				looks like I've just am loading up the name of the function
+				that I am about to call. Code to evaluate the parameters like
+				_cls, x, or y, would come later.</p>.
 
 			<p>I'll ask for help on <i>_tuple</i>. Ah it is the internal
 			name for <code>tuple</code>. After a couple of steps I see that
@@ -704,8 +716,9 @@ prev[prev[0]]
 			<p>And we can do the same thing when we step
 			into <code>__repr__</code> in running <code>print</code></p>
 
-			<p>Those of you how use Jetbrains, or some other debugger, I am
-			curious how well those do in this kind of situation.</p>
+			<p>Again, those of you how use Jetbrains, or some other
+			debugger, I am curious how well those do in this kind of
+			situation.</p>
 
 		</aside>
 		<video controls width="600"
@@ -713,17 +726,20 @@ prev[prev[0]]
 	</section>
 
 	<section>
-		<h4>Debugging code when there is no no source</h4>
+		<h4>Debugging code when there is no source</h4>
 		<aside class="notes"><p>The last example I am going to show is
-				debugging bytecode when there is no source code at all! Just
-				the bytecode file. Reverse engineers: pay attention.</p>
+				a slight variation of the last example.</p>
 
-			<p>There is a command-line program I wrote that will disassemble
-			bytecode. It has a <code>--header</code> option to give meta
-			information about a bytecode file. In particular, the version
-			interpreter version and the magic number of the for the bytecode
-			file. Alos it shows the file that was used to create it.
-			Filename "exec" is pretty meaningless.</p>
+			<p>We can debugging bytecode when there is no source code at all!
+				Just the bytecode file. Reverse engineers: pay attention.</p>
+
+			<p>There is a command-line program, <code>pydisasm</code> I
+			wrote that will disassemble bytecode. It has
+			a <code>--header</code> option to give meta information about a
+			bytecode file. In particular, it gives the version interpreter
+			version and the magic number of the for the bytecode file.  The
+			file name Python was given for the file whne when it create it
+			was "exec" which is pretty meaningless.</p>
 
 			<p>Even though I don't have the source code, I can still run the
 				program Python.</p>
@@ -734,19 +750,40 @@ prev[prev[0]]
 				I have to suspend and kill it.
 			</p>
 
-			<p>I've been running this inside Emacs, and I also I'm going to
-			show an emacs package I wrote which interfaces not just to this
-			debugger, trepan3k, but also to about a dozen others including
-			pdb, and ipdb. The package is called realgud.</p>
+			<p>I've been running this inside Emacs, and I'm also going to
+			show off an emacs package I wrote which interfaces not just to
+			this debugger, trepan3k, but also to about a dozen others
+			including
+			<i>pdb</i>, and <i>ipdb</i>. The package is
+			called <i>realgud</i>.</p>
 
-			<p>The emacs package tracks the location for me. The green
-				orange and brown arrows in the fringe indicate where the program
-				is where has been. The realgud track all the places you've
-				stopped.</p>
+			<p>When I give "trepan3k" a bytecode file it notices that and
+				looks for the source code. It can't find that, so then it
+				decompiles the entire program and debugs that.</p>
 
-			Notice that in function <i>fib()</i> there are <i>two</i>
-			recursive calls. And again deparse can show you which one was
-			called.
+			<p>You can modify, and rename that file if you want since it is
+			a file in the filesystem now.</p>
+
+			<p>The emacs package tracks the location for me. Line with treen
+				green arrow is where I am currently. The line that I had been
+				previously stopped at has an orange mark. And the line before
+				that has a brown mark.</p>
+
+			<p>In fact, the emacs interface saves all of the locations you
+				have been stopped at even though it show the last 3 lines.
+				There are commands to cycle though just the stopping-point
+				locations.
+			</p>
+
+			<p>Notice that in function <i>fib()</i> there are <i>two</i>
+				recursive calls. And again deparse can show you which one was
+				called.</p>
+
+			<p>So we went up in the call stack. Run a "deparse" and you can
+			see which of the two calls we are inside.</p>
+
+			<p>We step further do it again and now we can see that the
+				call locat has changed.</p>
 
 			<p>And as you might expect in a debugger front-end, you highlight a
 			region and have that evaluated. </p>
@@ -760,16 +797,24 @@ prev[prev[0]]
 		<section>
 			<h3>There is more to do...</h3>
 			<aside class="notes">
-				<p>Through anology with human-language translation, I've shown
-				a little bit of the challanges a decompiler faces, and also a
-				this novel idea of how to get pretty precisely location
-				information as a program runs.</p>
+				<p>That is it for the demos.</p>
 
-				<p>I also have this working for Perl, and I've looked
-					at doing it in Emacs Lisp bytecode. The idea seems to be
-					pretty general and can be applied to other languages. I hope
-					others will help out in extending this to other
-					languages.</p>
+				<p>In summary, through anology with human-language
+				translation, I've shown a little bit of the challanges a
+				decompiler faces, and also a this novel idea of how to get
+				pretty precisely location information as a program runs.</p>
+
+				<p>I also have this working for Perl, and I've looked at doing
+					it in Emacs Lisp bytecode. The idea seems to be pretty
+					general and can be applied to other languages.</p>
+
+				<p>The reason I am giving this talk is to expose people to
+					this idea and I hope others will help out in extending this
+					to other languages.</p>
+
+				<p>So quickly even if you don't understand Emacs Lisp, or its
+				bytecode you can see that this looks similar to what you have
+				seen earlier.
 			</aside>
 
 			Emacs Lisp:
@@ -830,12 +875,21 @@ Note the similarity in parse structure with previous examples
 
 		<h3>Links...</h3>
 		<aside class="notes">
+			<p>What code that handles decompilation is <i>uncompyle6</i>.
+				However it makes use of the bytecode tools is "xdis".
+				pydisasm of xdis we saw briefly in getting bytecode meta
+				data.</p>
+
 			<p>The wiki for the Python decompiler
 				https://github.com/rocky/python-uncompyle6/wiki has a lot of
 				information on how the code works, and there is even a more
 				technical and research-oriented version of this paper for
 				those who would like to carry this idea to other
-				languages. Again, I encourage you to do this.</p>
+				languages. Again, I encourage you toa do this.</p>
+
+			<p>Here are links for the Python3 debugger, and the Python 2
+			debugger. Both of these
+
 			<p>Muchas gracias.</p>
 		</aside>
 
