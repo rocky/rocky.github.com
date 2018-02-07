@@ -54,11 +54,17 @@
 			<p>I make a lot of mistakes, and always have. I even make mistakes in
 				finding my mistakes.</p>
 
-			<p>So when I do, I'd like to know exactly where I am at. Computers
-				generally excel at giving detailed information involving lots of
-				calculation. But in this one area, just about all of the programming
-				languages could do better at giving more precise and useful
-				information. Let's look at a Python error...
+			<p>So when I do, I'd like to know exactly where I am at.  I feel
+				as though I'm trying to find Waldo, the guy with glasses in
+				the red-and-white stripped shirt and the red ski cap in this
+				picture.
+			</p>
+
+			<p>Computers generally excel at giving detailed information
+				involving lots of calculation. But in this one area, just
+				about all of the programming languages could do better at
+				giving more precise and useful information. So let's look at a
+				Python error...
 			</p>
 		</aside>
 	</section>
@@ -98,17 +104,18 @@ x = prev[prev[0]]                      # which prev ?
 [e[0] for i in d[j] if got[i] == e[i]] # lots going on here
 		</code></pre>
 		<pre class="fragment roll-in"><code class="python">
-exec(some_code % 10, namespace)        # code created at runtime
+exec(some_code % 10, namespace)        # code at runtime
 		</code></pre>
 
 		<aside class="notes">
-			<p>If I get an error in subscripting "prev", which "prev" access
-			are we talking about?</p>
+			<p>If I get an error in subscripting "prev", even if I am told
+				the invalid access involves list "prev", which "prev" access
+				are we talking about?</p>
 
 			<p><b>[next]</b> In the second example there are several different array
-				accesses, and even if you know which say that the value of the
-				index is of 0, you still wouldn't know which list was being
-				accessed.  I will show how we can disambiguate these.</p>
+				accesses, and again, even if you know the value of the
+				index, say it is 0, you still wouldn't know which list was being
+				accessed.
 
 			<p><b>[next]</b> The last example I think is particularly interesting, because
 				it shows that in Python you can run code that is created at
@@ -194,7 +201,7 @@ NameError: name 'bad' is not defined
 			<p>Compare that with... <b>next</b></p>
 		</p></aside>
 
-		<p class="fragment roll-in">but the Python interpreter sees:
+		<p class="fragment roll-in">but the C Python interpreter sees:
 			<pre class="fragment roll-in"><code>
   2:  8 LOAD_NAME    x
      10 LOAD_NAME    y
@@ -236,8 +243,8 @@ NameError: name 'bad' is not defined
 
 			<p>So how do we make sense of this? Let me suggest an answer by
 				pointing out that you've probably already seen examples of
-				this kind matching problem when you read a side-by-side
-				translation:</p>
+				what I showed before with line numbers, and also this kind
+				matching problem when you read a side-by-side translation:</p>
 		</aside>
 
 		<p class="fragment roll-in">A person says in Spanish:
@@ -251,32 +258,65 @@ NameError: name 'bad' is not defined
 	</section>
 
 	<section>
-		<h3>Side-by-side Translation</h3>
+		<section>
+			<h3>Side-by-side Translation</h3>
 
+			<p>1: Whose woods these are I think I know.<br>
+				 2: His house is in the village though</p>
 
-		<p>1: Whose woods these are I think I know.<br>
-			 2: His house is in the village though</p>
+			<p>1: A quién pertenece este bosque creo que sé<br>
+  			2: Aunque su casa en el pueblo está</p>
 
-		<p>1: A quién pertenece este bosque creo que sé<br>
-			 2: Aunque su casa en el pueblo está</p>
+			<aside class="notes">
+				<p>You can assume that the first line of the English is roughly like the
+					first line of the Spanish, and the second line of the English is like
+					the second line of the Spanish. <b>down</b></p>
+			</aside>
+		</section>
+		<section>
+			<h3>Side-by-side Translation</h3>
 
-		<aside class="notes">
-			<p>You can assume that the first line of the English is roughly like the
-				first line of the Spanish, and the second line of the English is like
-				the second line of the Spanish. And possibly the words at the
-				beginning or end of the sentence roughly go with words at the
-				beginning of the corresponding translation. "His house" at the
-				beginning of line two is almost the same position as "su casa." But
-				not exactly, and sometimes the position doesn't match at all. For
-				example, see the positions of "is" versus "está" on line two.
-				Also "though" versus "Aunque".</p>
+			<p>1: Whose woods these are I think I know.<br>
+				 2: <font color="green">His house</font> is in the village though</p>
 
-			<p>And this is sort of like what goes on when you get the error message
-				that we saw above when it said the error was on line 2.</p>
+			<p>1: A quién pertenece este bosque creo que sé<br>
+  			2: Aunque <font color="green">su casa</font> en el pueblo está</p>
 
-			<p>So let's do a side-by-side translation in Python...</p>
+			<aside class="notes">
+				<p>And possibly the words at the beginning or end of the
+					sentence roughly go with words at the beginning of the
+					corresponding translation. "His house" at the beginning of
+					line two is almost the same position as "su casa." But not
+					exactly... <b>down</b>.</p>
 
-		</aside>
+				<p>And this is sort of like what goes on when you get the error message
+					that we saw above when it said the error was on line 2.</p>
+
+				<p>So let's do a side-by-side translation in Python...</p>
+			</aside>
+		</section>
+		<section>
+			<h3>Side-by-side Translation</h3>
+
+			<p>1: Whose woods these are I think I know.<br>
+				 2: His house is in the village <font color="green">though</font> </p>
+
+			<p>1: A quién pertenece este bosque creo que sé<br>
+  			2: <font color="green">Aunque</font> su casa en el pueblo está</p>
+
+			<aside class="notes">
+				<p>Sometimes the position doesn't match at all. For example,
+					see the positions of "though" versus "Aunque".  on line
+					two. And "is" versus "está"</p>
+
+				<p>Overall, this kind of vague translation is what goes on
+					when you get the error message that we saw above when it
+					said the error was on line 2.</p>
+
+				<p>To investigate further, let's do a side-by-side translation
+				in Python...</p>
+			</aside>
+		</section>
 	</section>
 
 	<section>
@@ -297,10 +337,10 @@ NameError: name 'bad' is not defined
 
 		<aside class="notes">
 			<p>Notice again that the order of the variable name and
-				constants have been reversed as they were in the example
-				with addition. The mathematical name for this kind of ordering
-				is called "reverse polish notation". English adjectives are
-				like that.</p>
+				constants have been reversed as they were in the example with
+				addition. The mathematical name for this kind of ordering is
+				called "reverse polish notation". English adjectives are like
+				that. The "assignment" equal sign doesn't appear at all.</p>
 
 			<p>Now that we have seen how this resembles a human-language
 				translation problem, rather than a programmer-versus-computer
@@ -397,54 +437,79 @@ NameError: name 'bad' is not defined
 		<section>
 			<h3>Bytecode Parse</h3>
 			<aside class="notes">
-				<p>First is the python code. Next is the Abstract Syntax Tree
-					that Python uses as its internal representation before
-					producing bytecode. It is "Abstract" in the sense that some
-					of the symbols from the Python have been removed. Here,
-					there are no square brackets represented in this tree.
+				<p>First is the Python code. This code is from an example
+					we used in a prior slide.</p>
+
+				<p>Next is the Abstract Syntax Tree that Python uses as its
+					internal representation before producing bytecode. It is
+					"Abstract" in the sense that some of the symbols from the
+					Python have been removed. Here, there are no square brackets
+					represented in this tree.
 					<b>down</b>
 			</aside>
 
 			<pre><code> prev[prev[0]]</code></pre>
-			<center><img data-src="prev-ast.png", height=342, width=342></center>
+
+			<div class="fragment roll-in">
+				<p>parses to:
+				<center><img data-src="prev-ast.png", height=342, width=342>
+				</center></div></p>
 
 
-			<p>translates to:...</p>
 		</section>
 		<section>
 			<aside class="notes">
-				<p>Next is the bytecode, and finally a reconstituted parse
-					tree from just the instructions which is created by
+				<p>Next is the bytecode</p>
+
+				<p>Notice that some instructions like <code>LOAD_NAME</code>
+					and <code>LOAD_CONST</code> has an operand or attribute.
+					We will come back to this a little later.</p>
+
+				<p>For both of the <code>LOAD_NAME</code> the operand is
+					"prev" however that is just a coincidence here.</p>
+
+				<p>For <code>LOAD_CONST</code> the operand value is 0.</p>
+
+				<p>And finally a reconstituted parse
+				tree from just the instructions which is created by
 					my decompiler <i>uncompyle6</i>.
-					<b>down</b></p>
+
+				<p>I will not go into how this tree was created other than
+					to say that it uses some standard and a little non-standard
+					parsing theory from compiler theory.</p>
+
+				<p>Notice how all of the leaves of the parse tree are the
+					bytecode instructions.  It might be hard to see that because the
+					leaves are at different tree depths. But as you will see, the
+					different depths will become important a little later.</p>
+
+				<b>down</b>
+
 			</aside>
 
-
+			<p>translates to:
 			<pre><small><code>
 2  6 LOAD_NAME "prev"
    8 LOAD_NAME "prev"
   10 LOAD_CONST 0
   12 BINARY_SUBSCR
   14 BINARY_SUBSCR
-				</code></small></pre>
+				</code></small></pre></p>
 
-			<p>deparses to...
-				<center><img data-src="prev.png", height=376, width=500></center></p>
+			<div class="fragment roll-in">
+				<p>uncompyle6 (de)parses to:</p>
+				<center><img data-src="prev.png", height=350, width=400></center>
+			</div>
 		</section>
     <section>
 			<aside class="notes">
 				<p>The tree structure is
-					roughly the same, but rename "Name" and
+					roughly the same, but the "Name" and
 					"Load" are both called "Expr" in the reconstructed tree.
 					The name change isn't important. The main thing is that
 					in either case they alway have only one child, and they can
-					derived from and also derive a "sucbscript".
+					derived from and also derive a "subscript".
 				</p>
-
-				<p>Notice how all of the leaves of the parse tree are the
-					bytecode instructions.  It might be hard to see that because the
-					leaves are at different tree depths. But as you will see, the
-					different depths will become important a little later.</p>
 
 				<p>And as we saw with "Entiendo" versus "I understand",
 					there is an extra instruction: "SUBSCR". </p>
@@ -516,16 +581,34 @@ NameError: name 'bad' is not defined
 				<p>In this tree, I've take the operand values of the
 					instruction, when there is one, and shown that instead of
 					the instruction name and offset.</p>
+				<b>down</b>
+			</aside>
+			<h3>With Instruction Operands</h3>
 
+			<center><img data-src="prev-text1.png",
+									 height=500, width=500></center>
+		</section>
+    <section>
+			<aside class="notes">
 				<p>For the other nodes, recall they are either <i>Expr</i> or
 					<i>Subscript</i>.  For Expr, just copy the value from its
-					child below; for <i>Subscript</i>, take the value from the
+					child below;
+					<b>next</b></p>
+			</aside>
+			<h3>With "Expr" rule</h3>
+			<center><img data-src="prev-text2.png",
+									 height=500, width=500></center>
+		</section>
+    <section>
+			<aside class="notes">
+				<p>For <i>Subscript</i>, take the value from the
 					first child and the surround the value of the second child
 					in square brackets and finally ignore the last child which
 					here is always "SUBSCR". Now are are in a position to
 					show where we are at each of the instructions...
 					<b>next</b></p>
 			</aside>
+			<h3>With "Subscr" rule</h3>
 			<center><img data-src="prev-text.png",
 									 height=500, width=500></center>
 		</section>
