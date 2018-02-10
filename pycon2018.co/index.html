@@ -46,13 +46,15 @@
 		<h3>Where am I now &mdash; Really?</h3>
     <center><img data-src="waldo.jpg", height=342, width=442></center><br/>
 		<aside class="notes">
-			<p>Hi I am rocky bernstein.</p>
+			<p>Hi I am Rocky Bernstein, a long time open-source developer;
+			one of the people Christine mentioned yesterday.</p>
+
 			<p>This talk is in two parts. The first part describes
 				decompilation; and then the second part to demoes it from a
 				debugger.</p>
 
-			<p>I make a lot of mistakes, and always have. I even make mistakes in
-				finding my mistakes.</p>
+			<p>As I said I write a lot of code. I also make I make a lot of
+				mistakes. I even make mistakes in finding my mistakes.</p>
 
 			<p>So when I do, I'd like to know exactly where I am at.  I feel
 				as though I'm trying to find Waldo, the guy with the glasses and
@@ -391,6 +393,8 @@ NameError: name 'bad' is not defined
 		<aside class="notes">
 			<p>And here is one translation of it in Spanish.</p>
 
+			<p>By the way, I wonderful mondongo here in Medellin last night</p>
+
 			<p>At the top levels of the grammar they are the same: a
 				sentence is a <i>subject</i> and a <i>predicate</i>.  In
 				Spanish the subject is empty while in English it is
@@ -431,6 +435,8 @@ NameError: name 'bad' is not defined
 				<p>First is the Python code. This code is from an example
 					we used in a prior slide.</p>
 
+				<b>down</b>
+
 				<p>Next is the Abstract Syntax Tree that Python uses as its
 					internal representation before producing bytecode. It is
 					"Abstract" in the sense that some of the symbols from the
@@ -453,7 +459,7 @@ NameError: name 'bad' is not defined
 				<p>Next is the bytecode</p>
 
 				<p>Notice that some instructions like <code>LOAD_NAME</code>
-					and <code>LOAD_CONST</code> has an operand or attribute.
+					and <code>LOAD_CONST</code> have an operand or attribute.
 					We will come back to this a little later.</p>
 
 				<p>For both of the <code>LOAD_NAME</code> the operand is
@@ -497,19 +503,20 @@ NameError: name 'bad' is not defined
 		</section>
     <section>
 			<aside class="notes">
-				<p>The tree structure is
-					roughly the same, but the "Name" and
+				<p>The tree structure is roughly the same, but the "Name" and
 					"Load" are both called "Expr" in the reconstructed tree.
-					The name change isn't important. The main thing is that
-					in either case they alway have only one child, and they can
-					derived from and also derive a "subscript".
+					The name change isn't important. I could and maybe should
+					have kept the same names. The main thing is that in either
+					case "Name", "Index", or "Expr" have only one child, and
+					they can derived from and also derive a "subscript".
 				</p>
 
 				<p>And as we saw with "Entiendo" versus "I understand",
 					there is an extra instruction: "SUBSCR". </p>
 
-				<p>The fact that all instructions are in this reconstructed tree
-					is a difference between it and the "abstract" syntax tree.
+				<p>The fact that <em>all instructions</em> are in this
+					reconstructed tree is a difference between it and the
+					"abstract" syntax tree.
 					<b>down</b></p>
 			</aside>
 
@@ -553,15 +560,9 @@ NameError: name 'bad' is not defined
 				<p>Here we'll show how to reconstruct the source text from
 					this tree.</p>
 
-				<p>Recall the intructions are the leaves. they are the things
-					that have offset numbers, 6, 8, ...  In addition to that
-					offset value, each Python bytecode instruction must have an
-					operand value for some instructions. And for other
-					instructions there will never be a value. Both "NAME" and
-					"CONST" have an operand value. In our example both "NAME" at
-					offset 6 and 8 both have the value "prev" for its
-					operand. The "CONST" has a value 0 in our example. In
-					contrast, "SUBSCR" never has an operand.</p>
+				<p>Recall the intructions are the leaves and
+					some of those have operand values: "NAME" and "CONST"
+					has an operand while "CONST" doesn't.</p>
 
 					<p>One other thing to note here is that there only two
 					different node types: Expr and Subscript. <b>down</b>
@@ -572,9 +573,9 @@ NameError: name 'bad' is not defined
 		</section>
     <section>
 			<aside class="notes">
-				<p>In this tree, I've take the operand values of the
-					instruction, when there is one, and shown that instead of
-					the instruction name and offset.</p>
+				<p>In this tree, I've take the operand values of instruction
+					that have operands, when there is one, and shown that
+					instead of the instruction name and offset.</p>
 				<b>down</b>
 			</aside>
 			<h3>With Instruction Operands</h3>
