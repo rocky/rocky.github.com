@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Python Assember</title>
+
+    <meta name="description" content="Decompilation for Precise Program Location Information">
+    <meta name="author" content="Rocky Bernstein">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/beige.css" id="theme">
+    <link rel="stylesheet" href="css/theme/rocky-adds.css" id="rocky">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+
+	<section>
+		<h2>Python Disassembler (all 20 versions)</h2>
+	</section>
+	<section>
+		<video controls width="600">
+			<source src="light1.webm" type="video/webm" />
+	</section>
+
+	<section>
+
+		<h3>Links...</h3>
+			<ul style="text-align: left, center:false">
+				<li><a href="https://pypi.python.org/pypi/xasm/">Python Assember://pypi.python.org/pypi/xasm/</a></li>
+				<li><a href="https://pypi.python.org/pypi/xdis/">Python Bytecode Library: https://pypi.python.org/pypi/xdis/</a></li>
+				<li><a href="https://rocky.github.io/pycon2018-light.co/">this presentation: https://rocky.github.io/pycon2018-light.co/</a></li>
+				<li>
+					<a href="mailto://rocky@gnu.org">rocky@gnu.org,</a>
+					<a href="https://github.com/rocky">https://github.com/rocky</a></li>
+			</ul>
+			<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+			<p style="text-align: right">- fin</p>
+			<small>>
+	</section>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+  // Full list of configuration options available at:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+	slideNumber: true,
+
+  transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+  { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+  { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+  { src: 'plugin/zoom-js/zoom.js', async: true },
+  { src: 'plugin/notes/notes.js', async: true }
+  ]
+  });
+
+</script>
+
+</body>
+</html>
+<!--
+Local Variables:
+tab-width: 2
+End:
+->
