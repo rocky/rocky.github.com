@@ -222,7 +222,7 @@ se traduce a:
   14 BINARY_SUBSCR
 ```
 
-analiza a: ![tree-diagram](prev.png)
+analiza a: ![tree-diagram](https://rocky.github.io/pycon2018.co/prev.png)
 
 ```
    binary_subscr
@@ -277,7 +277,7 @@ x = prev[prev[0]]
 ```
 
 - - -
-[Tiempo de una demostración!]
+Tiempo de una demostración: [demo](https://rocky.github.io/pycon2018.co/#/15)
 
 Hay una gran cantidad de tecnologías e ingeniería que hace que todo
 esto funcione. De hecho, hay muchos errores, y al dar esta charla
@@ -292,3 +292,15 @@ técnica y orientada a la investigación para quienes les gustaría llevar esta
 idea a otros idiomas. Los animo a hacer esto.
 
 Gracias.
+
+
+Links
+-----
+* [Python Decompiler](https://pypi.python.org/pypi/uncompyle6/)
+* [Python Bytecode Library](https://pypi.python.org/pypi/xdis/)
+* [traceback module + deparsing](https://pypi.python.org/pypi/loctrace)
+* [Python 3 Debugger](https://pypi.python.org/pypi/trepan3k/)
+* [trepan2 Documentation](http://python2-trepan.readthedocs.io/en/latest/)
+* [Emacs Interface to Debuggers](https://github.com/realgud/realgud)
+* [Decompilation Research Paper](https://rocky.github.io/Deparsing-Paper.pdf)
+* [This presentation](https://rocky.github.io/pycon2018.co)
