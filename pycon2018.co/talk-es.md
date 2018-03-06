@@ -1,4 +1,4 @@
-[translation of an earler version of the first part of the talk is
+[This is a translation of an earler version of the first part of the talk is
 graciously and gratefully provided by Gonzalo Peña-Castellanos]
 
 Hola, soy Rocky, un desarrollador de código abierto de vieja data. Paso la
