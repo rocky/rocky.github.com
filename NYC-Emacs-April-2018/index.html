@@ -52,6 +52,8 @@
 				if you are interested in that. Ditto for Emacs in Rust.
 			</p>
 
+			<p>Many thanks to both Eric Collins, Zach Kanfer, and Thoughtbot for hosting this.</p>
+
 			<p>Let's review what I went over in the last lighting talk...
 			<b>[next]</b></p>
 
@@ -572,7 +574,15 @@ ELISP> (symbol-function 'end-of-line)
 		</section>
 		<section>
 			<aside class="notes">
-				<p>Here is a control flow graph for the program.
+				<p>Here is a control flow graph for the program. Dark lines with arrows show
+					control flow. The dotted lines indicate that the last instruction of the upper block
+					immediately precedes the instruction of the following block, But that last instruction
+					is some sort of jump instruction. In reconstructing the program, we can make
+					use of this sort of instruction matching pattern to decide which of several
+					possible alternatives to use.</p>
+
+				<p>The top two blocks constitute the "if"/"when"
+					block. The rest constitutes the "cond" block.</p>
 				</p>
 			</aside>
 
@@ -581,7 +591,10 @@ ELISP> (symbol-function 'end-of-line)
 		</section>
 		<section>
 			<aside class="notes">
-				<p>Here is a dominator tree for the program.
+				<p>Here is a dominator tree for the program. I won't go into
+					what this is, except to say that it is created from the
+					control-flow graph and is used to figure out the nesting and
+					sequencing of "conditional" and "looping" control structures
 				</p>
 			</aside>
 
@@ -598,12 +611,28 @@ ELISP> (symbol-function 'end-of-line)
 				<p>Here we'll show how to reconstruct the source text from
 					this tree.</p>
 
-				<p>Bytecode instructions are the leaves of the tree.
-					Some of those instruction like "VARREF" have
-					an operand while others like "QUO" does not.</p>
+				<p>Bytecode instructions are the leaves of the tree, and none of the
+					instructions are missing. So in that sense this is not the same as an
+					"abstract syntax tree" in a compiler. Nothing abstract about it.
+					It is more like a grammar parse you might see in linguistics imposed on top of
+					an English sentence.</p>
 
-					<p>One other thing to note here is that there only three
-					different node internal types: "expr", "binary_op", and "binary_expr". <b>down</b>
+				<p>Some of the instruction like "VARREF" have an operand while
+					others like "QUO" does not.</p>
+
+				<p>I'm sorry that the instructions are not in a nice linear
+					sequence as they were shown previously. However as we will
+					see, the fact that the instructions like "QUO" are at
+					different levels of the tree has a big impact on describing
+					where you are in your program. Even though these two
+					instructions follow one another.</p>
+
+
+				<p>One other thing to note here is that there only three
+						different node internal types: "expr", "binary_op", and "binary_expr".</p>
+
+				<p>We will enter text in each of the nodes, first focusing on
+				expanding the two "binary_op" nodes. <b>down</b></p>
 			</aside>
 
 			<center><img data-src="div.png",
@@ -611,11 +640,11 @@ ELISP> (symbol-function 'end-of-line)
 		</section>
     <section>
 			<aside class="notes">
-				<p>In this tree, For the "binary_op" node I've filled in
-					its value from its child. Here "QUO" gets turned into
-					"/". that have operands, when there is one, and shown that
-					instead of the instruction name and offset.</p>
-				<b>down</b>
+				<p>In this tree, I have expanded the "binary_op" node. It looks at its single
+					child and picks out the operator name of that. For "QUO" the name is "/".
+				</p>
+				<p>Next up is hadnling the three "expr" nodes that are one level from the bottom.
+				<b>down</b></p>
 			</aside>
 			<h3>With "binary_op" rule</h3>
 
@@ -636,9 +665,12 @@ ELISP> (symbol-function 'end-of-line)
 		</section>
     <section>
 			<aside class="notes">
-				<p>For the other nodes, recall they are either <i>Expr</i> or
-					<i>Subscript</i>.  For Expr, just copy the value from its
-					child below;
+				<p>For "binary_expr" nodes, you simply take the text value of the <i>last</i> child,
+					and put it first as the function name. The first and second children come after that.<p>
+
+				<p>Remaining nodes, are either <i>expr</i> or
+					<i>binary_expr</i>. So we'll just repeat the process we've done before on
+					each.
 					<b>next</b></p>
 			</aside>
 			<h3>With "binary_expr" rule</h3>
@@ -646,14 +678,10 @@ ELISP> (symbol-function 'end-of-line)
 									 height=500, width=500></center>
 		</section>
     <section>
-			<aside class="notes">
-				<p>For "binary_expr" nodes, you simply take the text value of the <i>last</i> child,
-					and put it first as the function name. The first and second children come after that.
-					<b>next</b></p>
-			</aside>
 			<h3>Finishing up</h3>
 			<aside class="notes">
-				<p>To finish we just repeat another "expr" followed by a "binary_expr" rule.
+				Et Voilà! But if we are at a particular offset, like offset 3,
+				how do we find text associated with that?
 					<b>next</b></p>
 			</aside>
 			<center><img data-src="div-text3.png",
@@ -666,9 +694,12 @@ ELISP> (symbol-function 'end-of-line)
 		<section>
 			<h3>Parse at offset 3</h3>
 			<aside class="notes">
-				<p>Whenever we are at a <code>SUBSCR</code> node we just
-					use the text information from the parent shown in
-					blue. Here is how it looks in a program. <b>down</b></p>
+				<p>From the offset we can find a position in this tree. The
+					first step then is to go to the instruction's parent and
+					that will dictate the position. For "binary_op", we just
+					take the text of the parent. That parent node is shown in
+					blue. Here is how I show it in my Python debugger. I imagine
+					something like this could be adapted for Emacs. <b>down</b></p>
 			</aside>
 			<center><img data-src="div3.png", height=500,
 									 width=500></center>
@@ -676,7 +707,7 @@ ELISP> (symbol-function 'end-of-line)
 		<section>
 			<h3>Parse at offset 3 Display</h3>
 			<aside class="notes">
-				<b>up and next</b>
+				<b>next</b>
 			</aside>
 
 				<pre><code>
@@ -689,8 +720,8 @@ ELISP> (symbol-function 'end-of-line)
 	<section>
 		<section>
 			<aside class="notes">
-				<p>At offset 14 the paren is the whole tree. And again
-					how it looks from a program.
+				<p>At offset 4 the parent of the parent is the whole tree. Again,
+					how it might look from a program.
 					<b>down</b></p>
 			</aside>
 			<h3>Parse at offset 4</h3>
@@ -719,10 +750,11 @@ ELISP> (symbol-function 'end-of-line)
 
 	<section>
 		<h4>Adding Locations to Bytecode</h4>
-			<aside class="notes"><p>But this stuff is pretty complicated. This isn't how things are
-					normally done. Isn't there are simpler way?</p>
+			<aside class="notes"><p>This stuff is pretty complicated. You may say, Rocky is this how things are
+					normally done? Isn't there are simpler way?</p>
 
-				<p>Well, yes. But it involves changing the code to emit bytecode.</p>
+				<p>Well, yes. But it involves changing the code to emit
+				bytecode and the bytecode optiizer.</p>
 
 				<p>Recall in both kinds of compilers we have a parse tree. In byte
 					compiling you have accurate information about which constructs were used
@@ -733,7 +765,22 @@ ELISP> (symbol-function 'end-of-line)
 					somewhat narrow-mindedly called a "line number table". Really it is a mapping of
 					positions from the source text to the object code.</p>
 
+				<p>I suppose you could also save this in the bytecode file somewhere as a constant giving
+					it a name that is related to the function name.</p>
+
 				<p>In our example we would have:</p>
+
+				<p>A downside with this "eager" approach is that you have to do all the work up front first.
+					I imagine getting this blessed by the Emacs devel community and signed off on enough to
+					change Emacs would be a lot of work.</p>
+
+
+				<p>In contrast, in the decompiler, there is that one little change to track offsets, and the
+					the rest can be done independent of Emacs core development. The two approaches are not
+					mutually exclusive. And I do agree that it would be nice to have a traditional line
+					number table like this.
+				</p>
+
 			</aside>
 
 
@@ -790,33 +837,30 @@ ELISP> (symbol-function 'end-of-line)
 
 		<h3>Links...</h3>
 		<aside class="notes">
-			<p>The Code that handles decompilation is <i>uncompyle6</i>.
-				However it makes use of a bytecode tools library
-				called <i>xdis</i>.  We saw briefly
-				showed <code>pydisasm</code> from <i>xdis</i> in getting
-				bytecode meta data.</p>
+			<p>The first link is the github project that does Emacs Lisp decompilaion.
+				However a lot of that code is written in Python.</p>
 
-			<p>The wiki for the Python decompiler
-				<a href="https://github.com/rocky/python-uncompyle6/wiki">https://github.com/rocky/python-uncompyle6/wiki</a>
-				has a lot of information on how the code works, and there is
-				even a more technical and research-oriented version of this
-				paper for those who would like to carry this idea to other
-				languages. Again, I encourage you toa do this.</p>
+			<p>The second link is the github project code for an Jay Earley parser written in Emacs Lisp.
+				I ported it from a Common Lisp program.</p>
 
-			<p>Here are links for the Python3 debugger, and the Python 2
-			debugger. All of the above is on Pypi. Although I give a
-			read-the-docs links for trepan2, trepan3k is also on
-			readthedocs.</p>
+			<p>The third link is a pretty extensive Emacs Lisp Bytecode manual. I got a lot of help from
+				pipcet, and we copied material from a blog post of Chris Wellon. Also some material was
+				copied from the Emacs Lisp manual. Stephan Monier gave suggestions too.</p>
 
-			<p>Muchas gracias.</p>
+			<p>If you are interested in learning more about the decompilation process used in this
+				decompiler and the one for Python, the research paper given next has a bit of detail.
+			</p>
+
+			<p>Thanks.</p>
 		</aside>
 
 		<small>
 			<ul>
 				<li><a href="https://github.com/rocky/elisp-decompile/">Elisp Decompiler</a></li>
+				<li><a href="https://github.com/rocky/elisp-early/">Earley Parser in Elisp</a></li>
 				<li><a href="https://github.com/rocky/elisp-bytecode">Elisp Bytecode Manual</a></li>
 				<li><a href="https://rocky.github.io/Deparsing-Paper.pdf">Decompilation Research Paper</a></li>
-				<li><a href="https://rocky.github.io/pycon2018.co/">this presentation</a></li>
+				<li><a href="https://rocky.github.io/NYC-Emacs-April-2018/">this presentation</a></li>
 				<li>
 					<a href="mailto://rocky@gnu.org">rocky@gnu.org,</a>
 					<a href="https://github.com/rocky">https://github.com/rocky</a></li>
