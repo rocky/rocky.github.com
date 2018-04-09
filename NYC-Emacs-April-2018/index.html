@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Elisp to LAP and Bytecode</title>
+
+    <meta name="description" content="Decompilation for Precise Program Location Information">
+    <meta name="author" content="Rocky Bernstein">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/theme/rocky-adds.css" id="rocky">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+
+	<section>
+		<h2>From LAP to Lisp...</h2>
+		<h4>Bytecode and miscellaneous thoughts on the Emacs Runtime</h4>
+		<!-- <small>(enter "s" to see presenter text for slides)</small> -->
+		<aside class="notes">
+			<p>In preparing for this talk, I see that I have too much material.
+				I had planned to say more about Emacs and the recent JIT work,
+				but that will have wait for some other time. Come talk to me
+				if you are interested in that. Ditto for Emacs in Rust.
+			</p>
+
+			<p>Let's review what I went over in the last lighting talk...
+			<b>[next]</b></p>
+
+		</aside>
+	</section>
+
+	<section>
+		<aside class="notes">
+			<p>See slide</p>
+		</aside>
+		<h3>Review</h3>
+		<ul>
+			<li>Bytecode in emacs is pervasive</li>
+			<li class="fragment roll-in">Gives speedup of 2 to 3 times in computation-bound code</li>
+			<li class="fragment roll-in">Is in reverse polish prefix (data first, then operator)</li>
+			<li class="fragment roll-in">A lot of the operations are either Lisp or Emacs functions</li>
+			<li class="fragment roll-in">Showed how to turn bytecode to LAP </li>
+			<li class="fragment roll-in">Asked how we would go the other way.</li>
+		</ul>
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<h3>Wither Bytecode?</h3>
+		<ul>
+			<li class="fragment roll-in">
+				Other Programming-Languages
+				<ul>
+					<li class="fragment roll-in">Common Lisp &mdash; is sort of being done</li>
+					<li class="fragment roll-in">Others &mdash; huge Elisp code base migration</li>
+				</ul>
+			</li>
+
+			<li class="fragment roll-in">
+				JITs
+				<ul>
+					<li class="fragment roll-in">
+						<code>libjit</code>, <code>lightning</code> &mdash; work off of Bytecode</li>
+					<li class="fragment roll-in">
+						JVM, LLVM &mdash; need to replicate Lisp environment; garbage collector?</li>
+					<li class="fragment roll-in">
+						V8, SpiderMonkey &mdash; pipcet has gc integrated </li>
+				</ul>
+			</li>
+		</ul>
+
+		<aside class="notes">
+			<p>Emacs's bytecode is pretty old &mdash; as old as Emacs itself. And
+				although there have been some changes to it, there has always been lurking
+				in the background the question of whether it might be totally ditched,
+				either as a by-product of switching out the underlying Lisp
+				implementation for something else, or as a result of using JIT
+				technology. <b>[next]</b>
+			</p>
+
+			<p>Let's take these two situations where Emacs Lisp Bytecode might become
+				obsolete separately. Both ideas have been floating around for a
+				long time.
+			</p>
+
+			<p>With respect to alternate programming-language implementations, there
+				have been many languages that been proposed and experimented with. The
+				big obstacle in totally replacing Emacs Lisp is in rewriting the huge
+				current Emacs Lisp code base. I think that if such an approach were to
+				work, the language would have to be available as an additional
+				language until the current code base was replaced. Currently
+				alternate programming languages haven't gained much of
+				a foothold; they are not in the Emacs distribution or in any
+				of its branches.</p>
+
+			<p>An obvious alternative language proposed is Common Lisp. Over
+				time, an Emacs Lisp package implemention Common Lisp has been
+				providing more and more Common Lisp functionality. The
+				addition of features in Common Lisp has been somewhat
+				reflected in changes in the run-time systems, such as the
+				addition of lexical scoping. And this approach partially
+				solves the large code-base migration problem. But it also
+				reduces the need to jump cold turkey from Emacs Lisp Bytecode
+				to something else.<b>[next]</b>
+				</p>
+
+			<p>And what about the other possibility where Emacs incorporates JIT
+				technology? The motivation for this is to speed up Emacs. There is
+				widespread belief among the development community that there could be
+				big performance wins if this were done right. After all, it is not
+				uncommon for some people to live inside a single GNU Emacs session.
+				</p>
+
+			<p>This idea of using a JIT to speed performance goes back over a decade,
+				at least back to 2006. Of the JITs that have been proposed, at least
+				four of them use Emacs Lisp Bytecode as the basis from which to JIT
+				from. I think that is because Emacs Lisp Bytecode is a reasonable
+				target to JIT: it is sufficiently low level, while also easy to hook a
+				JIT into.</p>
+
+			<p>Two alternatives to Emacs Lisp Bytecode which have sophisticated JIT
+				technology are LLVM IR and JVM IR. For each, the surrounding run-time
+				environment would have to be replicated. Another IR possibility might
+				be JavaScript IRs: specifically, the ones for V8 and Spidermonkey.</p>
+
+		</aside>
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<h3>A Personal History</h3>
+
+		<ul>
+			<li>Interest in beefing up the runtime environment in Programming Languages for debugging</li>
+			<li class="fragment roll-in">Did it for bash, GNU Make, Ruby, ...  </li>
+			<li class="fragment roll-in">Perl, and Python also have decompilation at runtime</li>
+			<li class="fragment roll-in">Can decompilation be applied to bytecode?</li>
+			<li class="fragment roll-in">Yes, but it there is a lot of work to do</li>
+		</ul>
+		<aside class="notes">
+			<p>I have long been interested in beefing up run-time environment in Programming Languages
+				to facilitate debugging. <b>[next]</b></p>
+
+			<p>I added the ability to debug in Bash (around 2.05b), and GNU Make. In
+				Ruby, I got more structured frame info added (around Ruby 2.0).</p>
+
+			<p>Recently I have been interested in decompilation as a way of getting
+				exact location information. And I have done that already in Python and
+				Perl. Can it be applied to Elisp?  Yes, but there is a lot of work to
+				do.</p>
+
+			<p>Before we get into the weeds, we need to understand a little more about,
+				Emacs Lisp's interpreter and run time. <b>[next]</b></p>
+		</aside>
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<h3>A Tale of Two Interpreters part 1: Lisp</h3>
+
+		<aside class="notes">
+			<p><code>functionp</code> will tell you if something is a
+		   function ... pretty simple. <b>[next]</b></p>
+
+		  <p>One the other hand <code>symbol-function</code> gives you the
+				current definition of the function. Internally, an object has
+				as special "function" property
+				which <code>symbol-function</code> retrieves.  We will come
+				back to this later..
+		 	</p>
+
+			<p>If you want to evaluate a function you can
+				use <code>funcall</code> giving it the function name and its
+				arguments.</p>
+		</aside>
+
+		<section>
+			plus <i>functionp</i>
+			<pre><code class="lisp">
+ELISP> (functionp 5)
+nil
+ELISP> (functionp (lambda(x) x))
+t
+      </code></pre>
+    </section>
+
+    <section>
+  		<p>plus <i>symbol-function</i> and <i>funcall</i></p>
+  		<pre><code class="lisp">
+ELISP> (symbol-function (lambda(x) x))
+(lambda (x) x)
+ELISP> (setq rocky-identity (lambda(x) x))
+(lambda (x) x)
+ELISP> (symbol-function rocky-identity)
+(lambda (x) x)
+ELISP> (funcall rocky-identity 5)
+5 (#o5, #x5, ?\C-e)
+		</code></pre>
+
+    </section>
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<h3>A Tale of Two Interpreters part 2: Bytecode</h3>
+		<aside class="notes">
+			<p>You can turn any lisp function into bytecode by
+					calling <code>byte-compile</code>. It returns a bytecode object
+					which is a special kind of Lisp vector. What each of the
+					parts in the vector is described in the Elisp bytecode
+					manual. I won't go into any detail into that, except to say
+					that you can isolate each of the parts
+					using <code>aref</code> and that the 3rd item is a bytecode
+					string which is an encoding of a LAP or (Lisp Assembly
+				Program.</p>
+
+
+			<p>Note
+			that <code>functionp</code>, <code>symbol-function</code> (not
+			shown here), and <code>funcall</code> work as they do for Lisp
+				interpreter functions. Under the covers <code>funcall</code>,
+				is using <code>symbol-function</code> to extract the definition
+				of the function in order to figure out how to evaluate it.
+				<b>[next]</b></p>
+
+			<p>Since the bytecode string is abstruse, you can use the
+				<code>disassemble</code> function to produce a more human
+				readable version. Of course, there is question as to whether
+				you really <i>want</i> to understand yet another language. I don't
+				and I'm going to talk about eliminating or reducing that step.
+			</p>
+
+			<p>Ok, with allof this a background we can start to see what and
+				understand what's going on when we hit an error.  Let's look
+				at some errors reported by Emacs. First, Emacs Lisp.
+				</p>
+		</aside>
+
+		<section>
+			plus <i>byte-compile</i> and  <i>aref</i>
+			<pre><code class="lisp">
+ELISP> (byte-compile rocky-identity)
+#[(x)
+  "^H\207"
+  [x]
+  1]
+ELISP> (aref rocky-identity 2)  ;; just the byte string
+  "^H\207"
+ELISP> (functionp rocky-identity)
+t
+ELISP> (funcall rocky-identity 5)
+5 (#o5, #x5, ?\C-e)
+    </code></pre>
+    </section>
+    <section>
+		plus <i>disassemble</i>
+		<pre><code class="lisp">
+    ELISP> (disassemble rocky-identity)
+byte code:
+  args: (x)
+0	varref	  x
+1	return
+    </code></pre>
+
+    </section>
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<h3>An Emacs Error from the Lisp Interpreter</h3>
+		<pre><code class="lisp">
+(fib-bug 3)
+Debugger entered--Lisp error: (arith-error)
+/(1 0)
+(cond ((< n 1) 1) ((= fib-bug-count 0) (/ n 0)) (t (+ (fib-bug (1- n)) (fib-bug (- n 2)))))
+fib-bug(1) ;; A link to the source code
+(+ (fib-bug (1- n)) (fib-bug (- n 2)))
+(cond ((< n 1) 1) ((= fib-bug-count 0) (/ n 0)) (t (+ (fib-bug (1- n)) (fib-bug (- n 2)))))
+fib-bug(2) ;; A link to the source code
+...
+		</code></pre>
+		<aside class="notes">
+			<p>Note that we get the text fragment from were it comes
+				from. Oddly it is shown as the more conventional function form
+				with the parameters but not the function name in
+				parenthesis. So we see <code>/(1 0)</code>.</p>
+
+				But it is a little weird for another reason. Look at
+				the <code>cond</code> on the next line. It is supposed to be
+				the surrounding context. It is a bit too broad. More specific
+				would be that we are in the first <i>clause</i> of the
+				cond.</p>
+
+			<p>The line below that now gives the function called with the
+				parameter value: <code>fib-bug(1)</code>. In Emacs there is
+				also a link which you can click on that will get you to the
+				source of that function if available.  To do this though there
+				is some serious magic getting used which is the same magic
+				used by the <code>(describe-function)</code> function. The
+				underlying hacky function that gets called is
+			<code>find-lisp-object-file-name</code>.</p>
+
+			<p>After the <code>fib-bug</code> call, we now have another
+				context line. And as before it is a bit too broad, and we
+				begin to the pattern.  Thespecific call location is not shown
+				but its parent. Here, we are unluckly because it is ambiguous.
+				This is frustrating me because the interpreter has the
+				ability to distinguish.</p>
+
+			<p>If you find this as I do a little lacking, compare what you get when bytecode
+				is run...</p>
+		</aside>
+	</section>
+
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<h3>An Emacs Lisp Error from the Bytecode Interpreter</h3>
+		<pre><code class="lisp">
+(fib-bug 3)
+Debugger entered--Lisp error: (arith-error)
+fib-bug(1)
+fib-bug(2)
+fib-bug(3)
+eval((fib-bug 3) nil)
+elisp--eval-last-sexp(nil)
+...
+		</code></pre>
+		<aside class="notes">
+			<p>Here you just get the function calls (with links to the source code
+				if it can find it, as before) and the parameter values.</p>
+
+			<p>One other thing I should note is that if you are in <i>*ielm*</i> even tracebacks
+				like this are suppressed. So guess everything is relative.</p>
+
+			<p>Okay. So now that the challenge has been laid out. How can we address this?</p>
+		</aside>
+	</section>
+
+	<section>
+		<h3>Location, Location, Location...</h3>
+
+		<section>
+			<p>What Emacs concepts exist for storing a location that might be
+			useful here?
+
+				<div class="fragment roll-in">marks?</div>
+
+				<div class="fragment roll-in">Marks associate a <i>buffer</i> and offset, not a
+					a <i>file</i>.</div></p>
+		</section>
+		<section>
+		<p>What Emacs concepts exist for storing a location in a file?</p>
+		<p>
+			<ul class="fragment roll-in">
+				<li>Docstrings</li>
+				<li>Info nodes</li>
+			</ul></p>
+		</section>
+
+		<aside class="notes">
+			<p>What's missing in the previous traceback are location
+				pointers inside functions, and typically you see these in most other
+				programming languages.</p>
+
+			<p>Emacs does have already have a notion of a location? [Solicit] <b>next</b></p>
+
+
+			<p><b>next</b>How about a location in a file? [Solicit] (Docstrings, info nodes)</p>
+				How about a just program location? [Solicit]
+		</aside>
+
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<aside class="notes">
+			<p>I didn't reveal this before, but <code>symbol-function</code>
+				can actually return some other funky things. The reason for
+				this set of slides is to show you that Emacs currently has a
+				lot of flexibility right now in deciding how to execute a
+				function.  And therefore lends itself to <i>extension</i>. (I
+				bet you knew that already).</p>
+
+				<p>Try this for on <code>insert-file</code> and notice the
+				document field is a location inside a file. <b>[next]</b>
+				</p>
+			<p>It is not really <code>symbol-function</code> that is being
+				funky, what can be stored as a symbols "function" property.
+				And when that is a byte-code object, there can be variation in
+				what gets stored in the bytecode fields.</p>
+
+			<p>So here is another variation you can have in a bytecode
+				object. Sometimes there can be <i>two</i> pointers to file
+				locations: one for the docstring, and another one for the
+				byte string. The reason we didn't see this before in
+				"insert-file" is because insert-file was already loaded in
+				emacs. When emacs starts up, it already has the bytecode for
+				"insert-file" so it doeesn't need to retrieve it again. The
+				same thing is true for the doc string. Once it gets loaded,
+				that file pointer will disasppear. <b>[next]</b>.
+			</p>
+
+			<p>Another thing that can stored as the function property and
+			reported by <code>symbol-function</code> are autoloaded
+			functions. <b>[next]</b></p>
+
+			<p>Finally, <code>symbol-function</code> can report that the
+				function is some C code. In the Emacs written in Rust project,
+				it can also be Rust source code.</p>
+		</aside>
+		<h3><code>symbol-function</code> Revisited</h3>
+		<section>
+			<pre><code class="lisp">
+ELISP> (load-file "/usr/share/emacs/25.2/lisp/files.elc")
+t
+ELISP> (symbol-function 'insert-file)
+#[257 "\300^A\301\";"\207
+  [insert-file-1 insert-file-contents]
+  4
+  ("/usr/share/emacs/25.2/lisp/files.elc" . 154863)
+  "*fInsert file: "]
+		  </code></pre> <!-- " -->
+		  <p class="fragment roll-in">
+				Note the "doc-string" field.
+			</p>
+	  </section>
+    <section>
+  		<p>More <code>symbol-function</code> results:
+        <pre><code class="lisp">
+ELISP> (symbol-function 'calendar)
+#[(&optional arg)
+  ("/usr/share/emacs/25.2/lisp/calendar/calendar.elc" . 40335)
+  nil 3
+  ("/usr/share/emacs/25.2/lisp/calendar/calendar.elc" . 38677)
+  "P"]
+      </code></pre></p>
+  		<p class="fragment roll-in">
+        The first pointer is to bytecode; the second is to docstring.
+      </section>
+
+      <section>
+        <p><code>symbol-function</code> autoload</p>
+        <pre><code class="lisp">
+ELISP> (autoload 'realgud:remake "realgud.el"
+      	"Debugger for GNU (re)make" t)
+realgud:remake
+ELISP> (symbol-function 'realgud:remake)
+(autoload "realgud.el" "Debugger for GNU (re)make" t nil)
+	  	  </code></pre>
+		  </section>
+      <section>
+  		  <p><code>symbol-function</code> defalias</p>
+        <pre><code class="lisp">
+ELISP> (defalias 'remake 'realgud:remake)
+remake
+ELISP> (symbol-function 'remake)
+realgud:remake
+		    </code></pre>
+		  </section>
+      <section>
+        <p><code>symbol-function</code> C function</p>
+		    <pre><code class="lisp">
+ELISP> (symbol-function 'end-of-line)
+#&lt;subr end-of-line&gt;
+        </code></pre>
+      </section>
+  </section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<center><img data-src="intermission.jpg"></center>
+		<aside class="notes">With this, we have a foundation
+			for understanding what Emacs has to offer right now. In the next part
+			we'll show of on-going and original work towards
+			beefing up the run-time system.
+</aside>
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<h4>Tracking Bytecode offsets</h4>
+		<video controls width="600">
+			<source src="video/divide.webm" type="video/webm" />
+			<aside class="notes">
+				<p>Currently, there is no support inside Emacs Lisp for
+					getting information about the current bytecode
+					offset. Internally, a local C pointer is used which means
+					inside the tight bytecode evaluator it is generall only
+					available as a register.</p>
+
+				<p>So I modified Emacs to add a Emacs Lisp variable to save
+					the last offset run. I also save the bytecode offset every
+					time an error is caught; technically: every time a signal is
+					raised.</p>
+
+				<p>Currently I did this inside the interpreter loop only on
+					divide operations; it is trivial to move this code right
+					after the instruction fetch thereby to save it executing any
+					bytecode. The reason I've limited this is to make
+					demonstrating the concept simpler. Since bytecode is
+					pervasively used, such as in a signal-handler hook functions
+					and in the debugger read loop, were I to do it on all
+					instructions the interesting value at the point of error
+					would have been long gone. Conceptually what I need to do on
+					raising a signal is to create some sort of notion of a stack
+					frame where I can squirrel the offset value.</p>
+
+				<p>The next part is going to go by very fast, but let me show
+				this.</p>
+				</aside>
+
+	</section>
+
+	<!---------------------------------------------------------------------------->
+  <section>
+		<h4>An Emacs Lisp Decompiler</h4>
+		<section>
+			<aside class="notes">
+				<p>Ok, but how does this help us find out where we are when in
+					the source code an error occurred? So now let's go back to the
+					LAP-to-Lisp decompiler.</p>
+
+				<p>I've written the beginnings of such a beast and currently
+				it is called <code>eldecompile</code></p>
+			</aside>
+
+		<video controls width="600">
+			<source src="video/decompile-divide.webm" type="video/webm" />
+		</section>
+		<section>
+			<aside class="notes">
+				<p>Here is the program on a more complicated program.  It is
+					the program I mentioned in the lightning talk.  By the way,
+					the actual GCD algorithm, is one I learned from John
+					Pershing when I was at IBM.
+				</p>
+			</aside>
+
+			<video controls width="600">
+			<source src="video/gcd.webm" type="video/webm" />
+		</section>
+		<section>
+			<aside class="notes">
+				<p>Here is a control flow graph for the program.
+				</p>
+			</aside>
+
+			<center><img data-src="gcd-cfg.png"
+									 height=600></center>
+		</section>
+		<section>
+			<aside class="notes">
+				<p>Here is a dominator tree for the program.
+				</p>
+			</aside>
+
+			<center><img data-src="gcd-dom.png"
+									 height=600></center>
+		</section>
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<section>
+			<h3>Parse to Text</h3>
+			<aside class="notes">
+				<p>Here we'll show how to reconstruct the source text from
+					this tree.</p>
+
+				<p>Bytecode instructions are the leaves of the tree.
+					Some of those instruction like "VARREF" have
+					an operand while others like "QUO" does not.</p>
+
+					<p>One other thing to note here is that there only three
+					different node internal types: "expr", "binary_op", and "binary_expr". <b>down</b>
+			</aside>
+
+			<center><img data-src="div.png",
+									 height=500, width=500></center>
+		</section>
+    <section>
+			<aside class="notes">
+				<p>In this tree, For the "binary_op" node I've filled in
+					its value from its child. Here "QUO" gets turned into
+					"/". that have operands, when there is one, and shown that
+					instead of the instruction name and offset.</p>
+				<b>down</b>
+			</aside>
+			<h3>With "binary_op" rule</h3>
+
+			<center><img data-src="div-text0.png",
+									 height=500, width=500></center>
+		</section>
+    <section>
+			<aside class="notes">
+				<p>The "expr" rule here is simply to take the text from its single
+					child and copy that. We omit the top "expr" because we haven't
+					gotton to the "binary_expr" rule yet. That is next...
+				<b>down</b>
+			</aside>
+			<h3>With "expr" rule where possible</h3>
+
+			<center><img data-src="div-text1.png",
+									 height=500, width=500></center>
+		</section>
+    <section>
+			<aside class="notes">
+				<p>For the other nodes, recall they are either <i>Expr</i> or
+					<i>Subscript</i>.  For Expr, just copy the value from its
+					child below;
+					<b>next</b></p>
+			</aside>
+			<h3>With "binary_expr" rule</h3>
+			<center><img data-src="div-text2.png",
+									 height=500, width=500></center>
+		</section>
+    <section>
+			<aside class="notes">
+				<p>For "binary_expr" nodes, you simply take the text value of the <i>last</i> child,
+					and put it first as the function name. The first and second children come after that.
+					<b>next</b></p>
+			</aside>
+			<h3>Finishing up</h3>
+			<aside class="notes">
+				<p>To finish we just repeat another "expr" followed by a "binary_expr" rule.
+					<b>next</b></p>
+			</aside>
+			<center><img data-src="div-text3.png",
+									 height=500, width=500></center>
+		</section>
+	</section>
+
+	<!---------------------------------------------------------------------------->
+	<section>
+		<section>
+			<h3>Parse at offset 3</h3>
+			<aside class="notes">
+				<p>Whenever we are at a <code>SUBSCR</code> node we just
+					use the text information from the parent shown in
+					blue. Here is how it looks in a program. <b>down</b></p>
+			</aside>
+			<center><img data-src="div3.png", height=500,
+									 width=500></center>
+		</section>
+		<section>
+			<h3>Parse at offset 3 Display</h3>
+			<aside class="notes">
+				<b>up and next</b>
+			</aside>
+
+				<pre><code>
+(/ a (/ b c))
+     -------
+				</code></pre>
+		</section>
+	</section>
+
+	<section>
+		<section>
+			<aside class="notes">
+				<p>At offset 14 the paren is the whole tree. And again
+					how it looks from a program.
+					<b>down</b></p>
+			</aside>
+			<h3>Parse at offset 4</h3>
+			<aside class="notes">
+				<b>up and next</b>
+			</aside>
+			<center><img data-src="div4.png",
+									 height=500, width=500></center>
+		</section>
+		<section>
+			<h3>Parse at offset 4 Text display</h3>
+			<pre><code>
+(/ a (/ b c))
+-------------
+		  </code></pre>
+		</section>
+	</section>
+
+	<section>
+		<h4>A Decompiler Pipeline</h4>
+			<aside class="notes"><p>See slide. Wing it.</p>
+			</aside>
+			<center><img data-src="pipeline.png", height=600</center>
+
+	</section>
+
+	<section>
+		<h4>Adding Locations to Bytecode</h4>
+			<aside class="notes"><p>But this stuff is pretty complicated. This isn't how things are
+					normally done. Isn't there are simpler way?</p>
+
+				<p>Well, yes. But it involves changing the code to emit bytecode.</p>
+
+				<p>Recall in both kinds of compilers we have a parse tree. In byte
+					compiling you have accurate information about which constructs were used
+					and the position in source text that they are located. What you'd have to do
+					is save those somewhere as you are parsing. That's not currently done.
+					And then typically along with the bytecode you'd have to store this somewhere.
+					The most logical place would be to extend the bytecode object to have what is
+					somewhat narrow-mindedly called a "line number table". Really it is a mapping of
+					positions from the source text to the object code.</p>
+
+				<p>In our example we would have:</p>
+			</aside>
+
+
+			<pre><code>
+0         1
+01234567890123456789
+(/ a (/ b c))
+
+("tmp", "divide.el"
+  '(0 . (3 . 3))
+   (1 . (8 . 8))
+   (2 . (10 . 10))
+   (3 . (5 . 11))
+   (4 . (0 . 12)))
+				</code></pre>
+
+
+	</section>
+
+	<section>
+		<h4>Suggested Projects</h4>
+		<aside class="notes"><p>That's rougly all I have to say, but as you can see there is
+				still much to do. There were a few <i>reasons</i> to give the talk. At the outset,
+				I had a problem I feel needs solving. I hope I have convinced you that it might be
+				worthwhile and that you too might help. In doing that, I learned a lot about bytecode
+				and it is neat. It is probably not going away. And it is probably not going to get
+				improved unless people help out.</p>
+			</p>
+		</aside>
+		<font size="+2">
+		<ul>
+			<li>Bytecode Manual</li>
+			<ul>
+				<li> bugs: typos, grammar typos, thinkos</li>
+				<li class="fragment roll-in"> expand optimization section</li>
+				<li class="fragment roll-in">links back to Emacs/Elisp manual</li>
+			</ul>
+			<li class="fragment roll-in">Decompiler:
+			<ul>
+				<li>Earley algorithm in Emacs Lisp.</li>
+				<li>Fill out grammar</li>
+				<li>Control flow, and stack resolving</li>
+			</ul>
+			<li class="fragment roll-in">Emacs Hacking
+			<ul>
+				<li>Add run-time support for getting offset or adding a "line number table"</li>
+				<li>Bytecode lint checker</li>
+			</ul>
+		</ul>
+		</font>
+	</section>
+	<section>
+
+
+		<h3>Links...</h3>
+		<aside class="notes">
+			<p>The Code that handles decompilation is <i>uncompyle6</i>.
+				However it makes use of a bytecode tools library
+				called <i>xdis</i>.  We saw briefly
+				showed <code>pydisasm</code> from <i>xdis</i> in getting
+				bytecode meta data.</p>
+
+			<p>The wiki for the Python decompiler
+				<a href="https://github.com/rocky/python-uncompyle6/wiki">https://github.com/rocky/python-uncompyle6/wiki</a>
+				has a lot of information on how the code works, and there is
+				even a more technical and research-oriented version of this
+				paper for those who would like to carry this idea to other
+				languages. Again, I encourage you toa do this.</p>
+
+			<p>Here are links for the Python3 debugger, and the Python 2
+			debugger. All of the above is on Pypi. Although I give a
+			read-the-docs links for trepan2, trepan3k is also on
+			readthedocs.</p>
+
+			<p>Muchas gracias.</p>
+		</aside>
+
+		<small>
+			<ul>
+				<li><a href="https://github.com/rocky/elisp-decompile/">Elisp Decompiler</a></li>
+				<li><a href="https://github.com/rocky/elisp-bytecode">Elisp Bytecode Manual</a></li>
+				<li><a href="https://rocky.github.io/Deparsing-Paper.pdf">Decompilation Research Paper</a></li>
+				<li><a href="https://rocky.github.io/pycon2018.co/">this presentation</a></li>
+				<li>
+					<a href="mailto://rocky@gnu.org">rocky@gnu.org,</a>
+					<a href="https://github.com/rocky">https://github.com/rocky</a></li>
+			</ul>
+			<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+			<p style="text-align: right">- fin</p>
+			<small>
+	</section>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+  // Full list of configuration options available at:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+	slideNumber: true,
+
+  transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+  { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+  { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+  { src: 'plugin/zoom-js/zoom.js', async: true },
+  { src: 'plugin/notes/notes.js', async: true }
+  ]
+  });
+
+</script>
+
+</body>
+</html>
+<!--
+Local Variables:
+tab-width: 2
+End:
+->
