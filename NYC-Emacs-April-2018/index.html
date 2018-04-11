@@ -66,12 +66,12 @@
 		</aside>
 		<h3>Review</h3>
 		<ul>
-			<li>Bytecode in emacs is pervasive</li>
+			<li>Bytecode in Emacs is pervasive</li>
 			<li class="fragment roll-in">Gives speedup of 2 to 3 times in computation-bound code</li>
-			<li class="fragment roll-in">Is in reverse polish prefix (data first, then operator)</li>
+			<li class="fragment roll-in">Is in reverse Polish prefix (data first, then operator)</li>
 			<li class="fragment roll-in">A lot of the operations are either Lisp or Emacs functions</li>
-			<li class="fragment roll-in">Showed how to turn bytecode to LAP </li>
-			<li class="fragment roll-in">Asked how we would go the other way.</li>
+			<li class="fragment roll-in">Demonstrated how to turn bytecode to LAP </li>
+			<li class="fragment roll-in">But how we would go the other way?</li>
 		</ul>
 	</section>
 
@@ -80,7 +80,7 @@
 		<h3>Wither Bytecode?</h3>
 		<ul>
 			<li class="fragment roll-in">
-				Other Programming-Languages
+				Other programming languages
 				<ul>
 					<li class="fragment roll-in">Common Lisp &mdash; is sort of being done</li>
 					<li class="fragment roll-in">Others &mdash; huge Elisp code base migration</li>
@@ -91,9 +91,9 @@
 				JITs
 				<ul>
 					<li class="fragment roll-in">
-						<code>libjit</code>, <code>lightning</code> &mdash; work off of Bytecode</li>
+						<code>libjit</code>, <code>lightning</code> &mdash; works off of Bytecode</li>
 					<li class="fragment roll-in">
-						JVM, LLVM &mdash; need to replicate Lisp environment; garbage collector?</li>
+						JVM, LLVM &mdash; needs to replicate Lisp environment; garbage collector?</li>
 					<li class="fragment roll-in">
 						V8, SpiderMonkey &mdash; pipcet has gc integrated </li>
 				</ul>
@@ -162,11 +162,11 @@
 		<h3>A Personal History</h3>
 
 		<ul>
-			<li>Interest in beefing up the runtime environment in Programming Languages for debugging</li>
+			<li>Interest in beefing up the runtime environment in programming languages for debugging</li>
 			<li class="fragment roll-in">Did it for bash, GNU Make, Ruby, ...  </li>
-			<li class="fragment roll-in">Perl, and Python also have decompilation at runtime</li>
+			<li class="fragment roll-in">Perl and Python also have decompilation at runtime</li>
 			<li class="fragment roll-in">Can decompilation be applied to bytecode?</li>
-			<li class="fragment roll-in">Yes, but it there is a lot of work to do</li>
+			<li class="fragment roll-in">Yes, but there is a lot of work to do</li>
 		</ul>
 		<aside class="notes">
 			<p>I have long been interested in beefing up run-time environment in Programming Languages
@@ -379,7 +379,7 @@ elisp--eval-last-sexp(nil)
 				<div class="fragment roll-in">marks?</div>
 
 				<div class="fragment roll-in">Marks associate a <i>buffer</i> and offset, not a
-					a <i>file</i>.</div></p>
+					 <i>file</i>.</div></p>
 		</section>
 		<section>
 		<p>What Emacs concepts exist for storing a location in a file?</p>
@@ -820,9 +820,9 @@ ELISP> (symbol-function 'end-of-line)
 			</ul>
 			<li class="fragment roll-in">Decompiler:
 			<ul>
-				<li>Earley algorithm in Emacs Lisp.</li>
+				<li>Earley algorithm in Emacs Lisp</li>
 				<li>Fill out grammar</li>
-				<li>Control flow, and stack resolving</li>
+				<li>Complete the "massage instructions" phase</li>
 			</ul>
 			<li class="fragment roll-in">Emacs Hacking
 			<ul>
