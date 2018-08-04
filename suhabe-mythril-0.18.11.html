@@ -1,0 +1,1813 @@
+<html>
+  <!--- FIXME: put in css -->
+  <style>
+    table, th, td {
+    border: 1px solid #cccccc;
+    border-collapse: collapse;
+    }
+
+    table {
+    font-size: 12px;
+    }
+
+    td {
+    padding: 5px;
+    align: center;
+    width: 150px;
+    }
+
+    body {
+    font-family: "Arial";
+    }
+
+    h2 {
+    font-size: 1.17em;
+    }
+
+    .highlight .hll { background-color: #ffffcc }
+    .highlight  { background: #f8f8f8; }
+    .highlight .c { color: #408080; font-style: italic } /* Comment */
+    .highlight .err { border: 1px solid #FF0000 } /* Error */
+    .highlight .k { color: #008000; font-weight: bold } /* Keyword */
+    .highlight .o { color: #666666 } /* Operator */
+    .highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+    .highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+    .highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+    .highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+    .highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+    .highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+    .highlight .gd { color: #A00000 } /* Generic.Deleted */
+    .highlight .ge { font-style: italic } /* Generic.Emph */
+    .highlight .gr { color: #FF0000 } /* Generic.Error */
+    .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+    .highlight .gi { color: #00A000 } /* Generic.Inserted */
+    .highlight .go { color: #888888 } /* Generic.Output */
+    .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+    .highlight .gs { font-weight: bold } /* Generic.Strong */
+    .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+    .highlight .gt { color: #0044DD } /* Generic.Traceback */
+    .highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+    .highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+    .highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+    .highlight .kp { color: #008000 } /* Keyword.Pseudo */
+    .highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+    .highlight .kt { color: #B00040 } /* Keyword.Type */
+    .highlight .m { color: #666666 } /* Literal.Number */
+    .highlight .s { color: #BA2121 } /* Literal.String */
+    .highlight .na { color: #7D9029 } /* Name.Attribute */
+    .highlight .nb { color: #008000 } /* Name.Builtin */
+    .highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+    .highlight .no { color: #880000 } /* Name.Constant */
+    .highlight .nd { color: #AA22FF } /* Name.Decorator */
+    .highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+    .highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+    .highlight .nf { color: #0000FF } /* Name.Function */
+    .highlight .nl { color: #A0A000 } /* Name.Label */
+    .highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+    .highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+    .highlight .nv { color: #19177C } /* Name.Variable */
+    .highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+    .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+    .highlight .mb { color: #666666 } /* Literal.Number.Bin */
+    .highlight .mf { color: #666666 } /* Literal.Number.Float */
+    .highlight .mh { color: #666666 } /* Literal.Number.Hex */
+    .highlight .mi { color: #666666 } /* Literal.Number.Integer */
+    .highlight .mo { color: #666666 } /* Literal.Number.Oct */
+    .highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+    .highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+    .highlight .sc { color: #BA2121 } /* Literal.String.Char */
+    .highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+    .highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+    .highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+    .highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+    .highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+    .highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+    .highlight .sx { color: #008000 } /* Literal.String.Other */
+    .highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+    .highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+    .highlight .ss { color: #19177C } /* Literal.String.Symbol */
+    .highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+    .highlight .fm { color: #0000FF } /* Name.Function.Magic */
+    .highlight .vc { color: #19177C } /* Name.Variable.Class */
+    .highlight .vg { color: #19177C } /* Name.Variable.Global */
+    .highlight .vi { color: #19177C } /* Name.Variable.Instance */
+    .highlight .vm { color: #19177C } /* Name.Variable.Magic */
+    .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+  </style>
+
+  <head>
+    <title>Analysis Tool Evaluation for the Suhabe Benchmark </title>
+  </head>
+  <body>
+    <!--- FIXME: use css better -->
+    <h1>Analysis Tool Evaluation for the <a href="https://github.com/ConsenSys/evm-analyzer-benchmark-suite">Suhabe</a> Benchmark 2018-08-04 14:58:24</h1>
+
+    <p>This page shows the results EVM code analysis tools when run over the <a href="https://github.com/ConsenSys/evm-analyzer-benchmark-suite">Suhabe</a> benchmark suite.
+      The code is <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites">hosted on github</a>.<br>
+      Please suggest or contribute more benchmarks or submit
+      <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/issues">suggestions or issues</a>.
+      <br></p>
+
+    <h2 id="results">Results Chart</h2>
+
+    <p>Green means the tool gives the expected result, yellow means the analysis program
+      failed or timed out, and red means it did not.</p>
+
+    <p>Click on the benchmark name to see its Solidity code.</p>
+
+    <p>See the project
+    wiki's <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/Terminology">Terminology</a>
+      entry for definitions used below.</p>
+
+    <!--- Results as a chart ---->
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+        <td>Benchmark</td>
+        <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+            <tr>
+        <td>Assertion</td>
+        <td><a href="#assert_constructor">assert_constructor</td>
+        <td> 1.36 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Assertion</td>
+        <td><a href="#assert_minimal">assert_minimal</td>
+        <td> 1.20 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Assertion</td>
+        <td><a href="#assert_multitx_1">assert_multitx_1</td>
+        <td> 1.22 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      <tr>
+        <td>Assertion</td>
+        <td><a href="#assert_multitx_2">assert_multitx_2</td>
+        <td> 1.81 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Assertion</td>
+        <td><a href="#assert_require">assert_require</td>
+        <td> 1.60 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+	      <tr>
+        <td>Assertion</td>
+        <td><a href="#assert_sym">assert_sym</td>
+        <td> 1.62 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#attribute_store">attribute_store</td>
+        <td>28.37 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      <tr>
+        <td>Eth Tx-Order Dependence</td>
+        <td><a href="#eth_tx_order_dependence_2">eth_tx_order_dependence_2</td>
+        <td> 1.32 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      <tr>
+        <td>Eth Tx-Order Dependence</td>
+        <td><a href="#eth_tx_order_dependence_minimal">eth_tx_order_dependence_minimal</td>
+        <td> 2.30 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Eth Tx-Order Dependence</td>
+        <td><a href="#eth_tx_order_dependence_multitx_1">eth_tx_order_dependence_multitx_1</td>
+        <td> 2.26 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      <tr>
+        <td>Eth Tx-Order Dependence</td>
+        <td><a href="#eth_tx_order_dependence_puzzle">eth_tx_order_dependence_puzzle</td>
+        <td>1 minute, 20.86 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/Wrong-Vulnerability>Wrong Vulnerability</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_add">integer_overflow_add</td>
+        <td> 2.05 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_benign_1">integer_overflow_benign_1</td>
+        <td> 1.71 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_benign_2">integer_overflow_benign_2</td>
+        <td> 1.81 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_bytes_param">integer_overflow_bytes_param</td>
+        <td>26.86 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_dynarray">integer_overflow_dynarray</td>
+        <td> 2.44 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_mapping_mapping">integer_overflow_mapping_mapping</td>
+        <td> 2.40 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_mapping_staticarray">integer_overflow_mapping_staticarray</td>
+        <td> 1.67 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_mapping_strkey">integer_overflow_mapping_strkey</td>
+        <td>29.02 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_mapping_struct">integer_overflow_mapping_struct</td>
+        <td> 2.34 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_mapping_sym_1">integer_overflow_mapping_sym_1</td>
+        <td> 1.92 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_mapping_sym_2">integer_overflow_mapping_sym_2</td>
+        <td> 1.95 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_mapping_word">integer_overflow_mapping_word</td>
+        <td> 1.67 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_minimal">integer_overflow_minimal</td>
+        <td> 1.71 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_mul">integer_overflow_mul</td>
+        <td> 7.34 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_multitx_multifunc_feasible">integer_overflow_multitx_multifunc_feasible</td>
+        <td> 1.72 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_multitx_onefunc_feasible">integer_overflow_multitx_onefunc_feasible</td>
+        <td> 1.70 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_multitx_onefunc_infeasible">integer_overflow_multitx_onefunc_infeasible</td>
+        <td> 1.73 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_path_1">integer_overflow_path_1</td>
+        <td> 1.83 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_staticarray">integer_overflow_staticarray</td>
+        <td> 1.71 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_storageinvariant">integer_overflow_storageinvariant</td>
+        <td> 1.69 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Integer Overflow</td>
+        <td><a href="#integer_overflow_storagepacking">integer_overflow_storagepacking</td>
+        <td> 1.20 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+	      <tr>
+        <td>Callback Effect-Free</td>
+        <td><a href="#reentrancy_dao">reentrancy_dao</td>
+        <td> 1.81 seconds</td>
+        <td style="background-color:
+            rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+	      <tr>
+        <td>Callback Effect-Free</td>
+        <td><a href="#reentrancy_dao_fixed">reentrancy_dao_fixed</td>
+        <td> 1.74 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      <tr>
+        <td>Callback Effect-Free</td>
+        <td><a href="#reentrancy_nostateeffect">reentrancy_nostateeffect</td>
+        <td> 1.91 seconds</td>
+        <td style="background-color:
+            rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+	      </tr>
+      <tr>
+        <td><b>summary stats</b></td>
+        <td>35 tests</td>
+        <td>3 minutes, 45.87 seconds</td>
+        <td>24 expected, 11 unexpected
+	  <!-- <br>
+	       
+	    -->
+	</td>
+      </tr>
+    </table>
+
+    <!--- breakout per result ---->
+    <h2 id="results">Results Details</h2>
+
+        <hr>
+    <h3 id=assert_constructor>assert_constructor</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	  	<td>Description</td>
+	        <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Assertion</td>
+		<td>
+	  <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/suhabe-assert_constructor">link</a>
+	</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="n">Benchmark</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="nf">assert</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=assert_minimal>assert_minimal</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	  	<td>Description</td>
+	        <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Assertion</td>
+		<td>
+	  <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/suhabe-assert_minimal">link</a>
+	</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="n">run</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="nf">assert</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Exception state (Informational)</h5>
+      A reachable exception (opcode 0xfe) has been detected. This can be caused by type errors, division by zero, out-of-bounds array access, or assert violations. This is acceptable in most situations. Note however that `assert()` should only be used to check invariants. Use `require()` for regular input checking. 
+                <hr>
+    <h3 id=assert_multitx_1>assert_multitx_1</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Assertion</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint256</span> <span class="kr">private</span> <span class="n">param</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">Benchmark</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">_param</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="nf">require</span><span class="p">(</span><span class="n">_param</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">param</span> <span class="o">=</span> <span class="n">_param</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">assert</span><span class="p">(</span><span class="n">param</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=assert_multitx_2>assert_multitx_2</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Assertion</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint256</span> <span class="kr">private</span> <span class="n">param</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">Benchmark</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">_param</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="nf">require</span><span class="p">(</span><span class="n">_param</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">param</span> <span class="o">=</span> <span class="n">_param</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">assert</span><span class="p">(</span><span class="n">param</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">set</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">_param</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">param</span> <span class="o">=</span> <span class="n">_param</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Exception state (Informational)</h5>
+      A reachable exception (opcode 0xfe) has been detected. This can be caused by type errors, division by zero, out-of-bounds array access, or assert violations. This is acceptable in most situations. Note however that `assert()` should only be used to check invariants. Use `require()` for regular input checking. 
+                <hr>
+    <h3 id=assert_require>assert_require</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Assertion</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">_param</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="nf">require</span><span class="p">(</span><span class="n">_param</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="nf">assert</span><span class="p">(</span><span class="n">_param</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=assert_sym>assert_sym</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Assertion</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">param</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="nf">assert</span><span class="p">(</span><span class="n">param</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Exception state (Informational)</h5>
+      A reachable exception (opcode 0xfe) has been detected. This can be caused by type errors, division by zero, out-of-bounds array access, or assert violations. This is acceptable in most situations. Note however that `assert()` should only be used to check invariants. Use `require()` for regular input checking. 
+                <hr>
+    <h3 id=attribute_store>attribute_store</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">8</span><span class="p">;</span>
+
+<span class="kd">library</span> <span class="n">AttributeStore</span> <span class="p">{</span>
+    <span class="kd">struct</span> <span class="n">Data</span> <span class="p">{</span>
+        <span class="kd">mapping</span><span class="p">(</span><span class="kt">bytes32</span> <span class="o">=&gt;</span> <span class="kt">uint</span><span class="p">)</span> <span class="n">store</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">getAttribute</span><span class="p">(</span><span class="n">Data</span> <span class="kr">storage</span> <span class="n">self</span><span class="p">,</span> <span class="kt">bytes32</span> <span class="n">_UUID</span><span class="p">,</span> <span class="kt">string</span> <span class="n">_attrName</span><span class="p">)</span> <span class="kr">public</span> <span class="kr">view</span> <span class="k">returns</span> <span class="p">(</span><span class="kt">uint</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">bytes32</span> <span class="n">key</span> <span class="o">=</span> <span class="nf">keccak256</span><span class="p">(</span><span class="n">_UUID</span><span class="p">,</span> <span class="n">_attrName</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">store</span><span class="p">[</span><span class="n">key</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">attachAttribute</span><span class="p">(</span><span class="n">Data</span> <span class="kr">storage</span> <span class="n">self</span><span class="p">,</span> <span class="kt">bytes32</span> <span class="n">_UUID</span><span class="p">,</span> <span class="kt">string</span> <span class="n">_attrName</span><span class="p">,</span> <span class="kt">uint</span> <span class="n">_attrVal</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="kt">bytes32</span> <span class="n">key</span> <span class="o">=</span> <span class="nf">keccak256</span><span class="p">(</span><span class="n">_UUID</span><span class="p">,</span> <span class="n">_attrName</span><span class="p">);</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">store</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_attrVal</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=eth_tx_order_dependence_2>eth_tx_order_dependence_2</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Eth Tx-Order Dependence</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">16</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint256</span> <span class="kr">public</span> <span class="n">reward</span><span class="p">;</span>
+    <span class="kt">address</span> <span class="n">owner</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">Benchmark</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">owner</span> <span class="o">=</span> <span class="nb">msg.sender</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">setReward</span><span class="p">()</span> <span class="kr">public</span> <span class="kr">payable</span> <span class="p">{</span>
+        <span class="nf">require</span><span class="p">(</span><span class="nb">msg.sender</span> <span class="o">==</span> <span class="n">owner</span><span class="p">);</span>
+
+        <span class="n">owner</span><span class="p">.</span><span class="nf">transfer</span><span class="p">(</span><span class="n">reward</span><span class="p">);</span> <span class="c1">//refund previous reward</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="nb">msg.value</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=eth_tx_order_dependence_minimal>eth_tx_order_dependence_minimal</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Eth Tx-Order Dependence</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">16</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">address</span> <span class="kr">public</span> <span class="n">owner</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="kr">public</span> <span class="n">claimed</span><span class="p">;</span>
+    <span class="kt">uint</span> <span class="kr">public</span> <span class="n">reward</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">Benchmark</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">owner</span> <span class="o">=</span> <span class="nb">msg.sender</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">setReward</span><span class="p">()</span> <span class="kr">public</span> <span class="kr">payable</span> <span class="p">{</span>
+        <span class="nf">require</span> <span class="p">(</span><span class="o">!</span><span class="n">claimed</span><span class="p">);</span>
+
+        <span class="nf">require</span><span class="p">(</span><span class="nb">msg.sender</span> <span class="o">==</span> <span class="n">owner</span><span class="p">);</span>
+        <span class="n">owner</span><span class="p">.</span><span class="nf">transfer</span><span class="p">(</span><span class="n">reward</span><span class="p">);</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="nb">msg.value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">claimReward</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">submission</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">require</span> <span class="p">(</span><span class="o">!</span><span class="n">claimed</span><span class="p">);</span>
+        <span class="nf">require</span><span class="p">(</span><span class="n">submission</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">);</span>
+
+        <span class="nb">msg.sender</span><span class="p">.</span><span class="nf">transfer</span><span class="p">(</span><span class="n">reward</span><span class="p">);</span>
+        <span class="n">claimed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Ether send (Warning)</h5>
+      In the function `setReward()` a non-zero amount of Ether is sent to an address taken from storage slot 0.
+There is a check on storage index 0. This storage slot can be written to by calling the function `claimReward(uint256)`.
+
+There is a check on storage index 0. This storage slot can be written to by calling the function `claimReward(uint256)`.
+There is a check on storage index 0. This storage slot can be written to by calling the function `claimReward(uint256)`.
+        <h5>Issue Transaction order dependence (Warning)</h5>
+      A possible transaction order independence vulnerability exists in function setReward(). The value or direction of the call statement is determined from a tainted storage location
+        <h5>Issue Ether send (Warning)</h5>
+      In the function `claimReward(uint256)` a non-zero amount of Ether is sent to msg.sender.
+
+There is a check on storage index 0. This storage slot can be written to by calling the function `claimReward(uint256)`.
+        <h5>Issue Transaction order dependence (Warning)</h5>
+      A possible transaction order independence vulnerability exists in function claimReward(uint256). The value or direction of the call statement is determined from a tainted storage location
+                <hr>
+    <h3 id=eth_tx_order_dependence_multitx_1>eth_tx_order_dependence_multitx_1</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Eth Tx-Order Dependence</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">16</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">address</span> <span class="kr">public</span> <span class="n">owner</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="kr">public</span> <span class="n">claimed</span><span class="p">;</span>
+    <span class="kt">uint256</span> <span class="kr">public</span> <span class="n">reward</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="kr">public</span> <span class="n">freezeReward</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">Benchmark</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">owner</span> <span class="o">=</span> <span class="nb">msg.sender</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">setReward</span><span class="p">()</span> <span class="kr">public</span> <span class="kr">payable</span> <span class="p">{</span>
+        <span class="nf">require</span> <span class="p">(</span><span class="o">!</span><span class="n">claimed</span><span class="p">);</span>
+        <span class="nf">require</span> <span class="p">(</span><span class="o">!</span><span class="n">freezeReward</span><span class="p">);</span>
+        <span class="nf">require</span><span class="p">(</span><span class="nb">msg.sender</span> <span class="o">==</span> <span class="n">owner</span><span class="p">);</span>
+
+        <span class="n">owner</span><span class="p">.</span><span class="nf">transfer</span><span class="p">(</span><span class="n">reward</span><span class="p">);</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="nb">msg.value</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">freezeReward</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">freezeReward</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">claimReward</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">submission</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">require</span> <span class="p">(</span><span class="n">freezeReward</span><span class="p">);</span>
+        <span class="nf">require</span> <span class="p">(</span><span class="o">!</span><span class="n">claimed</span><span class="p">);</span>
+        <span class="nf">require</span><span class="p">(</span><span class="n">submission</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">);</span>
+
+        <span class="nb">msg.sender</span><span class="p">.</span><span class="nf">transfer</span><span class="p">(</span><span class="n">reward</span><span class="p">);</span>
+        <span class="n">claimed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=eth_tx_order_dependence_puzzle>eth_tx_order_dependence_puzzle</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Eth Tx-Order Dependence</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/Wrong-Vulnerability>Wrong Vulnerability</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Adapted from Oyente paper</span>
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">16</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">address</span> <span class="kr">public</span> <span class="n">owner</span> <span class="p">;</span>
+    <span class="kt">bool</span> <span class="kr">public</span> <span class="n">locked</span> <span class="p">;</span>
+    <span class="kt">uint</span> <span class="kr">public</span> <span class="n">reward</span> <span class="p">;</span>
+    <span class="kt">bytes32</span> <span class="kr">public</span> <span class="n">diff</span> <span class="p">;</span>
+    <span class="kt">bytes</span> <span class="kr">public</span> <span class="n">solution</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">Puzzle</span><span class="p">()</span> <span class="kr">public</span> <span class="kr">payable</span> <span class="p">{</span>
+        <span class="n">owner</span> <span class="o">=</span> <span class="nb">msg.sender</span><span class="p">;</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="nb">msg.value</span><span class="p">;</span>
+        <span class="n">locked</span> <span class="o">=</span> <span class="kc">false</span> <span class="p">;</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="kt">bytes32</span> <span class="p">(</span><span class="mi">11111</span><span class="p">);</span> <span class="c1">// pre - defined difficulty</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="p">()</span> <span class="kr">public</span> <span class="kr">payable</span> <span class="p">{</span> <span class="c1">// main code , runs at every invocation</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="nb">msg.sender</span> <span class="o">==</span> <span class="n">owner</span> <span class="p">){</span> <span class="c1">// update reward</span>
+            <span class="nf">require</span> <span class="p">(</span><span class="o">!</span><span class="n">locked</span><span class="p">);</span>
+            <span class="n">owner</span><span class="p">.</span><span class="nf">transfer</span><span class="p">(</span><span class="n">reward</span><span class="p">);</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="nb">msg.value</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">msg.data</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// submit a solution</span>
+                <span class="nf">require</span> <span class="p">(</span><span class="o">!</span><span class="n">locked</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="nf">sha256</span> <span class="p">(</span><span class="nb">msg.data</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="n">diff</span> <span class="p">){</span>
+                    <span class="nb">msg.sender</span><span class="p">.</span><span class="nf">transfer</span><span class="p">(</span><span class="n">reward</span><span class="p">);</span> <span class="c1">// send reward</span>
+                    <span class="n">solution</span> <span class="o">=</span> <span class="nb">msg.data</span><span class="p">;</span>
+                    <span class="n">locked</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Ether send (Warning)</h5>
+      In the function `fallback` a non-zero amount of Ether is sent to an address taken from storage slot 0.
+There is a check on storage index 0. This storage slot can be written to by calling the function `Puzzle()`.
+
+There is a check on storage index 0. This storage slot can be written to by calling the function `Puzzle()`.
+There is a check on storage index 0. This storage slot can be written to by calling the function `Puzzle()`.
+        <h5>Issue Transaction order dependence (Warning)</h5>
+      A possible transaction order independence vulnerability exists in function fallback. The value or direction of the call statement is determined from a tainted storage location
+        <h5>Issue Ether send (Warning)</h5>
+      In the function `fallback` a non-zero amount of Ether is sent to msg.sender.
+
+There is a check on storage index 0. This storage slot can be written to by calling the function `Puzzle()`.
+There is a check on storage index 0. This storage slot can be written to by calling the function `Puzzle()`.
+There is a check on storage index 2. This storage slot can be written to by calling the function `Puzzle()`.
+        <h5>Issue Transaction order dependence (Warning)</h5>
+      A possible transaction order independence vulnerability exists in function fallback. The value or direction of the call statement is determined from a tainted storage location
+        <h5>Issue Integer Overflow (Warning)</h5>
+      A possible integer overflow exists in the function `fallback`.
+The addition or multiplication may result in a value higher than the maximum representable integer.
+                <hr>
+    <h3 id=integer_overflow_add>integer_overflow_add</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	  	<td>Description</td>
+	        <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+		<td>
+	  <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/suhabe-integer_overflow_add">link</a>
+	</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Single transaction overflow</span>
+<span class="c1">//Post-transaction effect: overflow escapes to publicly-readable storage</span>
+
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint</span> <span class="kr">public</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">input</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Integer Overflow (Warning)</h5>
+      A possible integer overflow exists in the function `run(uint256)`.
+The addition or multiplication may result in a value higher than the maximum representable integer.
+                <hr>
+    <h3 id=integer_overflow_benign_1>integer_overflow_benign_1</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	  	<td>Description</td>
+	        <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+		<td>
+	  <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/suhabe-integer_overflow_benign_1">link</a>
+	</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Single transaction overflow</span>
+<span class="c1">//Post-transaction effect: overflow never escapes function</span>
+
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint</span> <span class="kr">public</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">input</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="kt">uint</span> <span class="n">res</span> <span class="o">=</span> <span class="n">count</span> <span class="o">-</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_benign_2>integer_overflow_benign_2</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	  	<td>Description</td>
+	        <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+		<td>
+	  <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/suhabe-integer_overflow_benign_2">link</a>
+	</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Single transaction overflow</span>
+<span class="c1">//Post-transaction effect: overflow nevers escapes to publicly-readable storage</span>
+
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint</span> <span class="kr">public</span> <span class="n">count</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">input</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">err</span><span class="p">;</span>
+        <span class="kt">uint256</span> <span class="n">res</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="n">minus</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">input</span><span class="p">);</span>
+
+        <span class="nf">require</span><span class="p">(</span><span class="o">!</span><span class="n">err</span><span class="p">);</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">res</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//from BasicMathLib</span>
+    <span class="kd">function</span> <span class="n">minus</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">a</span><span class="p">,</span> <span class="kt">uint256</span> <span class="n">b</span><span class="p">)</span> <span class="kr">private</span> <span class="kr">pure</span> <span class="k">returns</span> <span class="p">(</span><span class="kt">bool</span> <span class="n">err</span><span class="p">,</span><span class="kt">uint256</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">assembly</span> <span class="p">{</span>
+            <span class="n">res</span> <span class="o">:=</span> <span class="nf">sub</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+            <span class="nf">switch</span> <span class="nf">eq</span><span class="p">(</span><span class="nf">and</span><span class="p">(</span><span class="nf">eq</span><span class="p">(</span><span class="nf">add</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="n">a</span><span class="p">),</span> <span class="nf">or</span><span class="p">(</span><span class="nf">lt</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="n">a</span><span class="p">),</span> <span class="nf">eq</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="n">a</span><span class="p">))),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">case</span> <span class="mi">0</span> <span class="p">{</span>
+                <span class="n">err</span> <span class="o">:=</span> <span class="mi">1</span>
+                <span class="n">res</span> <span class="o">:=</span> <span class="mi">0</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Integer Underflow (Warning)</h5>
+      A possible integer underflow exists in the function `run(uint256)`.
+The subtraction may result in a value &lt; 0.
+        <h5>Issue Integer Overflow (Warning)</h5>
+      A possible integer overflow exists in the function `run(uint256)`.
+The addition or multiplication may result in a value higher than the maximum representable integer.
+                <hr>
+    <h3 id=integer_overflow_bytes_param>integer_overflow_bytes_param</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">8</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="n">get</span><span class="p">(</span><span class="kt">bytes</span> <span class="n">key</span><span class="p">)</span> <span class="kr">public</span> <span class="kr">pure</span> <span class="k">returns</span> <span class="p">(</span><span class="kt">bytes32</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">keccak256</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_dynarray>integer_overflow_dynarray</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Dynamic storage array with packing</span>
+<span class="c1">//</span>
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">11</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+
+    <span class="kt">uint128</span><span class="p">[]</span> <span class="kr">private</span> <span class="n">s</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">init</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">s</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xAA</span><span class="p">;</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xBB</span><span class="p">;</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xCC</span><span class="p">;</span>
+        <span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xDD</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_mapping_mapping>integer_overflow_mapping_mapping</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//storage key for tuples[k].a calculated as</span>
+<span class="c1">//  keccak(bytes32(k) + bytes32(position[&#39;tuples&#39;]))+offset[&#39;a&#39;]</span>
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">11</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">mapping</span><span class="p">(</span><span class="kt">uint256</span> <span class="o">=&gt;</span> <span class="kd">mapping</span> <span class="p">(</span><span class="kt">uint256</span> <span class="o">=&gt;</span> <span class="n">Tuple</span><span class="p">))</span> <span class="n">maps</span><span class="p">;</span>
+
+    <span class="kd">struct</span> <span class="n">Tuple</span> <span class="p">{</span>
+        <span class="kt">uint256</span> <span class="n">a</span><span class="p">;</span>
+        <span class="kt">uint256</span> <span class="n">b</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">init</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">maps</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">].</span><span class="n">b</span> <span class="o">=</span> <span class="mh">0x1A</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_mapping_staticarray>integer_overflow_mapping_staticarray</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//storage key for tuples[k].a calculated as</span>
+<span class="c1">//  keccak(bytes32(k) + bytes32(position[&#39;map&#39;]))+offset[&#39;a&#39;]</span>
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">11</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">C</span> <span class="p">{</span>
+    <span class="kd">mapping</span><span class="p">(</span><span class="kt">uint256</span> <span class="o">=&gt;</span> <span class="kt">bytes2</span><span class="p">)</span> <span class="n">map</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">init</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">k</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">map</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x1A</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_mapping_strkey>integer_overflow_mapping_strkey</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">8</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">mapping</span><span class="p">(</span><span class="kt">string</span> <span class="o">=&gt;</span> <span class="kt">uint256</span><span class="p">)</span> <span class="n">map</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">get</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">)</span> <span class="kr">public</span> <span class="kr">view</span> <span class="k">returns</span> <span class="p">(</span><span class="kt">uint256</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">map</span><span class="p">[</span><span class="n">key</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_mapping_struct>integer_overflow_mapping_struct</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//storage key for tuples[k].a calculated as</span>
+<span class="c1">//  keccak(bytes32(k) + bytes32(position[&#39;tuples&#39;]))+offset[&#39;a&#39;]</span>
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">11</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">C</span> <span class="p">{</span>
+    <span class="kd">mapping</span><span class="p">(</span><span class="kt">uint256</span> <span class="o">=&gt;</span> <span class="n">Tuple</span><span class="p">)</span> <span class="n">tuples</span><span class="p">;</span>
+
+    <span class="kd">struct</span> <span class="n">Tuple</span> <span class="p">{</span>
+        <span class="kt">uint256</span> <span class="n">a</span><span class="p">;</span>
+        <span class="kt">uint256</span> <span class="n">b</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">init</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tuples</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">b</span> <span class="o">=</span> <span class="mh">0x1A</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_mapping_sym_1>integer_overflow_mapping_sym_1</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">11</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">mapping</span><span class="p">(</span><span class="kt">uint256</span> <span class="o">=&gt;</span> <span class="kt">uint256</span><span class="p">)</span> <span class="n">map</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">init</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">k</span><span class="p">,</span> <span class="kt">uint256</span> <span class="n">v</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">map</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="n">v</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Integer Underflow (Warning)</h5>
+      A possible integer underflow exists in the function `init(uint256,uint256)`.
+The subtraction may result in a value &lt; 0.
+                <hr>
+    <h3 id=integer_overflow_mapping_sym_2>integer_overflow_mapping_sym_2</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">11</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">mapping</span><span class="p">(</span><span class="kt">uint256</span> <span class="o">=&gt;</span> <span class="kt">uint256</span><span class="p">)</span> <span class="n">map</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">init</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">k</span><span class="p">,</span> <span class="kt">uint256</span> <span class="n">v</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="nf">require</span><span class="p">(</span><span class="n">v</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">);</span>
+        <span class="n">map</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="n">map</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="n">v</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_mapping_word>integer_overflow_mapping_word</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//storage key for tuples[i].a calculated as</span>
+<span class="c1">//  keccak(bytes32(i) + bytes32(position[&#39;tuples&#39;]))+offset[a]</span>
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">11</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">C</span> <span class="p">{</span>
+    <span class="kd">mapping</span><span class="p">(</span><span class="kt">uint256</span> <span class="o">=&gt;</span> <span class="kt">uint256</span><span class="p">)</span> <span class="n">tuples</span><span class="p">;</span>
+
+    <span class="c1">//tuple variable offset added to keccak(bytes32(key) + bytes32(position))</span>
+    <span class="kd">function</span> <span class="n">init</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">key</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">tuples</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x1A</span><span class="p">;</span>
+        <span class="c1">//tuples[key].b = 0x1B;</span>
+        <span class="c1">//tuples[key].c = 0x1C;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_minimal>integer_overflow_minimal</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Single transaction overflow</span>
+<span class="c1">//Post-transaction effect: overflow escapes to publicly-readable storage</span>
+
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint</span> <span class="kr">public</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">input</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">count</span> <span class="o">-=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Integer Underflow (Warning)</h5>
+      A possible integer underflow exists in the function `run(uint256)`.
+The subtraction may result in a value &lt; 0.
+                <hr>
+    <h3 id=integer_overflow_mul>integer_overflow_mul</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Single transaction overflow</span>
+<span class="c1">//Post-transaction effect: overflow escapes to publicly-readable storage</span>
+
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint</span> <span class="kr">public</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">input</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">count</span> <span class="o">*=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Integer Overflow (Warning)</h5>
+      A possible integer overflow exists in the function `run(uint256)`.
+The addition or multiplication may result in a value higher than the maximum representable integer.
+                <hr>
+    <h3 id=integer_overflow_multitx_multifunc_feasible>integer_overflow_multitx_multifunc_feasible</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Multi-transactional, multi-function</span>
+<span class="c1">//Arithmetic instruction reachable</span>
+
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint256</span> <span class="kr">private</span> <span class="n">initialized</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">uint256</span> <span class="kr">public</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">init</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">initialized</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">initialized</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">count</span> <span class="o">-=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Integer Underflow (Warning)</h5>
+      A possible integer underflow exists in the function `run(uint256)`.
+The subtraction may result in a value &lt; 0.
+                <hr>
+    <h3 id=integer_overflow_multitx_onefunc_feasible>integer_overflow_multitx_onefunc_feasible</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Multi-transactional, single function</span>
+<span class="c1">//Arithmetic instruction reachable</span>
+
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint256</span> <span class="kr">private</span> <span class="n">initialized</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">uint256</span> <span class="kr">public</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">input</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">initialized</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">initialized</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">count</span> <span class="o">-=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Integer Underflow (Warning)</h5>
+      A possible integer underflow exists in the function `run(uint256)`.
+The subtraction may result in a value &lt; 0.
+                <hr>
+    <h3 id=integer_overflow_multitx_onefunc_infeasible>integer_overflow_multitx_onefunc_infeasible</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	  	<td>Description</td>
+	        <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+		<td>
+	  <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/suhabe-integer_overflow_multitex_onefuc_infeasible">link</a>
+	</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Multi-transactional, single function</span>
+<span class="c1">//Overflow infeasible because arithmetic instruction not reachable</span>
+
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint256</span> <span class="kr">private</span> <span class="n">initialized</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">uint256</span> <span class="kr">public</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">input</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">initialized</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">count</span> <span class="o">-=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_path_1>integer_overflow_path_1</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Single transaction overflow</span>
+<span class="c1">//Post-transaction effect: overflow nevers escapes to publicly-readable storage</span>
+
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kt">uint</span> <span class="kr">public</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">input</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">input</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">//from SafeMath</span>
+    <span class="kd">function</span> <span class="n">sub</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">a</span><span class="p">,</span> <span class="kt">uint256</span> <span class="n">b</span><span class="p">)</span> <span class="kr">internal</span> <span class="kr">pure</span> <span class="k">returns</span> <span class="p">(</span><span class="kt">uint256</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">require</span><span class="p">(</span><span class="n">b</span> <span class="o">&lt;=</span> <span class="n">a</span><span class="p">);</span><span class="c1">//SafeMath uses assert here</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_staticarray>integer_overflow_staticarray</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">11</span><span class="p">;</span>
+<span class="kd">contract</span> <span class="n">C</span> <span class="p">{</span>
+    <span class="kt">uint256</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="kr">private</span> <span class="n">numbers</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">get</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">i</span><span class="p">)</span> <span class="kr">public</span> <span class="k">returns</span><span class="p">(</span><span class="kt">uint256</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">require</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">numbers</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=integer_overflow_storageinvariant>integer_overflow_storageinvariant</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	  	<td>Description</td>
+	        <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+		<td>
+	  <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/suhabe-integer_overflow_storageinvariant">link</a>
+	</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//No underflow because of credit/balance invariant: sum (credit.values) = balance</span>
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">mapping</span> <span class="p">(</span><span class="kt">address</span> <span class="o">=&gt;</span> <span class="kt">uint</span><span class="p">)</span> <span class="n">credit</span><span class="p">;</span>
+    <span class="kt">uint</span> <span class="nb">balance</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">withdrawAll</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="kt">uint</span> <span class="n">oCredit</span> <span class="o">=</span> <span class="n">credit</span><span class="p">[</span><span class="nb">msg.sender</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">oCredit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">credit</span><span class="p">[</span><span class="nb">msg.sender</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="nb">balance</span> <span class="o">-=</span> <span class="n">oCredit</span><span class="p">;</span>
+            <span class="nb">msg.sender</span><span class="p">.</span><span class="nf">transfer</span><span class="p">(</span><span class="n">oCredit</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">deposit</span><span class="p">()</span> <span class="kr">public</span> <span class="kr">payable</span> <span class="p">{</span>
+        <span class="n">credit</span><span class="p">[</span><span class="nb">msg.sender</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">msg.value</span><span class="p">;</span>
+        <span class="nb">balance</span> <span class="o">+=</span> <span class="nb">msg.value</span><span class="p">;</span>
+        <span class="nf">require</span><span class="p">(</span><span class="nb">balance</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Integer Underflow (Warning)</h5>
+      A possible integer underflow exists in the function `withdrawAll()`.
+The subtraction may result in a value &lt; 0.
+        <h5>Issue Integer Overflow (Warning)</h5>
+      A possible integer overflow exists in the function `deposit()`.
+The addition or multiplication may result in a value higher than the maximum representable integer.
+        <h5>Issue Integer Overflow (Warning)</h5>
+      A possible integer overflow exists in the function `deposit()`.
+The addition or multiplication may result in a value higher than the maximum representable integer.
+                <hr>
+    <h3 id=integer_overflow_storagepacking>integer_overflow_storagepacking</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Integer Overflow</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Negative>True Negative</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="c1">//Storage packing optimization stores a,b in a single 32-byte storage slot.</span>
+<span class="c1">//solc generates MUL instruction that operates on compile-time constants to</span>
+<span class="c1">//  extract variable a (or b) from packed storage slot.</span>
+<span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">11</span><span class="p">;</span>
+<span class="kd">contract</span> <span class="n">C</span> <span class="p">{</span>
+    <span class="kt">uint128</span> <span class="n">a</span><span class="p">;</span>
+    <span class="kt">uint128</span> <span class="n">b</span><span class="p">;</span>
+    <span class="kd">function</span> <span class="n">C</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=reentrancy_dao>reentrancy_dao</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Callback Effect-Free</td>
+	        <td style="background-color:
+		   rgba(80, 200, 120, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/True-Positive>True Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">mapping</span> <span class="p">(</span><span class="kt">address</span> <span class="o">=&gt;</span> <span class="kt">uint</span><span class="p">)</span> <span class="n">credit</span><span class="p">;</span>
+    <span class="kt">uint</span> <span class="nb">balance</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">withdrawAll</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="kt">uint</span> <span class="n">oCredit</span> <span class="o">=</span> <span class="n">credit</span><span class="p">[</span><span class="nb">msg.sender</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">oCredit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">balance</span> <span class="o">-=</span> <span class="n">oCredit</span><span class="p">;</span>
+            <span class="kt">bool</span> <span class="n">callResult</span> <span class="o">=</span> <span class="nb">msg.sender</span><span class="p">.</span><span class="nf">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">oCredit</span><span class="p">)();</span>
+            <span class="nf">require</span> <span class="p">(</span><span class="n">callResult</span><span class="p">);</span>
+            <span class="n">credit</span><span class="p">[</span><span class="nb">msg.sender</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">deposit</span><span class="p">()</span> <span class="kr">public</span> <span class="kr">payable</span> <span class="p">{</span>
+        <span class="n">credit</span><span class="p">[</span><span class="nb">msg.sender</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">msg.value</span><span class="p">;</span>
+        <span class="nb">balance</span> <span class="o">+=</span> <span class="nb">msg.value</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+        <h4>Mythril Report</h4>
+        <h5>Issue Integer Underflow (Warning)</h5>
+      A possible integer underflow exists in the function `withdrawAll()`.
+The subtraction may result in a value &lt; 0.
+        <h5>Issue Message call to external contract (Warning)</h5>
+      This contract executes a message call to the address of the transaction sender. Generally, it is not recommended to call user-supplied addresses using Solidity&#39;s call() construct. Note that attackers might leverage reentrancy attacks to exploit race conditions or manipulate this contract&#39;s state.
+        <h5>Issue State change after external call (Warning)</h5>
+      The contract account state is changed after an external call. Consider that the called contract could re-enter the function before this state change takes place. This can lead to business logic vulnerabilities.
+        <h5>Issue Integer Overflow (Warning)</h5>
+      A possible integer overflow exists in the function `deposit()`.
+The addition or multiplication may result in a value higher than the maximum representable integer.
+        <h5>Issue Integer Overflow (Warning)</h5>
+      A possible integer overflow exists in the function `deposit()`.
+The addition or multiplication may result in a value higher than the maximum representable integer.
+                <hr>
+    <h3 id=reentrancy_dao_fixed>reentrancy_dao_fixed</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	          <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Callback Effect-Free</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+    <span class="kd">mapping</span> <span class="p">(</span><span class="kt">address</span> <span class="o">=&gt;</span> <span class="kt">uint</span><span class="p">)</span> <span class="n">credit</span><span class="p">;</span>
+    <span class="kt">uint</span> <span class="nb">balance</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">withdrawAll</span><span class="p">()</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="kt">uint</span> <span class="n">oCredit</span> <span class="o">=</span> <span class="n">credit</span><span class="p">[</span><span class="nb">msg.sender</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">oCredit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nb">balance</span> <span class="o">-=</span> <span class="n">oCredit</span><span class="p">;</span>
+            <span class="n">credit</span><span class="p">[</span><span class="nb">msg.sender</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="kt">bool</span> <span class="n">callResult</span> <span class="o">=</span> <span class="nb">msg.sender</span><span class="p">.</span><span class="nf">call</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">oCredit</span><span class="p">)();</span>
+            <span class="nf">require</span> <span class="p">(</span><span class="n">callResult</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="n">deposit</span><span class="p">()</span> <span class="kr">public</span> <span class="kr">payable</span> <span class="p">{</span>
+        <span class="n">credit</span><span class="p">[</span><span class="nb">msg.sender</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">msg.value</span><span class="p">;</span>
+        <span class="nb">balance</span> <span class="o">+=</span> <span class="nb">msg.value</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+            <hr>
+    <h3 id=reentrancy_nostateeffect>reentrancy_nostateeffect</h3>
+    <p>
+    <table>
+      <tr style="font-weight: bold">
+        <td>Bug Type</td>
+	  	<td>Description</td>
+	        <td colspan="2">
+          Mythril
+          <br>
+          <span style="font-size: 10px">v0.18.11</span>
+      </tr>
+      <tr>
+        <td>Callback Effect-Free</td>
+		<td>
+	  <a href="https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/suhabe-reentrancy_nostateeffect">link</a>
+	</td>
+	        <td style="background-color:
+		   rgba(255, 145, 164, .4)">
+	  <a href=https://github.com/EthereumAnalysisBenchmarks/evm-analyzer-bench-suites/wiki/False-Positive>False Positive</a></td>
+      </tr>
+    </table>
+    <h4>Source Code</h4>
+    <div class="highlight"><pre><span></span><span class="kr">pragma solidity</span> <span class="o">^</span><span class="mf">0.4</span><span class="p">.</span><span class="mi">19</span><span class="p">;</span>
+
+<span class="kd">interface</span> <span class="n">Runner</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">param</span><span class="p">)</span> <span class="kr">external</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">contract</span> <span class="n">Benchmark</span> <span class="p">{</span>
+
+    <span class="kd">function</span> <span class="n">run</span><span class="p">(</span><span class="kt">address</span> <span class="n">base</span><span class="p">,</span> <span class="kt">uint256</span> <span class="n">param</span><span class="p">)</span> <span class="kr">public</span> <span class="p">{</span>
+        <span class="n">Runner</span><span class="p">(</span><span class="n">base</span><span class="p">).</span><span class="n">run</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+
+        
+  </body>
+</html>
