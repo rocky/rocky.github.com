@@ -1,8 +1,0 @@
-8  <@> leave[1 ref] vKP/REFC ->(end)
-1     <0> enter ->2
-2     <;> nextstate(main 1 div.pl:1) v:{ ->3
-7     <2> divide[t5] vK/2 ->8
-5        <2> divide[t3] sK/2 ->6
-3              <#> gvsv[*a] s ->4
-4              <#> gvsv[*b] s ->5
-6           <#> gvsv[*c] s ->7
