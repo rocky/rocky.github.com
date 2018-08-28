@@ -94,8 +94,8 @@ sub boom { $prev[$prev[$_[1]]]; }
 				the error, line five. It even gives the array element and its
 				index value. This is great!  But there are <i>two</i> subscripts on line file.</p>
 
-			<p><b>[next]</b> Which one are we talking about? Where am I really?</p>
-			<p>Here, are some other examples...</p>
+			<p>Which one are we talking about? Where am I really?</p>
+			<p>Here, are some other examples...<b>[next]</b> </p>
 		</aside>
 	</section>
 
@@ -105,12 +105,10 @@ sub boom { $prev[$prev[$_[1]]]; }
 		<small><pre><code>Use of uninitialized value $_ in numeric gt (&gt;) at YAPC2018/map.pl line 4
     </code></pre></p>
 		<p>where line 5 is:</p></small>
-		<div class="fragment roll-in">
-			<pre><code class="perl">
+    <p><pre><code class="perl">
 map { $_ &gt; 4 ? $_ : () } @_ if $_ &gt 4;
-      </code></pre></p>
-     <small><p>and finally...</p></small>
-    </div>
+    </code></pre></p>
+    <small><p>and finally...</p></small>
 
 		<div class="fragment roll-in">
 		<small><p>
@@ -129,7 +127,7 @@ eval { $code };
 			<p>In this example there are several different uses of the same
 			variable dollar underscore. Doller underscore is used a lot in Perl.
 
-			<p><b>[next]</b> And finally &mdash; this is my favorite &mdash; because
+			<p><b>[down]</b> And finally &mdash; this is my favorite &mdash; because
 				it shows that in Perl you can run code that is created at
 				runtime and the source code doesn't sit in a file somewhere.</p>
 		</aside>
@@ -140,16 +138,21 @@ eval { $code };
 		<h3>Laziness, Impatience, Hubris</h3>
 		<section>
 			<p>&ldquo;<i>We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris.</i>&rdquo;</p>
+			<aside class="notes">
+				<p>Let's see addressing this is very consistent with the Perl philosophy.</p>
+				<p>When I gave a Python-centric version of this talk, one of the questions I got was: why bother?</p>
+				<p>The answer is Laziness...<b>next</b></p>
 		</section>
 		<section>
 			<p><i>Laziness:</i> The quality that makes you go to great effort to reduce overall energy expenditure.</p>
 			<p class="fragment roll-in"><i>Impatience:</i> The anger you feel when the computer is being lazy.</p>
 
 			<aside class="notes">
-				<p>When I gave a Python-centric version of this talk, one of the questions I got was: why bother?</p>
-				<p>Yes, it is a bit of work, but let me remind of the first of Larry Wall's great virtues of a programmer: Laziness.</p>
+				<p>Laziness is the first of Larry Wall's great virtues of a
+				programmer.</p>
 
-				<p><i>Laziness:</i> The quality that makes you go to great effort to reduce overall energy expenditure.</p>
+				<p><i>Laziness:</i> The quality that makes you go to great
+				effort to reduce overall energy expenditure.</p>
 				<p>Let's face it. Writing something as big and complex as Perl
 					even in its first inceptions is a lot of work.  Writing a
 					programming language is probably not something that most of
@@ -167,12 +170,9 @@ eval { $code };
 				<p><i>Impatience:</i> The anger you feel when the computer is
 				being lazy.</p>
 				<p>At least for me this has been particularly irksome. The
-					computer "knows" which divide or index is the probelem: the
-					information is available, it just needs to be instructed to
-					tell you.</p>
-
-				<p>In sum, this kind of activity is very much in line with the
-				principles behind the creation of Perl.</p>
+					computer "knows" which divide or index is the problem: the
+					information is available, not lost. It just needs to be
+					instructed to tell you.</p>
 			</aside>
 		</section>
 	</section>
@@ -561,7 +561,7 @@ sub gvsv {
       </code></pre></p>
 		</section>
     <section>
-			<h3>Simplifying rule code</h3>
+			<h3>Simplifying the 100's of rule codes</h3>
 			<aside class="notes">
 				<p>B::Deparse.pm is about 5K lines of code excluding the POD documentation at the bottom.
 					A fair bit of it is like the code I showed above. How can we reduce the above?</p>
@@ -597,7 +597,7 @@ my $str =  sprintf("%s/%s", $left , $right);
 			<h3>Simplifying rule code - templating</h3>
 			<pre><code class="perl">
 our $PP_RULES = {
-    divide => ("%p/%p", [[0, 1], 19]),
+    divide => ("%p/%p", [[0, 19], [1, 19]]),
     ...
 }
       </code></pre></p>
@@ -711,7 +711,7 @@ sub print_line {
 		<aside class="notes">
 			<p>There is a lot I haven't covered here, so here is where you can get more information and details.</p>
 
-`			<p>One thing I wanted to show in this list is how awesome the Perl community is.</p>
+			<p>One thing I wanted to show in this list is how awesome the Perl community is.</p>
 			<p>There is CPAN, which may not seem exciting now, but it was the first of its kind.</p>
 			<p>But there is also a blog just for Perl that I have made use of.</p>
 			<p>And then there is Perlmonks which long preceded StackOverflow. It was from there that from one of the monks that I got this idea from</p>
