@@ -48,18 +48,21 @@
 		<aside class="notes">
 			<p>Hi - I am Rocky Bernstein, a long-time open-source developer. I work
 				now in the Mythril team at ConsenSys Diligence, and specifically in
-				developing what will go behind the Mythril API which you will hear
+   			developing what will go behind the Mythril Platform which you will hear
 				more about from Bernhard.</p>
 
-			<p>Today, I'd like to describe something that I have recently been
-				interested in and hope you too get interested and involved in too:
-				code that runs a number of Ethereum Analyzer tools across a suite of
-				test benchmarks see how well each did on their own and in comparison
-				the others.</p>
+			<p>Analysis tools play a big role in helping to find smart contract
+				vulnerabilities. How do we know if these tools are any good? Which
+				tools are best for finding a certain category of bug?</p>
 
-			<p>The reports, the code to generate them, and the benchmark suites are
-				all publicly available on github right now.</p>
-			</p>
+			<p>There’s been a recent effort to answer these questions with a
+				benchmark suite. The goal is to have a standard set of smart contracts
+				we can use to measure each tool’s accuracy at finding vulnerabilities.</p>
+
+			<p>Today I’d like to convince you that this work is important and that
+				it’s worth your time to contribute test cases to the benchmarks.</p>
+
+			<p>Let’s take a look at what we have so far...</p>
 		</aside>
 		<div text-align=right>
 		<svg viewBox="0 0 508 152.1"xmlns="http://www.w3.org/2000/svg",
@@ -70,6 +73,7 @@
     <path d="M16.2 48.5c1.5 0 2.8-1.2 2.8-2.8 0-1.5-1.2-2.8-2.8-2.8-1.5 0-2.8 1.2-2.8 2.8 0 1.5 1.2 2.8 2.8 2.8zM23.2 40.7c0-1.7-1.4-3-3-3-1.7 0-3 1.4-3 3 0 1.7 1.4 3 3 3 1.6.1 3-1.3 3-3z"/>
 			</g>
 		</svg>
+		<img border=0em, data-src="C-Dili_logo_fill_stretch.png", height=50, width=50/>
 		</div>
 
 	</section>
@@ -173,7 +177,7 @@
 			<li>Install Analyzer tools</li>
 			<li class="fragment roll-in">Gather Benchmark Suite(s)</li>
 			<li class="fragment roll-in">Run tools over suite(s) &mdash; takes time</li>
-			<li class="fragment roll-in">Classify and grade results</li>
+			<li class="fragment roll-in"><b>Classify and grade results</b></li>
 		</ul>
 		<aside class="notes">
 			<p>Yes. First you need get a list of vulnerability tools and
@@ -196,12 +200,13 @@
 	<section>
 		<h3>What Information is needed for Benchmark Suite testing?</h3>
 
+		<small><p>
 		<ul>
 			<li>Suite: What does it cover?</li>
 			<li class="fragment roll-in">Benchmark Test: What Vulnerablity does it detect?</li>
 			<li class="fragment roll-in">Benchmark Test: What's the right answer?</li>
-			<li class="fragment roll-in">Benchmark Test x Tool: What's the right answer for this tool?</li>
-			<li class="fragment roll-in">Benchmark Test x Tool: What vulns for <em>this</em> tool &mdash; is it relevant?</li>
+			<li class="fragment roll-in">Benchmark Test x Tool: What's the right answer for <em>this</em> tool? Is it even relevant?</li>
+		</ul></small></p>
 
 		<aside class="notes">
 			<p>Leave aside the analyzer tool for the moment, we want to make sure
@@ -264,14 +269,17 @@
 		</section>
 	<section
 		<h3>Thanks</h3>
+		<small><p>
 		<ul>
 			<li>Dr. Suhabe Bugrara &mdash; cool idea</li>
 			<li>Aleks Sobolev &mdash; revamping the reports</li>
 			<li>Vladimirs Timofejevs &mdash; code to cover Manticore and Oyente</li>
 			<li>Rocky Bernstein &mdash; and takes credit for the above</li>
+			<li>Steve Marx &mdash; for the win
 			<li>ConsenSys Diligence &mdash; has been funding this to date</li>
 			<li>You &mdash; for getting involved</li>
 		</ul>
+		</p></small>
 
 		<br/><br/><br/>
 		<div text-align=right>
