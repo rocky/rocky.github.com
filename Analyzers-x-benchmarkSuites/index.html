@@ -79,7 +79,7 @@
 		<ul>
 			<li><a href="https://ethereumanalysisbenchmarks.github.io/">Home page</a></li>
 			<li><a href="https://ethereumanalysisbenchmarks.github.io/Suhabe">Suhabe benchmark suite</a></li>
-			<li><a href="https://github.com/EthereumAnalysisBenchmarks/Omnibus">Omnibus</a></li>
+ 		<li class="fragment roll-in"><a href="https://github.com/EthereumAnalysisBenchmarks/nssc">(Not so) Smart Contracts</a></li>
 		</ul>
 		<aside class="notes">
 			<p>Currently we have two different benchmark suites, one that Suhabe
@@ -109,6 +109,23 @@
 				Furthermore, some of these have been fixed.</p>
 		</aside>
 	</section>
+	<section>
+		<h3>Introducing Omnibus</h3>
+		<p>Full set of standardized vulnerability classes</p>
+		<small><p>
+		<ul>
+				<li><code>OMN-CALL-UNCHECKEDRETVAL</code>
+				<li><code>OMN-CALL-UNTRUSTED</code>
+				<li><code>OMN-DELEGATECALL-UNTRUSTED</code>
+				<li><code>OMN-LINT-OLDCOMPILER</code></li>
+				<li><code>OMN-LINT-VISIBILITYNOTSET</code></li>
+				<li>(...)
+		</ul>
+		</p></small>
+
+		<p>Micro-benchmarks and real-world samples for each subclass</p>
+		</section>
+	</section>
 
 	<section>
 		<h3>Who should be interested in this?</h3>
@@ -118,9 +135,9 @@
 			<ul>
 				<li>Does tool handle a vulnerability you are interested in?</li>
 			</ul>
-			<li>Vulnerability/security auditors</li>
-			<li>Tool Developers</li>
-			<ul>
+			<li class="fragment roll-in">Vulnerability/security auditors</li>
+			<li class="fragment roll-in">Tool Developers</li>
+			<ul class="fragment roll-in">
 			 <li>How am I doing today?</li>
 			 <li>Have I improved over time?</li>
 			 </ul>
@@ -151,7 +168,13 @@
 
 	<section>
 		<h3>Is it all that difficult to do?</h3>
-		<p><em>Yes:</em></p>
+		<p><em>Yes!</em></p>
+		<ul>
+			<li>Install Analyzer tools</li>
+			<li class="fragment roll-in">Gather Benchmark Suite(s)</li>
+			<li class="fragment roll-in">Run tools over suite(s) &mdash; takes time</li>
+			<li class="fragment roll-in">Classify and grade results</li>
+		</ul>
 		<aside class="notes">
 			<p>Yes. First you need get a list of vulnerability tools and
 			install them. Then you need to do the same for benchmark
@@ -172,6 +195,13 @@
 
 	<section>
 		<h3>What Information is needed for Benchmark Suite testing?</h3>
+
+		<ul>
+			<li>Suite: What does it cover?</li>
+			<li class="fragment roll-in">Benchmark Test: What Vulnerablity does it detect?</li>
+			<li class="fragment roll-in">Benchmark Test: What's the right answer?</li>
+			<li class="fragment roll-in">Benchmark Test x Tool: What's the right answer for this tool?</li>
+			<li class="fragment roll-in">Benchmark Test x Tool: What vulns for <em>this</em> tool &mdash; is it relevant?</li>
 
 		<aside class="notes">
 			<p>Leave aside the analyzer tool for the moment, we want to make sure
@@ -207,6 +237,12 @@
 
 	<section>
 		<h3>The need for common terminology:</h3>
+
+		<ul>
+			<li>Location</li>
+			<li>Vulnerabilty Class</li>
+			...
+		</ul>
 
 		<aside class="notes">
 			<p>In a single reports there are runs _n_ tools over a single benchmark
