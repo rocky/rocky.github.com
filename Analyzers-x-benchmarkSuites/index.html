@@ -49,18 +49,19 @@
 			<p>Hi - I am Rocky Bernstein, a long-time open-source developer. I work
 				now in the Mythril team at ConsenSys Diligence, and specifically in
    			developing what will go behind the Mythril Platform API which you will hear
-				more about from Bernhard.</p>
+				more about from Bernhard next.</p>
 
-			<p>Analysis tools play a big role in helping to find smart contract
+			<p>Analysis tools play a big role in helping to find Smart Contract
 				vulnerabilities. How do we know if these tools are any good? Which
 				tools are best for finding a certain category of bug?</p>
 
 			<p>There’s been a recent effort to answer these questions with a
-				benchmark suite. The goal is to have a standard set of smart contracts
-				we can use to measure each tool’s accuracy at finding vulnerabilities.</p>
+				benchmark suite. The goal is to have a standard set of Smart Contracts
+				that we can use to measure each tool’s accuracy at finding vulnerabilities.</p>
 
 			<p>Today I’d like to convince you that this work is important and that
-				it’s worth your time to contribute test cases to the benchmarks.</p>
+				it’s worth your time to contribute test cases to the benchmarks at the
+				hackathon that will happen at ETHBerlin.</p>
 
 			<p>Let’s take a look at what we have so far...</p>
 		</aside>
@@ -86,17 +87,16 @@
  		<li class="fragment roll-in"><a href="https://github.com/EthereumAnalysisBenchmarks/nssc">(Not so) Smart Contracts</a></li>
 		</ul>
 		<aside class="notes">
-			<p>Currently we have two different benchmark suites, one that Suhabe
-				Bugrara wrote, and other was written by Trail of Bits folks you just
-				heard from. The first contains micro-benchmarks while the second is at
-				the other end of the spectrum and are based on interesting contracts
-				that have been published. Currently, we are working on another
-				benchmark suite that will add more vulnerabilities, especially those
-				that can be detected at primarily the Solidity source-code level.</p>
+			<p>Currently we have two different benchmark suites, one that
+				Suhabe Bugrara wrote, and other was written by Trail of Bits
+				folks you just heard from. Suhabe's suite contains
+				micro-benchmarks while th "(Not so) Smart Contracts" is at the
+				other end of the spectrum and are based on interesting
+				contracts that have been published.</p>
 
-			<p>Currently we have 3 tools we run against: Mytrhil which you'll hear
-				about next, Trail of Bits Manticore, and Oyente which is now bundled
-				in the remix IDE.</p>
+			<p>As for as analyzer tools we have 3: Mythril which you'll hear about
+				next, Trail of Bits' Manticore, and Oyente which is now bundled in the
+				remix IDE.</p>
 
 			<p>I just want to show here is that we have the ability to run several
 				tools across a given benchmark and show the results side-by-side. Some
@@ -107,14 +107,28 @@
 			<p>This aspect is more historical than intentional. For dynamic tracing
 				tools, there are very few tools and they are not equivalent.</p>
 
-			<p>But I note that comparison which fosters competition has just
-				publicizing this 10-minute talk already been beneficial. I and others
-				have found bugs in some of the tools as a result of running the suite.
-				Furthermore, some of these have been fixed.</p>
+			<p>But comparison which fosters competition and that has already been
+				beneficial. Just in publicizing this 10-minute talk, I and others have
+				found bugs in some of the tools as a result of running the suites, and
+				some of these have already been fixed.
+			</p>
 		</aside>
 	</section>
 	<section>
 		<h3>Introducing Omnibus</h3>
+		<aside>
+			<p>In a third Omnibus suite we are working we will add more
+				tests, especially those that can be detected only at the
+				Solidity source-code level.</p>
+
+			<p>We will be defining a common vulnerability class for each
+				kind of vulnerability.  These are based on ConsenSys' Ethereum
+				Smart Contract Security Best Practices. Where new
+				vulnerabilities are categorized we will be expanding the best
+				practices
+			</p>
+		</aside>
+
 		<p>Full set of standardized vulnerability classes</p>
 		<small><p>
 		<ul>
@@ -152,8 +166,8 @@
 				against each other?  What kinds of vulnerabilities do they catch? And
 				are the things reported really vulnerabilities?</p>
 
-			<p>Another thing you might be in is how long it takes an analyzer takes
-				to run for a given smart contract?</p>
+			<p>You also might be interested in how long it takes an analyzer to run
+				over various Smart Contracts.</p>
 
 			<p>Suppose instead you are a Vulnerability/security auditor like we have
 				at Diligence. For you, it is important to keep abreast of the tools are
@@ -189,11 +203,12 @@
 				the analyzers tools over the benchmark suite(s) takes a bit of
 				time.</p>
 
-			<p>Finally you now need to classify and grade the results you
-				get back.  It might be that a tool is not applicable for the
-				the kind of benchmark test. For example, a tool that works
-				with EVM bytecode won't find Solidity coding style
-				weaknesses.</p>
+			<p>Finally, and this is the hardest part, you need to classify and grade
+				the results you get. It might be that a tool is not applicable for the
+				kind of benchmark test. For example, a tool that works with EVM
+				bytecode won't find Solidity coding style weaknesses. Oyente is very
+				selective right now in terns of the kinds of vulnerabilities it
+				detects.			</p>
 		</aside>
 	</section>
 
@@ -209,11 +224,11 @@
 		</ul></small></p>
 
 		<aside class="notes">
-			<p>Leave aside the analyzer tool for the moment, we want to make sure
-				that a benchmark suite covers some interesting related set of
-				vulnerabilities. This means having benchmark tests that detect a kind
-				of vulnerability as well as one that doesn't but looks deceptive so
-				that they might fool an analyzer.</p>
+			<p>We want to make sure that a benchmark suite covers some interesting
+				related set of vulnerabilities. This means having benchmark tests that
+				detects a kind of vulnerability as well as one that doesn't but looks
+				deceptive so it they might fool an analyzer.
+			</p>
 
 			<p>For a benchmark in a benchmark suite, we want to know what it is
 				testing, and what in a broad sense, what the analyzer tool should
@@ -225,9 +240,7 @@
 				kind of vulnerability that a benchmark test expressions.</p>
 
 			<p>And for each benchmark and analyzer tool, we have to decide whether
-				the benchmark test is relevant. (As I mentioned before, a tool that
-				works with EVM bytecode won't find weaknesses in Solidity coding
-				style).</p>
+				the benchmark test is relevant.</p>
 
 			<p>Analyzer results may change as the analyzer tool changes: maybe
 				earlier versions of a tool detects the problem tersely, and later
@@ -235,7 +248,7 @@
 				"correctness".</p>
 
 			<p>Finally results can change depending on Solidity compiler generation and
-1				optimization level. So we need somehow to need to note and accommodate
+				optimization level. So we need somehow to need to note and accommodate
 				that.</p>
 		</aside>
 	</section>
@@ -250,21 +263,29 @@
 		</ul>
 
 		<aside class="notes">
-			<p>In a single reports there are runs _n_ tools over a single benchmark
-				suite, but we allow for several benchmark suites. So we have code
-				running _n_ tools run over _m_ benchmarks. Fortunately but _n_ and _m_
-				are less than three or less. But as you can see the cross product
-				leads to complexity that should be managed.</p>
+			<p>In a single report there are runs _n_ tool runs over a single
+				benchmark suite for each analyzer. Here _n_ is 3.</p>
 
-			<p>This is a standard problem in "compiler collections" like, say, the
-				GNU compiler collection, "GCC" which accepts a number of front-end
-				languages and produces code for a number of target machines.</p>
+			<p>But we allow for several benchmark suites. So we have code
+				running _n_ analyzers run over _m_ benchmarks. Here _m_ is
+				2.</p>
 
-			<p>The standard technique to reduce complexity here is to use a common
-				intermediate language. So if we can use common terminology for ideas
-				like "vulnerability class" and location in a program, we will keep the
-				code to gather data from analyzers and the code to produce reports
-					simpler.</p>
+			<p>Fortunately _n_ and _m_ are small right now. But as you can
+				see the multiplication leads to complexity that should be
+				managed.</p>
+
+			<p>This is a standard problem in "compiler collections" like,
+				say, the GNU compiler collection, "GCC" which accepts a number
+				of front-end languages and produces code for a number of
+				target machines.</p>
+
+			<p>The standard technique to reduce complexity here is to use a
+				common intermediate language. So if we can use common
+				terminology for ideas like "vulnerability class" and location
+				in a program, we will keep the code to gather data from
+				analyzers and the code to produce reports simpler. For example
+				is "Transaction Order" that mythril reports the same thing as
+				"Reentrancy" that Manticore reports?</p>
 		</aside>
 		</section>
 	<section
