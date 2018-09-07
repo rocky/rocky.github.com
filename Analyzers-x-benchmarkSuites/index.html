@@ -44,7 +44,7 @@
 	<section>
 		<h2>Vulnerability Tools x Benchmark Suites =</h2>
 		<center><img data-src="rainbow-unicorn-clouds-and-stars-crista-forest.jpg", height=342, width=442></center>
-		<!-- <small>(enter "s" to see presenter text for slides)</small> -->
+		<small>(enter "s" to see presenter text for slides)</small>
 		<aside class="notes">
 			<p>Hi - I am Rocky Bernstein, a long-time open-source developer. I work
 				now in the Mythril team at ConsenSys Diligence, and specifically in
@@ -116,7 +116,7 @@
 	</section>
 	<section>
 		<h3>Introducing Omnibus</h3>
-		<aside>
+		<aside class="notes">
 			<p>In a third Omnibus suite we are working we will add more
 				tests, especially those that can be detected only at the
 				Solidity source-code level.</p>
@@ -162,24 +162,26 @@
 			</ul>
 
 		<aside class="notes">
-			<p>Suppose you are a smart-contracts developer: how do the tools stack up
-				against each other?  What kinds of vulnerabilities do they catch? And
-				are the things reported really vulnerabilities?</p>
+			<p>Suppose you are a smart-contracts developer: how do the tools
+				stack up against each other?  What kinds of vulnerabilities do
+				they catch? And are the things reported really
+				vulnerabilities?</p>
 
-			<p>You also might be interested in how long it takes an analyzer to run
-				over various Smart Contracts.</p>
+			<p>You also might be interested in how long it takes an analyzer
+				to run over various Smart Contracts.</p>
 
-			<p>Suppose instead you are a Vulnerability/security auditor like we have
-				at Diligence. For you, it is important to keep abreast of the tools are
-				out there and assess how good they are.</p>
+			<p>Suppose instead you are a Vulnerability/security auditor like
+				we have at Diligence. For you, it is important to keep abreast
+				of the tools are out there and assess how good they are.</p>
 
-			<p>Of course, things change over time, so it is important to track
-				changes in the tools. New kinds of attacks come out, and new kinds of
-				recommendations may surface.</p>
+			<p>Of course, things change over time, so it is important to
+				track changes in the tools. New kinds of attacks come out, and
+				new kinds of recommendations may surface.</p>
 
-			<p>Finally, suppose you are developing analyzer tools like me.  I want to
-				know how well I am doing, where I need to work harder, and I need to
-				make sure we are continually improving.</p>
+			<p>Finally, suppose you are developing analyzer tools like me.
+				I want to know how well I am doing, where I need to work
+				harder, and I need to make sure we are continually
+				improving.</p>
 		</aside>
 
 	</section>
@@ -190,6 +192,7 @@
 		<ul>
 			<li>Install Analyzer tools</li>
 			<li class="fragment roll-in">Gather Benchmark Suite(s)</li>
+			<li class="fragment roll-in">Write a runner that can run the tools over the benchmark suite</li>
 			<li class="fragment roll-in">Run tools over suite(s) &mdash; takes time</li>
 			<li class="fragment roll-in"><b>Classify and grade results</b></li>
 		</ul>
@@ -203,12 +206,12 @@
 				the analyzers tools over the benchmark suite(s) takes a bit of
 				time.</p>
 
-			<p>Finally, and this is the hardest part, you need to classify and grade
-				the results you get. It might be that a tool is not applicable for the
-				kind of benchmark test. For example, a tool that works with EVM
-				bytecode won't find Solidity coding style weaknesses. Oyente is very
-				selective right now in terns of the kinds of vulnerabilities it
-				detects.			</p>
+			<p>Finally, and this is the hardest part, you need to classify
+				and grade the results you get. It might be that a tool is not
+				applicable for the kind of benchmark test. For example, a tool
+				that works with EVM bytecode won't find Solidity coding style
+				weaknesses. Oyente is very selective right now in terns of the
+				kinds of vulnerabilities it detects.</p>
 		</aside>
 	</section>
 
