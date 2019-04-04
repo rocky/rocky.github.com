@@ -185,7 +185,7 @@ eval { $code };
 			<pre><code class="perl">
 $a / $b / $c
 		</code></pre></p>
-		<p>The Perl 5 interpreter sees (according to <a href="https://metacpan.org/pod/B::Concise">B::Concise)</a>...
+		<p>The Perl 5 interpreter sees (according to <a href="https://metacpan.org/pod/B::Concise">B::Concise)</a>...</p>
 
 		<aside class="notes">
 			<p>In order to solve this problem, we need to go into a little
@@ -242,7 +242,7 @@ $a / $b / $c
 				associated earlier <code>nextstate</code>/<code>dbstate</code>
 				instruction.  In particular, all of the instructions from
 				instruction 2 onto 8 are associated with.  the single
-				<code>nextstate</ocde> listed. Specifically they are all
+				<code>nextstate</code> listed. Specifically they are all
 				considered to be "on line 1" of <code>div.pl</code>.
 			</p>
 
@@ -330,7 +330,7 @@ $a / $b / $c
 					something similar to the <code>nextstate</code> position
 					mark followed by a bunch of instructions that.  I am
 					referring to a side-by-side translation of poetry....</p>
-		</aside>
+			</aside>
 		</section>
 
 	</section>
@@ -630,30 +630,30 @@ our $PP_RULES = {
 }
       </code></pre></p>
 		</section>
-	</section>
-	<section>
-		<h3>Lingering Problems: Translation</h3>
-		<section>
-			<aside class="notes">
-				<p>So is that it? As far as translation goes, pretty much, but there is one more problem
-					I want to mention here. And we saw it before.
-					<b>next</b></p>
-				<p>Suppose I am reading the word "to", where am I in the
-					Scots? The best we can do is fall back on the vagueness associated with line numbers,
-					and say you are somewhere in "Fair fa'".
-					<b>down</b></p>
-			</aside>
-		<small>
-		<p>Fair fa' your honest..<p>
-		<p> Good luck to you and your honest...<p>
-		</p>
-		<p class="fragment roll-in" data-transition="none">
-				If we are are reading "to" where are we in the Scots?
-		</p>
-		</small>
-		</section>
-		<section>
-			<pre><code>
+
+    <section>
+			<h3>Lingering Problems: Translation</h3>
+			<section>
+				<aside class="notes">
+					<p>So is that it? As far as translation goes, pretty much, but there is one more problem
+						I want to mention here. And we saw it before.
+						<b>next</b></p>
+					<p>Suppose I am reading the word "to", where am I in the
+						Scots? The best we can do is fall back on the vagueness associated with line numbers,
+						and say you are somewhere in "Fair fa'".
+						<b>down</b></p>
+				</aside>
+				<small>
+					<p>Fair fa' your honest..<p>
+					<p> Good luck to you and your honest...<p>
+					</p>
+					<p class="fragment roll-in" data-transition="none">
+						If we are are reading "to" where are we in the Scots?
+					</p>
+				</small>
+			</section>
+			<section>
+				<pre><code>
 #1: my @prev = (undef, 0, 1);
     COP (0x7fee65ad8728) dbstate
     BINOP (0x7fee65ad8788) aassign [2]
@@ -676,22 +676,22 @@ our $PP_RULES = {
 					an array list literal.
 			</aside>
 
-		</section>
-		<section>
-			<pre><code>
+			</section>
+			<section>
+				<pre><code>
 pushmark, pushmark B::OP=SCALAR(0x7fee6823fe78)
 	at address 0x7fee60d08160:
 my(@prev) = (undef, 0, 1)
              |
-			</code></pre>
-			<aside class="notes">
-				<p>I don't want to get into all the different icon symbols I
-					use in <i>B:DeparseTree</i> or <i>Devel::Trepan::Deparse</i>
-					but a vertical bar just means that there is no equivalent
-					piece of source code, but it roughly appears at this range
-					in the source.
-					<b>next</b></p>
-			</aside>
+				</code></pre>
+				<aside class="notes">
+					<p>I don't want to get into all the different icon symbols I
+						use in <i>B:DeparseTree</i> or <i>Devel::Trepan::Deparse</i>
+						but a vertical bar just means that there is no equivalent
+						piece of source code, but it roughly appears at this range
+						in the source.
+						<b>next</b></p>
+				</aside>
 		</section>
 	</section>
 
@@ -718,7 +718,7 @@ sub print_line {
 		</p>
 		<p>prints "call from line 1".<p><p>
 		<small><p>From <a href="https://stackoverflow.com/questions/28652593/perls-caller-function-returning-incorrect-line-number/51349698#51349698">StackOverflow</a></small></p>
-	</section>
+	/section>
 
 	<section>
 		<h4>Devel::Trepan Deparse with Fibonacci</h4>
@@ -750,8 +750,6 @@ sub print_line {
 	</section>
 
 	<section>
-
-
 		<h3>Links...</h3>
 		<aside class="notes">
 			<p>There is a lot I haven't covered here, so here is where you can get more information and details.</p>
