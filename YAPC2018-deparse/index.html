@@ -106,7 +106,7 @@ sub boom { $prev[$prev[$_[1]]]; }
     </code></pre></p>
 		<p>where line 5 is:</p></small>
     <p><pre><code class="perl">
-map { $_ &gt; 4 ? $_ : () } @_ if $_ &gt 4;
+map { $_ &gt; 1 ? 1 : $_ } @_ if $_;
     </code></pre></p>
     <small><p>and finally...</p></small>
 
@@ -125,9 +125,9 @@ eval { $code };
 
 		<aside class="notes">
 			<p>In this example there are several different uses of the same
-			variable dollar underscore. Doller underscore is used a lot in Perl.
+			variable dollar underscore. Dollar underscore is used a lot in Perl.
 
-			<p><b>[down]</b> And finally &mdash; this is my favorite &mdash; because
+			<p><b>[next]</b> Finally &mdash; this is my favorite &mdash; because
 				it shows that in Perl you can run code that is created at
 				runtime and the source code doesn't sit in a file somewhere.</p>
 		</aside>
@@ -139,9 +139,9 @@ eval { $code };
 		<section>
 			<p>&ldquo;<i>We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris.</i>&rdquo;</p>
 			<aside class="notes">
-				<p>Let's see addressing this is very consistent with the Perl philosophy.</p>
+				<p>Let's see how addressing this is very consistent with the Perl philosophy.</p>
 				<p>When I gave a Python-centric version of this talk, one of the questions I got was: why bother?</p>
-				<p>The answer is Laziness...<b>next</b></p>
+				<p>The answer is Laziness...<b>down</b></p>
 		</section>
 		<section>
 			<p><i>Laziness:</i> The quality that makes you go to great effort to reduce overall energy expenditure.</p>
@@ -158,14 +158,15 @@ eval { $code };
 					programming language is probably not something that most of
 					us have the chops to do ourselves.  But Larry undertook that
 					so he would have to think about writing Unix pipe with
-					`awk`, `grep`, `cut`, `sed`, and so on.  In the long run,
-					using Perl would save him and others a bit of work</p>
+					<code>awk</code>, <code>grep</code>, <code>cut</code>, <code>sed</code>,
+					and so on.  In the long run, using Perl would save him and
+					others a bit of work</p>
 
 				<p>So assuming you can someone like me to do the work to write this
 					code, then Perl programs can spend less effort in figuring out
 					where in the line you are when there's something wrong.</p>
 
-					<p>Now onto to the second virtue...<b>[next]</b></p>
+					<p>Now onto to the second virtue...<b>[down]</b></p>
 
 				<p><i>Impatience:</i> The anger you feel when the computer is
 				being lazy.</p>
@@ -180,10 +181,11 @@ eval { $code };
 	<section>
 		<h3>Programmer to Computer</h3>
 
-		<p>A programmer may write:
+		<p>A programmer may write ...
 			<pre><code class="perl">
 $a / $b / $c
 		</code></pre></p>
+		<p>The Perl 5 interpreter sees (according to <a href="https://metacpan.org/pod/B::Concise">B::Concise)</a>...
 
 		<aside class="notes">
 			<p>In order to solve this problem, we need to go into a little
@@ -192,54 +194,60 @@ $a / $b / $c
 
 			<p>
 				In the Perl5 implementation, the code you write gets
-				translated some thing called a B::OP tree, and running a Perl
-				program then is simply walking the tree and performing various
-				actions along the way. In short we say we "evaluate" the
-				tree. If there are loops in the tree, some of the tree nodes
-				may get executed repeatedly for each iteration of a loop.</p>
+				translated some thing called
+				a <a href="https://metacpan.org/pod/distribution/B-C/perloptree.pod">B::OP
+				tree</a>, and running a Perl program then is simply walking
+				the tree and performing various actions along the way. In
+				short we say we "evaluate" the tree. If there are loops in the
+				tree, some of the tree nodes may get executed repeatedly for
+				each iteration of a loop.</p>
 
 			<p>So let's see the B::OP tree for this...<b>next</b></p>
 
-			<p>There are a couple of ways B::Consise can display an OP::Tree, I have
+			<p>The is Perl
+				module <a href="https://metacpan.org/pod/B::Concise">B::Concise</a>
+				for showing the Op tree, and it can can display
+				an <i>OP::Tree</i> in a couple of different ways. I have
 				chosen the tree-oriented way rather than a linear-sequence. So
 				as a result you'll see numbers at the left which indicate the
-				instruction sequence were it shown in the linear ordering. And on the
-				extreme right, the number which is one more than the number on
-				the extreme left, if that exists.</p>
+				instruction sequence were it shown in the linear ordering. And
+				on the extreme right, the number which is one more than the
+				number on the extreme left, if that exists.</p>
 
-			<p>So note that the first instruction listed is in fact the last
-				one in the sequence. Interesting. And then there is a skip to
-				from the last instruction to the first one; then the second
-				instruction and a nother skip to an instruction near the end.
-				Those of you who are astute might see the pattern here. We'll
-				come back to this later.
+			<p>So note that the first instruction, instruction 8, listed is
+				in fact the last one in the sequence. Interesting. And then
+				there is a skip to from the last instruction to the first one;
+				then the second instruction and another skip to an instruction
+				near the end.  Those of you who are astute might see the
+				pattern here. We'll come back to this later.
 			<p>
 
-			<p>I have simplified the instructions a little by
-				removing instructions that have been replace by some other instruction
-				or "optimized" away. But even with removing instructions, you'll see
-				that the B::OP Tree </p>
+			<p>I have simplified the instructions a little by removing
+				instructions that have been replaced by some other instruction
+				or "optimized" away.</p>
 
 
-			<p>Instruction 2, the "nextstate" instruction, isn't an
-				instruction at all. It simply marks a statement boundary, and
+			<p>Instruction 2, the <code>nextstate</code> instruction, isn't an
+				instruction at all. It simply marks a statement boundary. It
 				contains values for a file name and line number.</p>
 
 			<p>When you are tracing instructions such as inside a debugger,
-				that instruction is called "dbstate" instead. In fact that's
-				how Perl knows whether to stop or not.</p>
-
+				that instruction is called <code>dbstate</code> instead. In
+				fact that's how the Perl interpreter knows whether to pause
+				and call the debugger or not.</p>
 
 			<p>All the instructions, in instruction order, after a nextstate
-				or dbstate up to the next nextstate/dbstate are associated
-				earlier nextstate/dbstate instruction.  In particular, all of the
-				instructions from instruction 2 onto 8 are associated with.
-				the single nextstate listed. Specifically they are all
-				considered to be "on line 1" of "div.pl".
+				or dbstate up to the
+				next <code>nextstate</code>/<code>dbstate</code> are
+				associated earlier <code>nextstate</code>/<code>dbstate</code>
+				instruction.  In particular, all of the instructions from
+				instruction 2 onto 8 are associated with.  the single
+				nextstate listed. Specifically they are all considered to be
+				"on line 1" of <code>div.pl</code>.
 			</p>
 
 			<p>And now you should see what the problem is. There are two "divide"
-				B::Ops in that sequence of instructions, and what we want to do now
+				<i>B::OP</i>s in that sequence of instructions, and what we want to do now
 				is say a little more about each other than they come from the same line.<p>
 
 			<p>To get a sense of how to do this, let's see how this is very
@@ -247,7 +255,7 @@ $a / $b / $c
 
 		</aside>
 
-		<small><p class="fragment roll-in" data-transition="none">but the Perl 5 interpreter sees (according to B::Concise):
+		<small><p class="fragment roll-in" data-transition="none">
 			<pre class="fragment roll-in"><code>
 8  <@> leave[1 ref] vKP/REFC ->(end)
 1     <0> enter ->2
@@ -280,26 +288,27 @@ $a / $b / $c
 					will be the situation see that see in the previous Perl to
 					OPtree output.</p>
 
-				<p><b>next</b>In a literal translation the word order is
-				jumbled a bit as it was in Perl to Optree</p>
+				<p><b>[next]</b> In a literal translation the word order is
+				jumbled a bit as it was in Perl to Optree.</p>
 
 				<p>There is also one other feature that is similar to what we
 					saw that I'll mention. Notice that the Gaelic uses a couple
 					of generic words like "Tha" for either "am", "are", "is" and
 					"mi" for "I" or "me" whereas in the English we need to bind
 					to one of those meanings. In the previous Perl example, we
-					used "$a", "$b", and "$c", and these variables could be
-					either a "my" varable or not. In the OPtree OP node this has
-					been made clear that the dollar variables are <em>not</em>
-					my variables</p>
+					used <code>$a</code>, <code>$b</code>, and <code>$c</code>,
+					and these variables could be either a <code>my</code> varable or
+					not. In the OPtree OP node this has been made clear that the
+					dollar variables are <em>not</em> <code>my</code> variables</p>
 
 				<p>So how do we make sense of this in a more rigorous way? Let
 					me suggest an answer by pointing out the first Perl listing
-					gave a clue. And in human too. But let me tease this out
-					just a little bit longer by showing that in human language
-					you've already seen something similar to "nextstate"
-					followed by a bunch of instructions associated with the
-					nextstate, in a side-by-side translation of poetry....</p>
+					gave a clue. So did my haggis sentence translation given
+					afterwards.  But let me tease this out just a little bit
+					longer by showing that in human language you've already seen
+					something similar to the <code>nextstate</code> position
+					mark followed by a bunch of instructions that.  I am
+					referring to a side-by-side translation of poetry....</p>
 			</aside>
 		</section>
 
@@ -334,7 +343,7 @@ $a / $b / $c
 			<p>In the above, you can assume that the first line in entirety
 				of the Gaelic is roughly like the first line of the English,
 				and the second line of the in entirety is Gaelic is like the
-				second line of the English. <b>down</b></p>
+				second line of the English.
 
 			<p>Since Gaelic and English are so close, for large stretches
 				you can do a word-for-word translation for the most part.</p>
@@ -431,18 +440,23 @@ a  <@> leave[1 ref] vKP/REFC
 				<p>Here is a diagram of the tree we saw before.
 					It is not an "abstract" syntax tree, but it is a syntax tree.</p>
 
-				<p>Now we'll show how to reconstruct the source text from
-					this tree. The is in fact how the Perl module B::Deparse works.
-					B::Deparse has been available in Perl for 20 years or so.
-					B::DeparseTree is my extension to B::Deparse which saves
+				<p>Now we'll show how to reconstruct the source text from this
+					tree. The is in fact how the Perl
+					module <a href="https://metacpan.org/pod/B::Deparse">B::Deparse</a>
+					works.  B::Deparse has been available in Perl for 20 years
+					or so.
+					<a href="https://metacpan.org/pod/B::DeparseTree">B::DeparseTree</a>
+					is my extension to <code>B::Deparse</code> which saves
 					additional information so as to be able to pick out the
-					fragments for a given B::Op instruction.
+					fragments for a given <em>B::Op</em> instruction.
 				</p>
 
 				<p>For those familiar with compilers, this sort of thing
-					should look familiar. Using the node type and information
-					propagated through adjacent nodes, we can create a Perl source-code
-					string that characterizes what the tree rooted at that node does.</p>
+					should look familiar. It is called a "syntax-directed
+					translation".  Using the node type and information
+					propagated through adjacent nodes, we can create a Perl
+					source-code string that characterizes what the tree rooted
+					at that node does.</p>
 
 				<p>I have written the instruction order near each node in the
 					tree.  However we can think of that as a memory address as
@@ -451,12 +465,12 @@ a  <@> leave[1 ref] vKP/REFC
 					fragment does that represent?
 				</p>
 
-				<p>Here we have only two node types: "gvsv" and "divide".
-					In <code>B::Deparse</code> the information obtained a node's
-					children are strings of Perl source-code
-					fragments. Information passed down from above is an
-					operator-precedence number that is used to determine whether
-					to surround the final result in parenthesis.</p>
+				<p>Here we have only two node types: <code>gvsv</code>
+					and <code>divide</code>.  In <code>B::Deparse</code> the
+					information obtained a node's children are strings of Perl
+					source-code fragments. Information passed down from above is
+					an operator-precedence number that is used to determine
+					whether to surround the final result in parenthesis.</p>
 
 				<p>In <code>B::DeparseTree</code> we need to keep more
 					information. Keep a hash of node addresses, so you can query
@@ -490,17 +504,20 @@ a  <@> leave[1 ref] vKP/REFC
 					Perl code is associated with that.<p>
 
 				<p>So if I am at instruction 3, the translation to Perl would
-					be "$a"; if at instruction 4, the "$b". At instruction 5 we
-					get "$a/$b". At instruction 7 we have "$a/$b/$c".  And with
-					this you now can see how a program can tell you which divide
-					you were working on. <p>
+					be <code>$a</code>; if at instruction 4,
+					the <code>$b</code>. At instruction 5 we get "$a/$b". At
+					instruction 7 we have <code>$a/$b/$c</code>.  And with this
+					you now can see how a program can tell you which divide you
+					were working on. <p>
 
 				<p>As for the rules or Perl code which I used to create these
 					strings, I'll give that code next, but it doesn't take too
-					much imagination to see what's going on: for "gvsv" you pick
-					out the name of the variable which and that has dollar at
-					the beginning. For "divide" you take the string for the left
-					child and right child but slap a "/" in between them.</p>
+					much imagination to see what's going on:
+					for <code>gvsv</code> you pick out the name of the variable
+					which and that has dollar at the
+					beginning. For <code>divide</code> take the string for the
+					left child and right child but slap a "/" in between
+					them.</p>
 
 				<p>I give some specific Perl code next, but before leaving
 					this slide, let me just point out that the string for each
@@ -527,8 +544,9 @@ sub divide {
       </code></pre></p>
 			<aside class="notes">
 				<p>This code is a simplfication of what B::Deparse does.
-					There isn't a rule for "divide" specifically, but instead the class
-					B::OP's that is part of. It is a binary operator or "BINOP".</p>
+					There isn't a rule for "divide" specifically, but instead
+					the class B::OP's that is part of. It is a binary operator
+					or <code>BINOP</code>.</p>
 
 				<p>The are other complications as well which I am not showing.
 					The above gives you a sense of how this works. The
