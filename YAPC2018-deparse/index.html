@@ -503,6 +503,7 @@ a  <@> leave[1 ref] vKP/REFC
 			<center><img data-src="div.png"></center>
 		</section>
     <section>
+			<h3>Perl fragments associated with B::OPs</h3>
 			<aside class="notes">
 				<p>In this diagram, I've given a Perl source-code translation for each node.</p>
 
@@ -535,10 +536,11 @@ a  <@> leave[1 ref] vKP/REFC
 					or "synthesized" attributes.
 				<b>down</b></p>
 			</aside>
-			<h3>Perl fragments associated with B::OPs</h3>
 
 			<center><img data-src="div-str.png"></center>
 		</section>
+	</section>
+	<section>
     <section>
 			<h3><code>divide</code> rule</h3>
 			<pre><code class="perl">
@@ -572,22 +574,24 @@ sub divide {
 					that parentheses are need around the addition operation.
 					<b>next</b></p>
 			</aside>
-		</section>
-    <section>
-			<aside class="notes">
-				<p>For gvsv OPs, all we do extract the name. Again this is a simplification.
+		  </section>
+      <section>
+  			<h3><code>gvsv</code> rule</h3>
+  			<aside class="notes">
+  				<p>For gvsv OPs, all we do extract the name. Again this is a simplification.
 					<b>next</b></p>
-			</aside>
-			<h3><code>gvsv</code> rule</h3>
-			<pre><code class="perl">
+  			</aside>
+  			<pre><code class="perl">
 sub gvsv {
    my ($self, $op, $context) = @_;
    my $str = $self->gv_name($op);
    return $self->maybe_local($op, $str);
 }
       </code></pre></p>
-		</section>
-    <section>
+      </section>
+   </section>
+
+<section>
 			<h3>Simplifying the 100's of rule codes</h3>
 			<aside class="notes">
 				<p>B::Deparse.pm is about 5K lines of code excluding the POD documentation at the bottom.
@@ -602,7 +606,7 @@ sub gvsv {
 					use <code>sprintf</code>. Instead I wrote a little template
 					parser like <code>sprintf</code> and use <code>%c</code> to
 					indicate the value returned from the child node. And when
-					there is precedence involved, I use <code>%p</ocde> which
+					there is precedence involved, I use <code>%p</code> which
 					informs the child as it recurses what my precidence is. Here
 					it is 19.
 				</p>
@@ -620,8 +624,8 @@ my $str =  $left . '/' . $right;
 			  <p><pre><code class="perl">
 my $str =  sprintf("%s/%s", $left , $right);
 			 </pre></code></p>
-     </section>
-    <section>
+   </section>
+   <section>
 			<h3>Simplifying rule code - templating</h3>
 			<pre><code class="perl">
 our $PP_RULES = {
@@ -629,9 +633,9 @@ our $PP_RULES = {
     ...
 }
       </code></pre></p>
-		</section>
+   </section>
 
-    <section>
+   <section>
 			<h3>Lingering Problems: Translation</h3>
 			<section>
 				<aside class="notes">
@@ -693,7 +697,7 @@ my(@prev) = (undef, 0, 1)
 						<b>next</b></p>
 				</aside>
 		</section>
-	</section>
+  </section>
 
 	<section>
 		<h3>Lingering Problem: PC location in a call</h3>
@@ -718,7 +722,7 @@ sub print_line {
 		</p>
 		<p>prints "call from line 1".<p><p>
 		<small><p>From <a href="https://stackoverflow.com/questions/28652593/perls-caller-function-returning-incorrect-line-number/51349698#51349698">StackOverflow</a></small></p>
-	/section>
+	</section>
 
 	<section>
 		<h4>Devel::Trepan Deparse with Fibonacci</h4>
