@@ -129,7 +129,7 @@ eval { $code };
 
 			<p><b>[next]</b> Finally &mdash; this is my favorite &mdash; because
 				it shows that in Perl you can run code that is created at
-				runtime and the source code doesn't sit in a file somewhere.</p>
+				runtime and the source code doesn't sit in a file somewhere. <b>next</b></p>
 		</aside>
 
 	</section>
@@ -173,7 +173,7 @@ eval { $code };
 				<p>At least for me this has been particularly irksome. The
 					computer "knows" which divide or index is the problem: the
 					information is available, not lost. It just needs to be
-					instructed to tell you.</p>
+					instructed to tell you.	<b>next</b></p>
 			</aside>
 		</section>
 	</section>
@@ -252,7 +252,7 @@ $a / $b / $c
 			about each other than they come from the same line.<p>
 
 			<p>To get a sense of how to do this, let's see how this is very
-			similar to human-language translation.</p>
+			similar to human-language translation.</p> <b>next</b></p></p>
 
 		</aside>
 
@@ -329,7 +329,7 @@ $a / $b / $c
 					longer by showing that in human language you've already seen
 					something similar to the <code>nextstate</code> position
 					mark followed by a bunch of instructions that.  I am
-					referring to a side-by-side translation of poetry....</p>
+					referring to a side-by-side translation of poetry.... 	<b>next</b></p>
 			</aside>
 		</section>
 
@@ -437,7 +437,7 @@ a  <@> leave[1 ref] vKP/REFC
 				between the two translations.</p>
 
 			<p>Perl already provides this tree structure which pretty much
-				follows its source-code grammar.</p>
+				follows its source-code grammar. <b>next</b></p>
 			</aside>
 	</section>
 
@@ -602,14 +602,6 @@ sub gvsv {
 					use the data at the end for formatting.</p>
 				<p>So the way to reduce that long repetitive code is to create
 					a little Domain-Specific Language or DSL<p>
-				<p>In B::Deparsetree the returned value is a tree, so we can't
-					use <code>sprintf</code>. Instead I wrote a little template
-					parser like <code>sprintf</code> and use <code>%c</code> to
-					indicate the value returned from the child node. And when
-					there is precedence involved, I use <code>%p</code> which
-					informs the child as it recurses what my precidence is. Here
-					it is 19.
-				</p>
 				<b>next</b></p>
 
 				<p>
@@ -626,7 +618,19 @@ my $str =  sprintf("%s/%s", $left , $right);
 			 </pre></code></p>
    </section>
    <section>
-			<h3>Simplifying rule code - templating</h3>
+		 <h3>Simplifying rule code - templating</h3>
+			<aside class="notes">
+				<p>In B::Deparsetree the returned value is a tree, so we can't
+					use <code>sprintf</code>. Instead I wrote a little template
+					parser like <code>sprintf</code> and use <code>%c</code> to
+					indicate the value returned from the child node. And when
+					there is precedence involved, I use <code>%p</code> which
+					informs the child as it recurses what my precidence is. Here
+					it is 19.
+				<b>next</b></p>
+			</aside>
+				</p>
+
 			<pre><code class="perl">
 our $PP_RULES = {
     divide => ("%p/%p", [[0, 19], [1, 19]]),
@@ -662,12 +666,12 @@ our $PP_RULES = {
     COP (0x7fee65ad8728) dbstate
     BINOP (0x7fee65ad8788) aassign [2]
         UNOP (0x7fee60d08198) null [157]
-            OP (0x7fee60d08160) pushmark
+            OP (0x7fee60d08160) PUSHMARK  // What's this? ...
             OP (0x7fee60d08220) undef
             SVOP (0x7fee60d081e0) const  IV (0x7fee61806c88) 0
             SVOP (0x7fee60d08120) const  IV (0x7fee61806c10) 1
         UNOP (0x7fee60d080c0) null [157]
-            OP (0x7fee65ad87d0) pushmark
+            OP (0x7fee65ad87d0) PUSHMARK  // and this?
             OP (0x7fee60d08258) padav [1] my @prev = (undef, 0, 1);
 			</code></pre>
 
@@ -677,7 +681,8 @@ our $PP_RULES = {
 					marking thing. When you open a new scope you have it. So
 					sometimes it might be like a brace, but it can occur even
 					when there is no brace involved as happen here when I have
-					an array list literal.
+					an array list literal. 	<b>next</b></p>
+
 			</aside>
 
 			</section>
@@ -736,19 +741,27 @@ sub print_line {
 
 				<p>I am running this inside a GNU Emacs session using a Emacs
 					Lisp program that acts as a wrapper or front-end to the
-					debugger. It is called realgud.</p>
+					debugger. It is called realgud. <b>play</b></p>
+
 
 				<p>I augmented the standard non-caching recursive Fibonacci
 					program so that I can stop at any place in the sequence of
-					recursive calls using variable $count. I set a breakpoint at
+					recursive calls using variable <code>$count</code>. I set a breakpoint at
 					line 5 if $count is 3. I run the code and get a breakpoint
 					at that line.
 				</p>
-				<p>First I'll show a backtrace with the source.</p>
-				<p>After that I show a backtrace with the specific calls
-					highlighted and you can see it identifies which call
-					function of the possible two was used.
-				</p>
+				<p>First I show a normal backtrace. Next I show one that was
+				produced with the deparser which highlights which call we are
+					coming from.</p>
+
+				<p>Finally, instead of the call stack I'll show information
+				about where exactly I am stopped. Note that I give the exact
+				address you are stopped at. And because this the underlined
+				text is <code>$count</code> rather than
+				under <code>++$count</code> the Perl interpreter is
+				stopped <i>before</i> the
+				preincrement <code>++</code>.  <b>next</b> </p>
+
 				</aside>
 
 	</section>
