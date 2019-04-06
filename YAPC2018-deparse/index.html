@@ -625,7 +625,7 @@ my $str =  sprintf("%s/%s", $left , $right);
 					parser like <code>sprintf</code> and use <code>%c</code> to
 					indicate the value returned from the child node. And when
 					there is precedence involved, I use <code>%p</code> which
-					informs the child as it recurses what my precidence is. Here
+ 					informs the child what my precedence is as it recurses. Here
 					it is 19.
 				<b>next</b></p>
 			</aside>
@@ -751,12 +751,12 @@ sub print_line {
 					at that line.
 				</p>
 				<p>First I show a normal backtrace. Next I show one that was
-				produced with the deparser which highlights which call we are
+				produced with the deparser. It highlights which call we are
 					coming from.</p>
 
 				<p>Finally, instead of the call stack I'll show information
 				about where exactly I am stopped. Note that I give the exact
-				address you are stopped at. And because this the underlined
+				address you are stopped at. And because the underlined
 				text is <code>$count</code> rather than
 				under <code>++$count</code> the Perl interpreter is
 				stopped <i>before</i> the
