@@ -1,419 +1,361 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="utf-8" />
     <title>Large-Scale Software Development with Elisp</title>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=1024" />
-    <meta name="description" 
+    <meta name="description"
 	  content="Large-Scale Software Development with Elisp">
     <meta name="author" content="Rocky Bernstein" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
-    <link href="styles.css" rel="stylesheet" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/beige.css" id="theme">
+    <link rel="stylesheet" href="css/theme/rocky-adds.css" id="rocky">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
 
   </head>
-<body>
+  <body>
 
-    <div id="impress">
-      <div class="no-support-message">
-	Your browser doesn't support impress.js.  Try Chrome or Safari.
-      </div>
-      
-      <div id="title" class="step slide with_height" data-scale="5">
-	<div class="title">
+    <div class="reveal">
+
+      <div class="slides", align="left">
+	<section>
 	  <h2>Large-scale Software Development with Elisp</h2>
-	</div>
-	<div id="slide_details">
-	Rocky Bernstein: <tt>rocky@gnu.org</tt>
-	</div>
-	<div id="slide-content">
-	  <ul class>
-	    <li>large program:
-	    <a href="http://github.com/rocky/emacs-dbgr">
-		https://github.com/rocky/emacs-dbgr</a></li>
-	    <li>linking tool:
-	    <a href="http://github.com/rocky/emacs-load-relative">
-		https://github.com/rocky/emacs-load-relative</a></li>
-	    <li>unit test:
-	    <a href="http://github.com/rocky/emacs-test-unit">
-		https://github.com/rocky/emacs-test-unit</a></li>
-	    <li>talk text:
-	    <a href="http://github.com/rocky/rocky.github.com/wiki/NYC-Lisp-Elisp-talk">
-		https://github.com/rocky/rocky.github.com/wiki/NYC-Lisp-Elisp-talk</a>
-	    </li>
-	    <li>slides (what you see here): 
-	    <a href="http://rocky.github.com/NYC-Lisp-Elisp-talk">
-		http://rocky.github.com/NYC-Lisp-Elisp-talk</a>
-	    </li>
-	  </ul>
-	</div>
-	<div class="hint">
-	  <p>Use a spacebar or arrow keys to navigate</p>
-	</div>
-	<script>
-	  if ("ontouchstart" in document.documentElement) { 
-	  document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
-	  }
-	</script>
 
-      </div>
-      
-      <div id="talk-overview" class="step slide" data-x="5000" data-scale="3">
-	<div class="slide-content">
-          <h3>Talk Overview</h3>
-	  <ul class="lv0_indent">
+	  <h4>Rocky Bernstein: <tt>rocky@gnu.org</tt></h4>
+	</section>
+
+	<section>
+	  <h3>Talk Overview</h3>
+	  <ul>
 	    <li>
-	      <a href="https://github.com/rocky/emacs-dbgr/wiki/Debconf2010-emacs-pydbgr.ogv">Short GUD rewrite demo</a></li>
-	    <li>Development Requirements</li>
-	    <li>Internal vs. External linking
-	    <li>Testing framework
-	    <li>Questions, where to go from here?
+	      <a href="https://github.com/realgud/realgud/wiki/Debconf2010-emacs-pydbgr.ogv">Short GUD rewrite demo</a></li>
+	    <li class="fragment roll-in">Development Requirements</li>
+	    <li class="fragment roll-in">Internal vs. External linking</li>
+	    <li class="fragment roll-in">Testing framework</li>
+	    <li class="fragment roll-in">Questions, where to go from here?</li>
 	  </ul>
-	</div>
-      </div>
+	</section>
 
-      <div id="require" class="step" data-x="10000" data-y='0'
-	   data-scale="3">
-	<div class="slide-content">
-          <h3>Development Requirements</h3>
-	  <p>Here are the things that are important to me:
-	    <ul class="lv0_indent">
+	<section>
+	  <h3>Development Requirements &mdash; General</h3>
+	  <p>Here are the things that are important to me:</p>
+	  <section>
+	    <ul>
+	      <li>Of course, I use GNU Emacs.</li>
+            </ul>
+	  </section>
+
+	  <section>
+	    <ul>
 	      <li>Of course, I use GNU Emacs.</li>
 	      <li>I need to be able to break this program into small chunks or modules.
-	  </ul></p>
-	</div>
-      </div>
-
-      <div id="require2a" class="step" data-x="10000" data-y="2000"
-	   data-scale="3">
-	<div class="slide-content">
-          <h3>Development Requirements</h3>
-    	  <p>Here are the things that are important to me:
-    	    <ul class="lv0_indent">
-    	      <li>Of course, I use GNU Emacs.</li>
-    	      <li>I need to be able to break this program into small chunks or modules.
-    		<br><em>Implication</em>: there may be many files.
-    	      </li>
-    	  </ul></p>
-	</div>
-      </div>
-      
-    <div id="require3" class="step" data-x="10000" data-y="4000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Development Requirements</h3>
-    	<p>Here are the things that are important to me:
-    	  <ul id="lv0_indent">
-    	    <li>Of course, I use GNU Emacs.</li>
-    	    <li>I need to be able to break this program into small chunks or modules.
-    	      <br><em>Implication</em>: there may be many files.
-    	    </li>
-    	    <li>I need to be able to run and debug each module in isolation.
-    	  </ul></p>
-      </div>
-    </div>
-
-
-    <div id="require3a" class="step slide" data-x="10000" data-y="6000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Development Requirements</h3>
-    	<p>Here are the things that are important to me:
-    	  <ul class="lv0_indent">
-    	    <li>Of course, I use GNU Emacs.</li>
-    	    <li>I need to be able to break this program into small chunks or modules.
-    	      <br><em>Implication</em>: there may be many files.
-    	    </li>
-    	    <li>I need to be able to run and debug each module in isolation.
-    	      <br><em>Implication</em>: each module needs to have enough information to pull in whatever other modules it needs
-	    </li>
-    	  </ul>
-    	</p>
-      </div>
-    </div>
-      
-    <div id="require4" class="step slide" data-x="10000" data-y="8000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Development Requirements</h3>
-    	<p>Here are the things that are important to me:
-    	  <ul class="lv0_indent">
-    	    <li>Of course, I use GNU Emacs.</li>
-    	    <li>I need to be able to break this program into small chunks or modules.
-    	      <br><em>Implication</em>: there may be many files.
-    	    </li>
-    	    <li>I need to be able to run and debug each test in isolation.
-    	      <br><em>Implication</em>: each module needs to have enough information to pull in whatever other modules it needs
-	    </li>
-	    <li>I want quick development turnaround (edit,test,run...)</li>
-    	  </ul>
-    	</p>
-      </div>
-    </div>
-
-    <div id="require4a" class="step slide" data-x="10000" data-y="10000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Development Requirements</h3>
-    	<p>Here are the things that are important to me:
-    	  <ul class="lv0_indent">
-    	    <li>Of course, I use GNU Emacs.</li>
-    	    <li>I need to be able to break this program into small chunks or modules.
-    	      <br><em>Implication</em>: there may be many files.
-    	    </li>
-    	    <li>I need to be able to run and debug each test in isolation.
-    	      <br><em>Implication</em>: each module needs to have enough information to pull in whatever other modules it needs
-	    </li>
-	    <li>I want to reduce the development loop.
-    	      <br><em>Implications:</em>
-	      <ul>
-    		<li> This means reducing the amount of "compilation" time</li>
-    		<li>it means I don't want to have to "install" code to try modules I am interested in.</li>
-    		<li>I may have an "installed" version and a "development" version and ...</li>
-		<li>I want to be able to run from the "development" code with little overhead.</li>
-    	      </ul></em>
-    	    </li>
-    	  </ul>
-    	</p>
-      </div>
-    </div>
-
-
-    <div id="require5" class="step slide" data-x="10000" data-y="12000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Development Requirements Continued...</h3>
-    	  <ul class="lv0_indent">
-	    <li>I need to be able to test each module in isolation.</li>
-	    <li>I need to be run all tests often.</li>
-	    <li>Test modules are still modules, so see above.</li>
-	  </ul>
-      </div>
-    </div>
-
-    <div id="require5a" class="step slide" data-x="10000" data-y="14000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Development Requirements Continued...</h3>
-    	  <ul class="lv0_indent">
-	    <li>I need to be able to test each module in isolation.</li>
-	    <li>I need to be able in batch</li>
-	    <li>Test modules are still modules, so see above.</li>
-	    <br><em>Implications:
-	      <ul>
-		<li>Because there are many files there are many tests</li>
-		<li>Tests need to be able to be run interactively</li>
-		<li>Tests need to be run in batch
-	      </ul></em>
-	  </ul>
-      </div>
-    </div>
-
-    <div id="Linking" class="step slide" data-x="15000" data-y="0"
-	 data-scale="3">
-      <div id="slide-content">
-        <h2>The Internal/External Linking Problem</h3>
-<p>
-A (large) Emacs Lisp program uses modules from many places. Some
-modules reside inside and some outside.
-
-<p><em>Example</em>: location positioning might be such a thing.
-      </div>
-    </div>
-
-    <div id="c-linking" class="step slide" data-x="20000" data-y="0"
-	 data-scale="3">
-      <div id="slide-content">
-        <h2>C #includes</h2>
-	<div class="slide-content">
-	  <p>Interestingly the very old language, C, got it right. Consider:
-<table class="CodeRay"><tr>
-  <td class="code"><pre><span class="preprocessor">#include</span> <span class="include">&quot;stdio.h&quot;</span>
-</pre></td>
-</tr></table>
-which can also be written as:
-
-<table class="CodeRay"><tr>
-  <td class="code"><pre><span class="preprocessor">#include</span> <span class="include">&quot;./stdio.h&quot;</span> 
-</pre></td>
-</tr></table>
-versus:
-<table class="CodeRay"><tr>
-  <td class="code"><pre><span class="preprocessor">#include</span> <span class="include">&lt;stdio.h&gt;</span>
-</pre></td>
-</tr></table>
-
-	</div>
-      </div>
-    </div>
-
-    <div id="ruby-linking" class="step slide" data-x="25000" data-y="0"
-	 data-scale="3">
-      <div id="slide-content">
-        <h2>Ruby requires</h2>
-	<div class="slide-content">
-	  <p>In Ruby 1.9.<em>x</em>:
-<table class="CodeRay"><tr>
-  <td class="code"><pre>require <span class="string"><span class="delimiter">'</span><span class="content">rubygems</span><span class="delimiter">'</span></span>
-</pre></td>
-</tr></table>
-	    versus:
-<table class="CodeRay"><tr>
-    <td class="code"><pre>require_relative <span class="string"><span class="delimiter">'</span><span class="content">rubygems</span><span class="delimiter">'</span></span>
-</pre></td>
-</tr></table>
-	</div>
-      </div>
-    </div>
-      
-    <div id="evil-load-path" class="step slide" data-x="30000" data-y="0"
-	 data-scale="3">
-      <div id="slide-content">
-        <h2>load-path is evil</h2>
-	<div class="slide-content">
-	  <p>In Emacs Lisp we have <tt>load-path</tt> which is consulted in <tt>load()</tt> and <tt>require()</tt>.</p>
-	  <p>Problems with <tt>load-path</tt>
-	    <ul>
-	      <li>It is insecure</li>
-	      <li>It is complex</li>
-	      <li>It is fragile</li>
+		<div class="fragment roll-in">
+    		  <br><em>Implication</em>: there may be many files.
+	      </div></li>
 	    </ul>
-	  </p><em>Show curent load-path</em>
-	</div>
-      </div>
-    </div>
+	  </section>
+	</section>
 
-<!--     <div id="load-relative" class="step slide" data-x="35000" data-y="0" -->
-<!-- 	 data-scale="3"> -->
-<!--       <div id="slide-content"> -->
-<!--         <h2>load-relative</h2> -->
-<!-- 	<div class="slide-content"> -->
-<!-- 	  <p>I wrote <a href="http://github.com/rocky/emacs-load-relative">emacs-load-relative</a> for internal linking. In its simplest form:</p> -->
-	    
-<!-- <table class="CodeRay"><tr> -->
-<!--   <td class="code"><pre>(<span class="keyword">require</span> 'load-relative) <span class="comment">; pull in (load-relative)</span> -->
-<!-- (load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span>) -->
-<!-- (load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">./my-module</span><span class="delimiter">&quot;</span></span>) <span class="comment">; same thing</span> -->
-<!-- </pre></td> -->
-<!-- </tr></table> -->
-<!-- 	</div> -->
-<!--       </div> -->
-<!--     </div> -->
+	<section>
+	  <h3>Development Requirements &mdash; Organization</h3>
+	  <section>
+    	    <ul>
+	      <li>I need to be able to break this program into small chunks or modules.
+		<div class="fragment roll-in">
+    		  <br><em>Implication</em>: there may be many files.
+	      </div></li>
+	      <li class="fragment roll-in">I need to be able to run and debug each module in isolation.
+		<div class="fragment roll-in">
+		  <br><em>Implication</em>: each module needs to have enough information to pull in whatever other modules it needs
+		</div>
+	      </li>
+    	    </ul>
+	  </section>
+	</section>
 
-    <div id="load-relative2" class="step slide" data-x="40000" data-y="0"
-	 data-scale="3">
-      <div id="slide-content">
-        <h2>load-relative</h2>
-	<div class="slide-content">
-	  <p>I wrote <a href="http://github.com/rocky/emacs-load-relative">emacs-load-relative</a> for internal linking. In its simplest form:</p>
-	    
-<table class="CodeRay"><tr>
-  <td class="code"><pre>(<span class="keyword">require</span> 'load-relative) <span class="comment">; pull in (load-relative)</span>
-(load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span>)
-(load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">./my-module</span><span class="delimiter">&quot;</span></span>) <span class="comment">; same as above</span>
-(load-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span> 'dbgr) <span class="comment">; find under 'dbgr</span>
-(require-relative <span class="string"><span class="delimiter">&quot;</span><span class="content">my-module</span><span class="delimiter">&quot;</span></span> 'dbgr) <span class="comment">; use require instead of load</span>
-</pre></td>
-</tr></table>
+	<section>
+          <h3>Development Requirements &mdash; Developing </h3>
+    	  <ul>
+	    <li>I want quick development turnaround (edit,test,run...)</li>
+		<div class="fragment roll-in">
+    		<br><small><em>Implications:</em>
+		<ul>
+    		  <li> This means reducing the amount of "compilation" time</li>
+    		  <li>it means I don't want to have to "install" code to try modules I am interested in.</li>
+    		  <li>I may have an "installed" version and a "development" version and ...</li>
+		  <li>I want to be able to run from the "development" code with little overhead.</li>
+		</ul></small>
+		</div>
+    	  </ul>
+	</section>
 
-<p>A real example from <a href="https://github.com/rocky/emacs-dbgr/blob/master/dbgr/debugger/trepan.pl/init.el">emacs-dbgr/debugger/trepan.pl/init.el</a>:
-<table class="CodeRay"><tr>
-  <td class="code"><pre>
-(require-relative-list '(<span class="string"><span class="delimiter">&quot;</span><span class="content">../../common/regexp</span><span class="delimiter">&quot;</span></span> 
-                         <span class="string"><span class="delimiter">&quot;</span><span class="content">../../common/loc</span><span class="delimiter">&quot;</span></span> 
-                         <span class="string"><span class="delimiter">&quot;</span><span class="content">../../common/init</span><span class="delimiter">&quot;</span></span>) 
-                         <span class="string"><span class="delimiter">&quot;</span><span class="content">dbgr-</span><span class="delimiter">&quot;</span></span>)
-</pre></td>
-</tr></table>
-	</div>
-      </div>
-    </div>
+	<section>
+	  <h3>Development Requirements &mdash; Testing Continued...</h3>
+	  <ul>
+	    <li>I need to be able to test each module in isolation.</li>
+	    <li>I need to be able to test in batch</li>
+	    <li>Test modules are still modules, so see above.</li>
+	    <div class="fragment roll-in">
+	      <br><em>Implications:
+		<ul>
+		  <li>Because there are many files there are many tests</li>
+		  <li>Tests need to be able to be run interactively</li>
+		  <li>Tests need to be run in batch
+	      </ul></em>
+	    </div>
 
-    <div id="testing" class="step slide" data-x="45000" data-y="0000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Testing</h3>
-	Relatively Recent Schools of Testing
-    	  <ul class="lv0_indent">
+	</section>
+
+	<section>
+	  <h3>The Internal/External Linking Problem</h3>
+	  <p>
+	    A (large) Emacs Lisp program uses modules from many places. Some
+	    modules reside inside and some outside.</p>
+
+	  <p><em>Example</em>: location positioning might be such a thing.
+	  </p>
+	</section>
+
+	<section>
+	  <h3>C #includes</h3>
+	  <p>Interestingly the very old language, C, got it right. Consider:
+	  <p><pre><code class="C">
+#include "stdio.h"
+	  </code></pre></p>
+
+	  which can also be written as:
+
+	  <p><pre><code class="C">
+#include "./stdio.h"
+	  </code></pre></p>
+
+	  versus:
+	  <p><pre><code class="C">
+#include &lt;stdio.h&gt;
+	  </code></pre></p>
+
+	</section>
+
+
+	<section>
+	  <h3>Ruby requires</h3>
+	  <p>In Ruby 1.9 and above:
+	  <p><pre><code class="ruby">
+		require "my_module"
+	    </code></pre>
+	    versus:
+	  <p><pre><code class="ruby">
+		require_relative "my_module"
+	  </code></pre></p>
+	</section>
+
+	<section>
+	  <h3>load-path is evil</h3>
+	  <section>
+	    <p>In Emacs Lisp we have <i>load-path</i> which is consulted in <i>load()</i> and <i>require()</i>.</p>
+	    <p>Problems with <i>load-path</i>:</p>
+	    <p align="left">
+	      <ul>
+		<li class="fragment roll-in">It is insecure</li>
+		<li class="fragment roll-in">It is complex</li>
+		<li class="fragment roll-in">It is fragile</li>
+	      </ul>
+	    </p>
+	  </section>
+	  <section>
+	    <p><pre><code class="Lisp">
+load-path
+("/home/rocky/.emacs.d/elpa/load-relative-20190601.1221"
+"/home/rocky/.emacs.d/elpa/lsp-mode-20190601.2003"
+"/home/rocky/.emacs.d/elpa/load-relative-20190531.2319"
+"/home/rocky/.emacs.d/elpa/lsp-mode-20190531.1911"
+"/home/rocky/.emacs.d/elpa/slime-20190531.1534/contrib"
+...)
+(length load-path) => 185
+	  </code></pre></p>
+	  </section>
+	</section>
+
+	<section>
+	  <section>
+            <h2>Introducing load-relative</h2>
+	    <p>I wrote <a href="http://github.com/rocky/emacs-load-relative">load-relative</a> for internal linking. It is available on ELPA and MELPA.</p>
+
+	    <p>In its simplest form:</p>
+
+	    <p><pre><code class="Lisp">
+(require 'load-relative) ;; pull in library
+(require-relative "my-module")
+(require-relative "./my-module") ;; same as above
+	    </code></pre></p>
+	  </section>
+
+	  <section>
+            <h2>Introducing load-relative-list</h2>
+
+	    <p><pre><code class="Lisp">
+(require-relative-list  '("my-module-a"))
+;; The above is the same as:
+(require-relative "my-module-a")
+(require-relative "my-module-b")
+	    </code></pre></p>
+	  </section>
+	</section>
+
+
+	<section>
+          <h3>Testing</h3>
+	  <p>Schools of Testing:</p>
+    	  <p><ul>
+	    <li>Behavior Driven Development (<a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>)</li>
 	    <li>Test Driven Development (<a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a>).
 	    </li>
-	    <li>Behavior Driven Development (<a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">BDD</a>)</li>
-	  </ul>
-	  <p>Some Test frameworks. See <a href="http://www.emacswiki.org/emacs/UnitTesting">http://www.emacswiki.org/emacs/UnitTesting:</a>
-    	  <ul class="lv0_indent">
-	    <li><a href="http://www.emacswiki.org/emacs/ElkTest">http://www.emacswiki.org/emacs/ElkTest</a></li>
-	    <li><a href="http://www.emacswiki.org/emacs/ErtTestLibrary"</a>http://www.emacswiki.org/emacs/ErtTestLibrary</li>
-	    <li><a href="https://github.com/rocky/emacs-test-unit"</a>https://github.com/rocky/emacs-test-unit</a></li>
-	  </ul>
-      </div>
-    </div>
+	  </ul></p>
+	  <p>Some Test frameworks.</p>
+   	  <p><ul>
+	    <li><a href="http://www.emacswiki.org/emacs/ErtTestLibrary">ERT</a></li>
+	    <li><a href="https://github.com/rocky/emacs-test-unit">Test Unit</a></li>
+	  </ul></p>
+	</section>
 
-    <div id="emacs-test-unit" class="step slide" data-x="50000" data-y="0000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Emacs Test Unit</h3>
-	  <p>I have <a href="https://github.com/rocky/emacs-dbgr/tree/master/test">39 tests for over 90 Emacs Lisp</a> files. This is more than <a href="http://bzr.savannah.gnu.org/lh/emacs/emacs-24/files/head:/test/automated/">Emacs 24 using <em>elr</em></a>. 
-	  <p>Let's now dive into a test from <em>emacs-dbgr</em>, specifically one for <a href="https://github.com/rocky/emacs-dbgr/blob/master/test/test-regexp-gdb.el">testing <em>gdb</em> regular expressions</a>: 
-      </div>
-    </div>
+	<section>
+          <h3>Emacs Test Unit</h3>
+	  <section>
+	    <p>I have <a href="https://github.com/realgud/realgud/tree/master/test">66 test files for over 100 Emacs Lisp</a> files. This is more than <a href="http://bzr.savannah.gnu.org/lh/emacs/emacs-24/files/head:/test/automated/">Emacs 24 using <em>elr</em></a>.
+	    <p>Let's now dive into a test. This one is from <a href="https://github.com/rocky/test-simple/blob/master/test/test-basic.el">testing <em>test-simple</em> itself</a>:
+	  </section>
+	  <section>
 
-    <div id="emacs-test-unit2" class="step slide" data-x="55000" data-y="0000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Emacs Test Unit Example</h3>
-	  <p><a href="https://github.com/rocky/emacs-dbgr/blob/master/test/test-regexp-gdb.el">Testing <em>gdb</em> regular expressions</a>:
+	    <p><pre><code class="Lisp">
+(require 'cl-lib)
+(load-file "../test-simple.el")
+(test-simple-start "test-simple.el")
+
+(note "basic-tests")
+(assert-t (memq 'test-simple features) "'test-simple provided")
+
+(assert-nil nil "Knights of ni")
+(assert-equal 5 (+ 1 4) "assert-equal")
+(assert-raises error (error "you should not see this") "assert-raises")
+
+(end-tests)
+	    </code></pre></p>
+	  </section>
+	</section>
+
+	<section>
+          <h3>Emacs Test Run</h3>
+	  <section>
+	    <p>Inside GNU Emacs</p>
+	    <p><pre><code class="Bash">
+M-x eval-current-buffer
+	    </code></pre></p>
+	    <p>Inside buffer <code>*test-simple*</code> we have:</p>
+
+	  <p><pre><code class="Bash">
+test-simple.el
+....
+ 0 failures in 4 assertions (0.00102626 seconds)
+	  </code></pre></p>
+	  </section>
+
+	  <section>
+	    <p>Inside a POSIX shell terminal:</p>
 
 
-<table class="CodeRay"><tr>
-  <td class="code"><pre>(<span class="keyword">require</span> 'test-unit) 
-(<span class="keyword">load-file</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">../dbgr/common/buffer/command.el</span><span class="delimiter">&quot;</span></span>) 
-(<span class="keyword">load-file</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">../dbgr/debugger/gdb/init.el</span><span class="delimiter">&quot;</span></span>)
-...
-(test-unit-clear-contexts)
-...
-(context  <span class="string"><span class="delimiter">&quot;</span><span class="content">traceback location matching</span><span class="delimiter">&quot;</span></span>
-   (tag regexp-gdb)
-   (specify <span class="string"><span class="delimiter">&quot;</span><span class="content">basic location</span><span class="delimiter">&quot;</span></span>
-     (assert-t (numberp (loc-match text))))
-...
-)
-(test-unit <span class="string"><span class="delimiter">&quot;</span><span class="content">regexp-gdb</span><span class="delimiter">&quot;</span></span>)
+	    <p><pre><code class="Bash">
+$ # after ./configure && make
+$ make check-short
+make -C test check 2>&1  | ruby make-check-filter.rb
+test-simple.el
+....
+0 failures in 4 assertions (0.000122467 seconds)
+..
+0 failures in 2 assertions (0.00157458 seconds)
+.....
+0 failures in 5 assertions (0.000479297 seconds)
+	    </code></pre></p>
+	  </section>
+	</section>
 
-</pre></td>
-</tr></table>
-      </p><em>Go through example</em>
-      </div>
-    </div>
 
-    <div id="batch-test" class="step slide" data-x="60000" data-y="0000"
-	 data-scale="3">
-      <div class="slide-content">
-        <h3>Running in Batch</h3>
-	<pre>
-  $ remake --tasks # shows what targets are around
-  CTAGS
-  ChangeLog
-  ...
-  check
-  check-am
-  check-recursive
-  check-short	# Run all tests without bloated output
-  $ cd test
-  $ make check-short
-	  
-  Running specs tagged "bp":
-  .
-  0 problems in 1 specification using 1 assertions. (0 seconds)
-	</pre>
-      </div>
-    </div>
+	<section>
+	  <h3>Links</h3>
+	  <small>
+	    <ul>
+	      <li>large program:
+		<a href="http://github.com/realgud/realgud">
+		  https://github.com/realgud/realgud</a></li>
+	      <li>linking tool:
+		<a href="http://github.com/rocky/emacs-load-relative">
+		  https://github.com/rocky/emacs-load-relative</a></li>
+	      <li>unit test:
+		<a href="http://github.com/rocky/emacs-test-unit">
+		  https://github.com/rocky/emacs-test-unit</a></li>
+	      <li>talk text:
+		<a href="http://github.com/rocky/rocky.github.com/wiki/NYC-Lisp-Elisp-talk">
+		  https://github.com/rocky/rocky.github.com/wiki/NYC-Lisp-Elisp-talk</a>
+	      </li>
+	      <li>slides (what you see here):
+		<a href="http://rocky.github.com/NYC-Lisp-Elisp-talk">
+		  http://rocky.github.com/NYC-Lisp-Elisp-talk</a>
+	      </li>
+	    </ul>
+	  </small>
+	</section>
 
-    <div id="TheEnd" class="step slide" data-x="65000" data-y="0" data-rotate="180" data-scale="3">
-      <div id="slide-details">
-        <h3>The End... Thanks!</h3>
-      </div>
-    </div>
+</div>
 
-    <script type="text/javascript" src="impress.js"></script>
-  </body>
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+  // Full list of configuration options available at:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+	slideNumber: true,
+
+  transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+	{ src: 'node_modules/reveal.js-menu/menu.js' },
+  { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+  { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+  { src: 'plugin/zoom-js/zoom.js', async: true },
+  { src: 'plugin/notes/notes.js', async: true },
+	{ src: 'plugin/menu/menu.js' }
+  ]
+	});
+
+</script>
+
+</body>
 </html>
