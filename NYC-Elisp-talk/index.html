@@ -1,34 +1,34 @@
-<!doctype html>  
+<!doctype html>
 <html lang="en">
-        
+
   <head>
     <meta charset="utf-8">
-    
-		
+
+
     <title>What Makes Really Good (Emacs Lisp) Code?</title>
-    
+
     <meta name="description" content="Slide Presentation to the Emacs NYC meetup group.">
     <meta name="author" content="Rocky Bernstein">
-    
+
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    
+
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    
+
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
-    
+
     <link rel="stylesheet" href="lib/zenburn.css">
   </head>
-  
+
   <body>
-    
+
     <div id="reveal">
-      
+
       <!-- Used to fade in a background when a specific slide state is reached -->
       <div class="state-background"></div>
-      
+
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
 	<section>
@@ -37,12 +37,12 @@
             Rocky Bernstein: <tt>rocky@gnu.org</tt>
 	    <h3></h3>
 	    <small>
-	      <p>slides: 
-		<a href="http://rocky.github.com/NYC-Elisp-talk">
-		  http://rocky.github.com/NYC-Elisp-talk</a>
+	      <p>slides:
+		<a href="http://rocky.github.io/NYC-Elisp-talk">
+		  http://rocky.github.io/NYC-Elisp-talk</a>
 	      </p><p>
-		text: 
-		<a href="https://github.com/rocky/rocky.github.com/wiki/NYC-Elisp-talk">https://github.com/rocky/rocky.github.com/wiki/NYC-Elisp-talk</a>
+		text:
+		<a href="https://github.com/rocky/rocky.github.io/wiki/NYC-Elisp-talk">https://github.com/rocky/rocky.github.io/wiki/NYC-Elisp-talk</a>
 	    </small>
             <script>
               // Delicously hacky. Look away.
@@ -70,9 +70,9 @@ Lisp_Object buffer-live-p(Lisp_Object object) { ...
    add_docstring("non nil if buffer OBJECT ...");
    ...
 	    </code></pre>
-	    we have: 
+	    we have:
             <pre><code contenteditable>
-DEFUN("buffer-live-p", ... 1, 1, 0, doc: /* non-nil if buffer OBJECT has not been killed... */) 
+DEFUN("buffer-live-p", ... 1, 1, 0, doc: /* non-nil if buffer OBJECT has not been killed... */)
 (Lisp_Object object)
 {
   return ((BUFFERP (object) && ! NILP (BVAR (XBUFFER (object), name)))
@@ -91,10 +91,10 @@ return ((BUFFERP (object) && ! NILP (BVAR (XBUFFER (object), name)))
 	  is roughly in Emacs Lisp:
             <pre><code contenteditable>
 (if (and (bufferp object) (not (null (BVAR object name))))
-     t 
+     t
    nil)
 	    </code></pre>
-which could be shortened if C were more Lisp-like: 
+which could be shortened if C were more Lisp-like:
             <pre><code contenteditable>
 (and (bufferp object) (BVAR object name))
 	    </code></pre>
@@ -125,14 +125,14 @@ DEFUN ("buffer-list", Fbuffer_list, Sbuffer_list, 0, 0, 0,
 	  <section>
 	    <h4>gud-def macro</h4>
 	    <p><tt>gud</tt> uses a macro to translate its debugger command into a string sent to a real debugger.</p>
-	    <p>For example, for <em>gdb</em>:</p> 
+	    <p>For example, for <em>gdb</em>:</p>
             <pre><code contenteditable>
 	      (gud-def gud-remove "clear %f:%l" "\C-d" "Remove breakpoint at current line")
             </pre></code>
 	    expands to:
             <pre><code contenteditable>
 (progn
-   (defalias gud-remove 
+   (defalias gud-remove
      (lambda (arg) '("Remove breakpoint at current line")
        (interactive "p")
        (if (not gud-running) (gud-call "clear %f:l" arg))))
@@ -187,7 +187,7 @@ want to save the values that were seen/requested originally."
    num           ;; If there is a number such as a breakpoint or frame
                  ;; number associated with this location, this is set.
                  ;; nil otherwise.
-   filename  
+   filename
    line-number
    column-number ;; Column offset within line
    marker        ;; Position in source code
@@ -195,7 +195,7 @@ want to save the values that were seen/requested originally."
 )
           </pre></code>
         </section>
-        
+
         <section>
 	  <section>
             <h4>Elisp Structure Issues</h4>
@@ -215,7 +215,7 @@ want to save the values that were seen/requested originally."
    bp-list ...
   )
           </pre></code>
-	  we write: 
+	  we write:
           <pre><code contenteditable>
 (dbgr-cmdbuf-info-bp-list dbgr-cmdbuf-info)
           </pre></code>
@@ -244,7 +244,7 @@ want to save the values that were seen/requested originally."
 	<img width="458" height="500" src="http://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Meleagris_gallopavo_Wild_Turkey.jpg/458px-Meleagris_gallopavo_Wild_Turkey.jpg">
 	</section>
       </div>
-      
+
       <!-- The navigational controls UI -->
       <aside class="controls">
         <a class="left" href="#">&#x25C4;</a>
@@ -252,63 +252,63 @@ want to save the values that were seen/requested originally."
         <a class="up" href="#">&#x25B2;</a>
         <a class="down" href="#">&#x25BC;</a>
       </aside>
-      
+
       <!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
       <div class="progress"><span></span></div>
-      
+
     </div>
-    
+
     <script src="js/reveal.js"></script>
-    
+
     <!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
     <script src="lib/highlight.js"></script>
     <script src="lib/classList.js"></script>
-    
+
     <script>
       // Parse the query string into a key/value object
       var query = {};
       location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
       query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
       } );
-      
+
       // Fires when a slide with data-state=customevent is activated
       Reveal.addEventListener( 'customevent', function() {
       alert( '"customevent" has fired' );
       } );
-      
+
       // Fires each time a new slide is activated
       Reveal.addEventListener( 'slidechanged', function( event ) {
       // event.indexh & event.indexv
       } );
-      
+
       Reveal.initialize({
       // Display controls in the bottom right corner
       controls: true,
-      
+
       // Display a presentation progress bar
       progress: true,
-      
+
       // If true; each slide will be pushed to the browser history
       history: true,
-      
+
       // Loops the presentation, defaults to false
       loop: false,
-      
+
       // Flags if mouse wheel navigation should be enabled
       mouseWheel: true,
-      
+
       // Apply a 3D roll to links on hover
       rollingLinks: true,
-      
+
       // UI style
       theme: query.theme || 'default', // default/neon
-      
+
       // Transition style
       transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
       });
-      
+
       hljs.initHighlightingOnLoad();
     </script>
-    
+
   </body>
 </html>

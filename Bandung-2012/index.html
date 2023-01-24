@@ -1,34 +1,34 @@
-<!doctype html>  
+<!doctype html>
 <html lang="en">
-        
+
   <head>
     <meta charset="utf-8">
-    
-		
+
+
     <title>Ruby debuggers</title>
-    
+
     <meta name="description" content="Slide Presentation for Bandung 2012 Ruby Meeting.">
     <meta name="author" content="Rocky Bernstein">
-    
+
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    
+
     <!-- <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
-    
+
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
-    
+
     <link rel="stylesheet" href="lib/zenburn.css">
   </head>
-  
+
   <body>
-    
+
     <div id="reveal">
-      
+
       <!-- Used to fade in a background when a specific slide state is reached -->
       <div class="state-background"></div>
-      
+
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
         <section>
@@ -36,10 +36,10 @@
           Rocky Bernstein: <tt>rocky@gnu.org</tt>
 	  <dl>
 	    <dt>slides:</dt>
-	    <dd><a href="http://rocky.github.com/Bandung-2012">
-		http://rocky.github.com/Bandung-2012</a></dt>
+	    <dd><a href="http://rocky.github.io/Bandung-2012">
+		http://rocky.github.io/Bandung-2012</a></dt>
 	    <dt>text:</dt>
-	    <dd><font color="#13D9EB">http://github.com/rocky/rocky.github.com/wiki/Bandung-2012-talk</a></font></dd>
+	    <dd><font color="#13D9EB">http://github.com/rocky/rocky.github.io/wiki/Bandung-2012-talk</a></font></dd>
 	    <dl>
 	    <dt>github:</dt>
 	    <dd><a href="http://github.com/rocky">http://github.com/rocky</a></dd>
@@ -74,7 +74,7 @@
 	      <image src="rails-book.png"/>
 	      <image src="pickaxe.jpg"/>
 	    </div></p>
-		    
+
 	</section>
 	<section>
           <h1>A Story</h1>
@@ -119,7 +119,7 @@ Loading development environment (Rails 3.0.9)
 :001 > post = Post.find(:first)
  => #&lt;Post id: 1, user: "rocky", text: "hallo semua!"...&gt;
 :002 > post.text
- => "hallo semua!" 
+ => "hallo semua!"
 :003 > link_to('Show', post)
 <em>NoMethodError: undefined method `link_to' for main:Object</em>
 	  </code class="ruby"></pre>
@@ -179,63 +179,63 @@ Loading development environment (Rails 3.0.9)
         <a class="up" href="#">&#x25B2;</a>
         <a class="down" href="#">&#x25BC;</a>
       </aside>
-      
+
       <!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
       <div class="progress"><span></span></div>
-      
+
     </div>
-    
+
     <script src="js/reveal.js"></script>
-    
+
     <!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
     <script src="lib/highlight.js"></script>
     <script src="lib/classList.js"></script>
-    
+
     <script>
       // Parse the query string into a key/value object
       var query = {};
       location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
       query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
       } );
-      
+
       // Fires when a slide with data-state=customevent is activated
       Reveal.addEventListener( 'customevent', function() {
       alert( '"customevent" has fired' );
       } );
-      
+
       // Fires each time a new slide is activated
       Reveal.addEventListener( 'slidechanged', function( event ) {
       // event.indexh & event.indexv
       } );
-      
+
       Reveal.initialize({
       // Display controls in the bottom right corner
       controls: true,
-      
+
       // Display a presentation progress bar
       progress: true,
-      
+
       // If true; each slide will be pushed to the browser history
       history: true,
-      
+
       // Loops the presentation, defaults to false
       loop: false,
-      
+
       // Flags if mouse wheel navigation should be enabled
       mouseWheel: true,
-      
+
       // Apply a 3D roll to links on hover
       rollingLinks: true,
-      
+
       // UI style
       theme: query.theme || 'default', // default/neon
-      
+
       // Transition style
       transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
       });
-      
+
       hljs.initHighlightingOnLoad();
     </script>
-    
+
   </body>
 </html>
