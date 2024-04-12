@@ -1,0 +1,3 @@
+[submodule "blackhat-asia-2024-additional"]
+	path = blackhat-asia-2024-additional
+	url = https://github.com/rocky/blackhat-asia-2024-additional.git
