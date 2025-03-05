@@ -13,10 +13,25 @@
 </div>
 <aside class="notes">
   <p>
-    Note: this concludes getting position information into the
-    compiler. Another piece that should be done is associating memory
-    addresses and register with source text variable names and the
-    kinds of types they hold.
+    [HIT play and stop at times below]
+  <p>
+    <ul>
+      <li>[0:10] First, I get a list of positions from the x86 assembly file.</li>
+      <li>Next, I run "lldb". I use this instead of gdb because it can stop at column numbers. [PLAY]</li>
+      <li>[0:31] Notice I have stopped at "our_code_starts_here" which
+	in objdump was addresss 0. and "our_code_starts_here+7" which
+	was listed as address 7. The actual addresses at runtime are different. [PLAY TO END</li>
+      <li>I am now going to run the code twice and you will see it pick show the positions.</li>
+      <li>At the end I got the value of AX which is 1 to show that I
+	was stopped before the "Inc".  Then I stepped a single
+	assembly instruction and we see the register now has 2. So we
+	indeed stopped at the right place.
+    </ul>
+    <p>This concludes what I have to say about getting position
+      information into the compiler</p>
+    <p>Similar work needs to be tone to associate stack addresses and
+    registers at particular points in time with source text variable
+    names and the kinds of types they hold.
     <div style="color: blue; background-color:
 		LightYellow">
       [NEXT] 14.1 ⟶ 15.2

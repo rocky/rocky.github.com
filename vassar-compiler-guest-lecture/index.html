@@ -97,10 +97,6 @@
         { topic: "Anything", src: "index.html", folder: "anything" },
       ];
 
-      var topicId = getTopicId();
-      // Variable tracking whether slide deck is connected to seminar server
-      let isConnected = false;
-
       // More info about initialization & config:
       // - https://revealjs.com/initialization/
       // - https://revealjs.com/config/
@@ -177,67 +173,18 @@
 	  ]
 	  }
       );
-
-      /******************************************
-       * Setup of topics
-       ******************************************/
-
-      function getTopicsMenu() {
-	  var topicsMenu = '<ul class="slide-menu-items">';
-	  for (var i=0; i < topics.length; i++) {
-	      topicsMenu += '<li class="slide-menu-item"><a href="' + getURL(i) + '" style="text-decoration:none">' + topics[i].topic + '</a></li>';
+      Reveal.configure({
+          // showNotes: 'separate-page',
+	  keyboard: {
+	      40: 'next', // go the right slide when the "5" key is pressed
+	      // 82: 'right', // go the right slide when the "5" key is pressed
+	      // 78: 'right', // go the right slide when the "n" key is pressed
+	      49: 'prev', // go the right slide when the "1" key is pressed
+	      50: 'next', // go the right slide when the "2" key is pressed
+	      51: 'prev', // go the right slide when the "3" key is pressed
+	      52: 'next', // go the right slide when the "4" key is pressed
 	  }
-	  topicsMenu += '</ul>';
-	  return topicsMenu;
-      }
-
-      function getTopicId() {
-	  // get topic id
-	  var urlparts= window.location.href.split('?');
-	  if (urlparts.length>=2) {
-	      var prefix= encodeURIComponent("topic")+'=';
-	      var parts= urlparts[1].split(/[&;]/g);
-	      for (var i= parts.length; i-- > 0;) {
-		  if (parts[i].lastIndexOf(prefix, 0) !== -1) {
-		      var j = parts[i].lastIndexOf(prefix, 0);
-		      var identifier = parts[i].substr(prefix.length,parts[i].length-prefix.length);
-
-		      var id = topics.findIndex(element => element.folder == identifier);
-		      if ( id < 0 ) {
-			  id = Number(identifier);
-		      }
-		      return Math.min(id,topics.length-1);
-		  }
-	      }
-	  }
-	  return 0;
-      }
-
-      function nextTopic() {
-	  if ( topicId >= topics.length-1 ) {
-	      alert("You already reached the last slide deck!");
-	  }
-	  else {
-	      window.location.href = getURL(topicId+1);
-	  }
-	  return false;
-      }
-
-      function getURL(id) {
-	  var urlparts= window.location.href.split('?');
-	  if ( id === undefined ) {
-	      return urlparts[0];
-	  }
-	  return urlparts[0] + '?' + "topic=" + topics[id].folder;
-      }
-
-      function getPath() {
-	  return topics[topicId].folder;
-      }
-
-      function getTopic() {
-	  return topics[topicId].topic;
-      }
+      });
 
     </script>
   </body>
