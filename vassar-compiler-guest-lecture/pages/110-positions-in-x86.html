@@ -1,0 +1,134 @@
+<h1>Propagating Position Information From AST to Assembly Code</h1>
+<section>
+  <div align="left">
+    <p>
+     Changing <span class="hljs-name">expr_to_instrs</span> for <span class="hljs-name">dec</span> and <span class="hljs-name">inc</span>:
+
+      <pre>
+	<code
+   	  data-line-numbers="1-100|2,8,9"
+	  data-ln-start-from="262",
+	  class="hljs ocaml",
+	  style="width: 1200px; max-height: 600px;">...
+  | EOp (op, variable, source_position) ->
+      (* handle nested expression *)
+      let rec_instrs = expr_to_instrs variable env si in
+      (* figure out which op it is *)
+      let new_instr =
+        match op with
+        | Inc -> [ Loc source_position; IAdd (Const 1, Reg Rax) ]
+        | Dec -> [ Loc source_position; ISub (Const 1, Reg Rax) ]
+        (* smush the instructions *)
+      in
+      rec_instrs @ new_instr
+	</code>
+      </pre>
+    </p>
+  </div>
+  <aside class="notes">
+    <p>While I won't go into all of the changes to propagate position
+      from the AST into assembly instructions and then into the
+      executable.  But I will follow the path down for one
+      built-in-function.
+    </p>
+
+    <p>Here, we have the code to pass location information into the list
+      of instructions generated for <tt>inc</tt> and <tt>dec</tt>.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN for line highlight] 11.1 ⟶ 11.1
+      </div>
+    </p>
+    <p>
+      The changes here, like other places are very simple, we are
+      passing <em>down</em> position information from parent node in the
+      AST, and using passing that into location "pseudo instruction".
+      The routine to create the location pseudo instruction is called
+      "Loc". we have to decide here is <em>where</em> before which
+      instruction we want to mark the position in the instruction
+      stream. I think the right place is just before the x86 ADD
+      instruction if we have "inc", or boefore the x86 SUB
+      instruction if we have "dec".
+    </p>
+    <p>
+      Here is the definition of Loc:
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN line highlight] 11.1 ⟶ 11.1
+      </div>
+    </p>
+    <p>
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[NEXT] 11.1 ⟶ 12
+      </div>
+    </p>
+  </aside>
+</section>
+<section>
+    <p>
+      Adding <span class="hljs-type">Loc</span> in <span class="hljs-name">instr_to_string</span>:
+
+      <pre>
+	<code
+   	  data-line-numbers="1-100"
+	  data-ln-start-from="102",
+	  class="hljs ocaml",
+	  style="width: 1200px; max-height: 600px;">...
+let instr_to_string (i : instr) : string =
+  match i with
+  ...
+  (* Note: below we add one to convert from 0-origin to 1-origin.  *)
+  | Loc p -> sprintf ".loc 1 %d %d" (p.start_pos.line + 1) (p.start_pos.col + 1)
+	</code>
+      </pre>
+    </p>
+
+    <p>
+      <span class="hljs-string">.loc</span> is a  <a href="https://sourceware.org/binutils/docs/as/Loc.html">pseudo instruction defined for the GNU assembler</a>.
+    </p>
+  </div>
+  <aside class="notes">
+    <p>While I won't go into all of the changes propagating position in
+      from the AST into assembly instruction and then into the executable, I will
+      I will follow the path down for built-in-function.
+    </p>
+
+    <p>Here we have the changed code AST to instruction code for <tt>inc</tt> and <tt>dec</tt>.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN for line highlight] 11.1 ⟶ 11.1
+      </div>
+    </p>
+    <p>
+      The changes here, like other places are very simple, we are
+      passing <em>down</em> position information from parent node in the
+      AST, and using that create a location "pseudo instruction" at the
+      right place in the instruction stream.  The routine to create the
+      location pseudo instruction is call "Loc". And we place this just
+      before the instruction for add (if we have "inc") or subtract (if we have "dec").
+    </p>
+    <p>
+      Here is the definition of Loc:
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN line highlight] 11.1 ⟶ 11.1
+      </div>
+    </p>
+    <p>
+      <tt>.loc</tt> is a pseudo instruction defined in the GNU
+      assembler.
+    </p>
+    <p>
+      I think the code here is pretty straight-forward. We do have to
+      add one since the sexplib library starts counting columns from
+      0, while non-computer people say that we start on column 1. The
+      reason we add one to the <em>line</em> number, will described
+      later.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[NEXT] 11.1 ⟶ 12
+      </div>
+    </p>
+  </aside>
+</section>

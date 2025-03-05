@@ -1,0 +1,139 @@
+<h1>From Assembly to executable</h1>
+<section>
+  <h2>331 Assembly and Object Code</h2>
+  <div align="left">
+    <p>
+      Assembly code for (<span class="hljs-name">inc</span> <span class="hljs-number">1</span>):
+      <pre>
+	<code
+   	  data-line-numbers="1-100|1|2-12|4,8,10|13-22|16-17,19-20"
+	  class="hljs console",
+	  style="width: 1200px; max-height: 700px;">$ cd vassar-cs331-lec10/example
+$ ../compile331 inc.331 > inc.s
+$ cat inc.s
+  .file 1 "inc.331.h"
+  .text
+  .globl our_code_starts_here
+  our_code_starts_here:
+  .loc 1 2 6
+  mov $1, %rax
+  .loc 1 2 2
+  add $1, %rax
+  ret
+$ as -g -c inc.s -o inc.o
+$ objdump -g inc.o | grep -A 8 "Line Number Statements"
+ Line Number Statements:
+  [0x00000027]  Set column to 6
+  [0x00000029]  Extended opcode 2: set Address to 0
+  [0x00000034]  Special opcode 6: advance Address by 0 to 0 and Line by 1 to 2
+  [0x00000035]  Set column to 2
+  [0x00000037]  Special opcode 103: advance Address by 7 to 0x7 and Line by 0 to 2
+  [0x00000038]  Advance PC by 5 to 0xc
+  [0x0000003a]  Extended opcode 1: End of Sequence
+$</code>
+      </pre>
+    </p>
+  </div>
+  <aside class="notes">
+    <font size="3.0em">
+      <p>Now that we have assembly code, we will go through the process of
+      getting position information into an executable.
+    </p>
+    <p>
+    First, we get move into the "example" directory:
+    <div style="color: blue; background-color:
+		  LightYellow"> [DOWN for line highlight] 12.1 ⟶ 12.1
+    </div>
+    and then we run the compiler and save its output to an assembly
+    file, "inc.s". We display that here.
+    <div style="color: blue; background-color:
+		  LightYellow"> [DOWN for line highlight] 12.1 ⟶ 12.1
+    </div>
+    </p>
+    <p>I have not shown how that ".file" pseudo instruction got in
+      there, nor why it has the name "inc.331.h" instead of
+      "inc.331". I will explain that later. Just note here that we are
+      defining short name "1" for the file "inc.331.h". A common theme
+      you will find when working with debug tables is that there is an
+      effort to compact things; Even assuming 64-bits per integer, an
+      integer is usually smaller than a file path name. An in fact
+      it <em>is</em> just barely shorter than the 9-character string
+      that we have here.
+    </p>
+
+    <p>In the ".loc" lines below, you will see this file number "1"
+      mentioned right after ".loc".
+    </p>
+    <p>
+    We have two ".loc" lines. The first ".loc" is for column 6 of the
+    program, and the second ".loc" is for column 2 of the program.  The
+    column number given as the last number of the three numbers in a
+    ".loc" line. The middle number, is a line number. Here, it is line
+    2, even though in our original source file this was line one.
+    Inside "inc.331.h", the line number has been shifted to line 2.
+    <div style="color: blue; background-color:
+		  LightYellow"> [DOWN for line highlight] 12.1 ⟶ 12.1
+    </div>
+    </p>
+    <p>
+    Now that we have our assembly code, the next and penultimate step
+    of the compile process is to create a an object file. This is done
+    using the GNU assembler: Aee S. In previous code the assembler was
+    getting called via the GNU cc toolchain command <tt>gcc</tt>.
+    </p>
+
+    <p>
+    In the Aee S command, the <tt>-g</tt> flag tells the assembler
+    that to pass through debug information found in the file. By
+    default, again, <em>partly</em> for compactness, it won't pass
+    through debug information.
+    <div style="color: blue; background-color:
+		  LightYellow"> [DOWN for line highlight] 12.1 ⟶ 12.1
+    </div>
+    </p>
+    <p>
+    To show that the debug information got into the object deck, we
+    use the "objdump" command. I am using "grep" to pick out the
+    portion of interest. The "-g" flag indicates that we are
+    interested in seeing debug information. The debug information
+    contains position information from ".loc" pseudo instructions.
+    </p>
+    <p>
+    The object format changes based on the Operating System you are
+    running. On Linux the object format used is called ELF. On
+    Microsoft Windows, it is called cough, spelled "C-O-F-F" is
+    used. The F at the end seems popular and usually stands for
+    "format". On MacOS, it is something different that doesn't end in
+    F.
+    </p>
+    <p>
+      Even though the object format varies per Operating System, the
+      debug portion does <em>not</em>. The common format across most
+      operating systems nowadays is called DWARF. Again this ends in
+      "F". Dr. Brian Russell at Bell Labs who designed and implemented
+      this format gave it the name "DWARF" to go with the "ELF"
+      motif. There is some backronym though that I cannot remember,
+      but the "D" at the beginning stands for "Debugger".
+    </p>
+    <p>I reason I mention that this format is called DWARF, is so that
+      you can look up the exact details of what is on lines 16-22 if
+      you want.  These lines are showing the steps that a specialized
+      DWARF interpreter is running. And the reason it is running
+      running this interpreter, again, is in order to compact the debug
+      information stored in the object deck.
+      <div style="color: blue; background-color:
+		  LightYellow"> [DOWN for line highlight] 12.1 ⟶ 12.1
+      </div>
+    </p>
+    <p>
+      However the parts of the trace output that are relevant to us
+      are these lines which just affirm that there is a mark for column
+      6 at address 0, and a mark for column 2 at address 7.
+      <div style="color: blue; background-color:
+		  LightYellow"> [NEXT] 12.1 ⟶ 13
+      </div>
+    <p>
+
+  </aside>
+  </font>
+</section>

@@ -1,0 +1,44 @@
+<h1>Parsing with Error Positions</h1>
+<section>
+<div class="asciicast">
+  <!--
+      {
+      "URL": "cast/bad-parse.cast",
+      "idle_time_limit": 0.5,
+      "font-size": "medium",
+      "start":12,
+      "speed":1.5,
+      "poster": "npt:1:23"
+      }
+    -->
+</div>
+<p align="left" style="font-size: 26px">
+  Programming tip: when giving an error message, try to provide what
+  was <em>expected</em> as well as what was <em>given</em>.
+</p>
+<aside class="notes">
+<p>Now that we have captured positions from the scanner and parser, we
+  should use those in error messages.</p>
+
+<p>
+  I won't go over the code for this. You can find it on github. It is
+  not that difficult or interesting.</p>
+
+<p>But I will show a test run to show what we get when we now have
+  position information available [PLAY]</p>
+
+<p>I think the error messages could look a little nicer. I leave this
+as an exercise for you to do this if you want to do so.
+</p>
+
+<p>But I do want to mention in writing a good error messages to try to
+provide two pieces of information: what the
+computer <em>expected</em>, and what the computer <em>got</em> instead.</p>
+
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[NEXT] 10 ⟶ 11
+      </div>
+    </p>
+</aside>
+</section>

@@ -1,0 +1,242 @@
+<h1>Translation Concepts</h1>
+<section>
+
+  <p> If we have an instruction address, how can we figure out where we
+    were in the source code?</p>
+
+  <p line-height="40px">
+    <pre>
+      <code
+	class="hljs x86asm",
+	style="width: 1200px; max-height: 600px;">
+   0x0000555555555179  <+0>:  mov    $0x5,%rax
+   0x0000555555555180  <+7>:  mov    %rax,-0x8(%rsp)
+=> 0x0000555555555185 <+12>:  mov    -0x8(%rsp),%rax
+   0x000055555555518a <+17>:  mov    %rax,-0x10(%rsp)
+   0x000055555555518f <+22>:  mov    $0x6,%rax
+   0x0000555555555196 <+29>:  cmp    %rax,-0x10(%rsp)
+   0x000055555555519b <+34>:  mov    $0x0,%rax
+   0x00005555555551a2 <+41>:  jge    0x5555555551ab &lt;after0&gt;
+   00000x5555555551a4 <+43>:  mov    $0x1, %rax
+   ...
+      </code>
+    </pre>
+    <pre>
+      <code
+	class="hljs scheme",
+	style="width: 1200px; max-height: 600px;">
+   (let (x 5) (if (< x 6) (inc x) 7))
+      </code>
+    </pre>
+  </p>
+
+  <aside class="notes">
+    <font size="4.0em">
+    <p>So with this background, let us start to understanding how we
+      can enable a compiler to give source-code location information
+      when there is a crash in the program, or when you are using a
+      debugger to debug a 331 program.
+    </p>
+
+    <p>Here is some x86 code produced by a 331 compiler. The position
+    we are at is marked on the left by an arrow. The address ends in
+    "55185". It is a <code>mov</code> instruction.</p>
+
+    <p>By the way, this instruction is probably several <em>micro</em>
+    instructions in the underlying x86 CPU chip. On a RISC
+    archecture like POWER (or 801), the operand "subtract 8 from the SP
+    register address" (<code>-0x8(%rsp)</code>) would be a separate
+    instruction.
+    </p>
+
+    <p>But at any rate, the 331 source code that covers this assembly
+      is listed below. This is the code that starts with a call to the
+      built-in function <code>let</code>.
+    </p>
+
+    <p>How do we match up the assembly code with the source code?</p>
+
+    <p>Actually, you have probably encountered this kind of situation
+    before outside of computers. This kind of thing happens in reading
+    translated poetry...
+
+    <div style="color: blue; background-color: LightYellow">
+      [DOWN] 6.1 ⟶ 6.2
+    </div>
+    </p>
+    </font>
+  </aside>
+
+</section>
+
+<section>
+  <h2>Side-by-side Scots-American Translation</h2>
+
+
+  <p align=left>1: Fair fa' your honest, sonsie face,<br>
+    2: Great chieftain o the puddin'-race!</p>
+
+  <p align=left>1: Good luck to you and your honest, plump face,<br>
+    2: Great chieftain of the sausage race!</p>
+
+<aside class="notes">
+  <font size="4.0em">
+  <p>Note. This example comes from a talk I gave in Glasgow,
+    Scotland. That is why I used Scots.
+  </p>
+
+  <p>You can assume that the entire first line, at the top in Scots,
+    is roughly like the first line of the English below. And the
+    second line of the Scots on top is like the second line of the
+    American English, below.
+  </p>
+
+  <p>Since Scots and American English are so close, you can do a
+    word-for-word translation ... for the most part. We will come back
+    to this.</p>
+
+  <p>In this particular example, words at the beginning of Scots
+    sentences match words at the beginning of the corresponding English lines.
+    Similarly, words the <em>end</em> of Scots lines match the words
+    at the end of the corresponding English lines.</p>
+
+  <p>I, and probably others, have used this kind beginning/end
+     heuristic to help decipher compiled assembly code. But there are
+     a couple of caveats here, which I will describe next...
+
+    <div style="color: blue; background-color: LightYellow">
+      [DOWN] 6.2 ⟶ 6.3
+    </div>
+  </p>
+  </font>
+
+</aside>
+</section>
+<section>
+  <h2>Spanish vs. English Ordering</h2>
+
+  <p align="left">
+    A person says in Spanish: &#8220;mango fragante&#8221;</br>
+    might translate in English to: &#8220;fragrant mango&#8221;</p>
+
+  <aside class="notes">
+    <font size="3.0em">
+    <p>In this slide, we switch to Spanish for reasons that will soon
+      become clear. This slide comes from a talk given in Medellín,
+      Columbia.</p>
+
+    <p>In Spanish: "mango fragante" might translate in English to:
+      "fragrant mango".</p>
+
+    <p>
+      What we see here is a switch in <em>word</em> order. And this kind of
+      thing happens when source code gets translated to assembly language.
+    </p>
+
+    <p>
+      In English and Romance languages, we think of the nouns as
+      main structural units, and adjectives as a <em>modifier</em>
+      or <em>parameter</em> attached to the noun. So think of "mango"
+      as analogous to a 331-language <em>function</em> name or an x86
+      assembly
+      <em>instruction</em> name. And think of "fragrant" or "fragrante"
+      as a parameter <em>value</em> or as an instruction <em>operand</em>.
+    </p>
+
+    <p> Given this, what mathematical expression order does <em>Spanish</em>
+      follow &mdash; where the noun comes <em>first</em>, and the
+      adjective or adjectives follow? ... Anyone? ...
+      Is it infix, prefix, or postfix order (noun first, then adjective)?
+    </p>
+
+    <p>Great - prefix order! Now what operation order does <em>English</em>
+      follow, where the noun comes <em>last</em>, and all adjectives
+      precede the noun? .... Right... postfix order.
+    </p>
+
+    <p>
+      In sum, what we see here is that ordering changes based on a
+      fundamental property of the language that we are using.  Keep
+      this in mind. We will see this come up later.
+
+    <p>
+      Now let us consider this example ...
+      <div style="color: blue; background-color: LightYellow">
+	[DOWN] 6.3 ⟶ 6.4
+      </div>
+    </p>
+    </font>
+
+  </aside>
+
+</section>
+<section>
+  <h2>Implied words</h2>
+
+  <p align="left">A person says in Spanish:
+    &#8220;Entiendo&#8221;</br> might translate in English to:
+    &#8220;I understand&#8221;</p>
+
+  <p align="left" class="fragment roll-in">&#8220;Far Fa&apos;&#8221; ⟶ &#8220;Good luck (to you and)&#8221;
+  </p>
+
+  <aside class="notes">
+    <font size="5.0em">
+    <p>"Entiendo" might be translated in English to "I understand".<p>
+
+    <p>Here, one Spanish word becomes <em>more than one</em> English
+      word. When we compile 331 functions to x86 assembly language, we
+      also sometimes see <em>several</em> x86 instructions for
+      a <em>single</em> 331 construct. In sense, this shows that the
+      331 language is a higher-level language than x86 assembly.
+
+      <div style="color: blue; background-color: LightYellow">
+	[DOWN] 6.1 ⟶ 6.2
+      </div>
+    </p>
+    <p>
+      Recall earlier in Scots we had &#8220;Far fa&apos;&#8221; which,
+      in <em>that</em> particular context, got translated as
+      &#8220;Good luck to you and&#8221; &mdash; the "to you and" is
+      somehow implied in the Scots but needs to be added in
+      English. Does this mean that Scots is ao higher level language?
+      <div style="color: blue; background-color: LightYellow">
+	[DOWN] 6.4 ⟶ 6.5
+      </div>
+    </p>
+    </font>
+  </aside>
+
+</section>
+<section>
+  <h2>Mismatched Concepts</h2>
+
+  <div>
+    <p align="left" class="fragment strike">A person says in Spanish:
+      &#8220;templado&#8221;</br> might translate in English to:
+      &#8220;not hot and not cold&#8221;</p></div>
+
+  <aside class="notes">
+    <p>Finally, consider the Spanish word <em>templado</em>...
+    </p>
+
+    <p>Which part of "templado" is "not hot" and which part is "and
+      not cold"? The concepts are mismatched, so there is no simple
+      English equivalent. As we say in Yiddish: Oy vey!</p>
+
+    <p>This kind of thing tends not happen in translating 331 to x86
+    assembly except in prologue code.
+      <div style="color: blue; background-color: LightYellow">
+	[DOWN] 6.6 ⟶ 6.7
+      </div>
+    </p>
+
+    <p>And we expect this because x86 and bytecode and the source code
+      were designed to generally speak the same kinds of concepts.
+      <div style="color: blue; background-color: LightYellow">
+	[NEXT] 6.7 ⟶ 7.1
+      </div>
+    </p>
+  </aside>
+
+</section>

@@ -1,0 +1,144 @@
+/*
+Custom twesks for Monokai style, and other things
+
+The first part is Adapted from Monokai style - ported by Luigi Maselli - http://grigio.org
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #272822;
+  color: #ddd;
+}
+
+.hljs-tag,
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-strong,
+.hljs-name {
+  color: #f92672;
+}
+
+.hljs-code {
+  color: #66d9ef;
+}
+
+.hljs-class .hljs-title {
+  color: white;
+}
+
+.hljs-attribute,
+.hljs-symbol,
+.hljs-regexp,
+.hljs-link {
+  color: #bf79db;
+}
+
+.hljs-string,
+.hljs-bullet,
+.hljs-subst,
+.hljs-title,
+.hljs-section,
+.hljs-emphasis,
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: #a6e22e;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+  color: #ff8c00;
+}
+
+.hljs-name {
+  color: #00bfff;
+}
+.hljs-keyword,
+.hljs-selector-id {
+    color: #00bfff;
+    font-weight: bold;
+}
+
+.hljs-literal,
+.hljs-doctag,
+.hljs-title,
+.hljs-section,
+.hljs-type,
+.hljs-selector-id {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+/* .reveal h1, .reveal h4 { */
+/*     text-align: left; */
+/*     text-transform: none; */
+/*     font-size: var(--r-heading4-size); */
+/*     text-shadow: var(--r-heading4-text-shadow); */
+/* } */
+/* .reveal h2, .reveal h4 { */
+/*     text-align: left; */
+/*     font-size: smaller; */
+/* } */
+/* .reveal p { */
+/*     font-size: 80%; */
+/*     text-align: left; */
+/*     line-height: 12px; */
+/* } */
+
+/* .reveal pre code { */
+/*     font-size: 60%; */
+/*     width: 600px; */
+/* } */
+/* .reveal span.small { */
+/*     font-size: 0.8em; */
+/* } */
+
+
+#left {
+  left:-8.33%;
+  text-align: left;
+  float: left;
+  width:48%;
+  z-index:-10;
+}
+
+#right {
+  left:31.25%;
+  top: 75px;
+  float: right;
+  text-align: right;
+  z-index:-10;
+  width:50%;
+}
+
+#left1 {
+  left:-8.33%;
+  text-align: left;
+  float: left;
+  z-index:-10;
+}
+
+#right1 {
+  left:31.25%;
+  top: 75px;
+  float: right;
+  text-align: right;
+  z-index:-10;
+  width:50%;
+}
+
+
+.image-container {
+    display: flex;
+}

@@ -1,0 +1,244 @@
+<!doctype html>
+<!-- Slides for Dr. Gommerstadt's Compiler Class 2025 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Guest Lecture for Dr. Gomerstadt's Compiler Course 2025</title>
+
+    <meta name="description" content="Slides">
+    <meta name="author" content="rocky Bernstein">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <meta name="author" content="Rocky Bernstein">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" type="text/html" href="plugin/asciinema/asciinema-player.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+    <link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="plugin/highlight/monokai-rocky.css"> <!-- This is the theme for the code highlighting -->
+    <!-- <link rel="stylesheet" href="plugin/highlight/github-dark.css"> --> <!-- An alternative code theme I didn't like as much -->
+    <link rel="stylesheet" type="text/css" href="./plugin/asciinema/asciinema-player.css" />
+
+    <!-- This is a modified theme for asciinema to git better with reveal.js's night theme -->
+    <link rel="stylesheet" type="text/css" href="./plugin/asciinema/reveal-asciinema-theme.css" />
+    <link rel="stylesheet" href="css/rocky-customize.css">
+
+    <!-- In order to include buttons for opening and closing the notes
+    canvas or the chalkboard you should make sure that font-awesome is
+    available. The easiest way is to include -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins/menu/font-awesome/css/fontawesome.css">
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-external="pages/010-title-page.html"></section>
+        <section data-external="pages/020-compiler-pervasiveness.html"></section>
+
+	<section data-external="pages/030-writing-a-compiler.html"
+		 data-transition="zoom fade-out"></section>
+	<section data-external="pages/040-outline.html"></section>
+	<section data-external="pages/050-my-story.html"></section>
+	<section data-external="pages/060-translation-concepts.html"></section>
+	<section data-external="pages/070-position-components.html"></section>
+	<section data-external="pages/080-location-in-container.html"></section>
+	<section data-external="pages/090-use-Annotate.html"></section>
+	<section data-external="pages/100-error-messages.html"></section>
+	<section data-external="pages/110-positions-in-x86.html"></section>
+	<section data-external="pages/120-asm-to-obj.html"></section>
+	<section data-external="pages/130-obj-to-exe.html"></section>
+	<section data-external="pages/140-running-lldb-inc.html"></section>
+	<section data-external="pages/150-running-lldb-compound.html"></section>
+	<section data-external="pages/160-decompilation.html"></section>
+	<section data-external="pages/170-philosopy.html"></section>
+	<section data-external="pages/9999-references.html"></section>
+      </div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+    <script src="./plugin/anything/plugin.js"></script>
+    <script src="./plugin/highlight/highlight-pp.js"></script>
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/search/search.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/asciinema/asciinema-player.js"></script>
+
+    <!-- <\!-- Font awesome is used by Chalkboard plugin -\-> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+
+    <!-- Custom controls plugin is used for opening and closing annotation modes-->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/customcontrols/plugin.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/customcontrols/style.css">
+
+    <!-- <\!-- Chalkboard plugin -\-> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/plugin.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/style.css"> -->
+
+
+    <!-- Load content plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/loadcontent/plugin.js"></script>
+
+    <!-- Menu plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js-menu@2.1.0/menu.js"></script>
+    <link href=" https://cdn.jsdelivr.net/npm/reveal.js-menu@2.1.0/menu.css " rel="stylesheet">
+
+    <script>
+
+      // list of topics
+      // the src must be found within the folder, folders must be distinct!
+      var topics = [
+        { topic: "Anything", src: "index.html", folder: "anything" },
+      ];
+
+      var topicId = getTopicId();
+      // Variable tracking whether slide deck is connected to seminar server
+      let isConnected = false;
+
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+	  width: 1280,
+	  height: 1050,
+	  controls: true,
+	  progress: true,
+	  history: false,
+	  center: true,
+	  mouseWheel: true,
+	  previewLinks: true,
+	  hash: true,
+	  slideNumber: true,
+	  transition: 'slide', // none/fade/slide/convex/concave/zoom,
+	  menu: {
+	      themes: false,
+	      transitions: false,
+	      markers: true,
+	      hideMissingTitles: true,
+	  },
+	  anything: [
+              {className: "asciicast",
+               initialize: (function(container, options) {
+		   // Defaults for the asciinema player
+		   const defaults = {'font-size': "14px", theme: "asciinema", start : 0, "idle_time_limit": 2};
+
+		   options = {...defaults, ...options};
+		   //  console.log(options.URL, container, options);
+		   const player = asciinema.player.js.CreatePlayer(container, options.URL, options);
+		   //  console.log(player);
+               })
+                   },
+	  ],
+	  // chalkboard: {
+	  //     storage: null,
+	  //     // src: getPath() + "/playback/chalkboard.json",
+	  //     theme: "blackboard"
+	  //     //			theme: "whiteboard"
+	  // },
+	  // customcontrols: {
+	  //     controls: [
+	  // 	  { icon: '<i class="fa fa-pen-square"></i>',
+	  // 	    title: 'Toggle chalkboard (B)',
+	  // 	    action: 'RevealChalkboard.toggleChalkboard();'
+	  // 	  },
+	  // 	  { icon: '<i class="fa fa-pen"></i>',
+	  // 	    title: 'Toggle notes canvas (C)',
+	  // 	    action: 'RevealChalkboard.toggleNotesCanvas();'
+	  // 	  },
+	  //     ]
+	  // },
+	  // Learn about plugins: https://revealjs.com/plugins/
+	  plugins: [
+	      RevealAnything,
+	      // RevealChalkboard,
+	      RevealCustomControls,
+	      RevealHighlight,
+	      RevealLoadContent,
+	      RevealMarkdown,
+	      RevealNotes,
+	      RevealSearch,
+	      RevealZoom,
+          ],
+          dependencies: [
+	      {
+		  src: 'plugin/asciinema/asciinema-player.js',
+		  src: 'plugin/anything/anything.js',
+		  src: 'plugin/external/external.js',
+		  condition: function() {
+		      return !!document.querySelector( '[data-external],[data-external-replace]' );
+		  }
+	      },
+	  ]
+	  }
+      );
+
+      /******************************************
+       * Setup of topics
+       ******************************************/
+
+      function getTopicsMenu() {
+	  var topicsMenu = '<ul class="slide-menu-items">';
+	  for (var i=0; i < topics.length; i++) {
+	      topicsMenu += '<li class="slide-menu-item"><a href="' + getURL(i) + '" style="text-decoration:none">' + topics[i].topic + '</a></li>';
+	  }
+	  topicsMenu += '</ul>';
+	  return topicsMenu;
+      }
+
+      function getTopicId() {
+	  // get topic id
+	  var urlparts= window.location.href.split('?');
+	  if (urlparts.length>=2) {
+	      var prefix= encodeURIComponent("topic")+'=';
+	      var parts= urlparts[1].split(/[&;]/g);
+	      for (var i= parts.length; i-- > 0;) {
+		  if (parts[i].lastIndexOf(prefix, 0) !== -1) {
+		      var j = parts[i].lastIndexOf(prefix, 0);
+		      var identifier = parts[i].substr(prefix.length,parts[i].length-prefix.length);
+
+		      var id = topics.findIndex(element => element.folder == identifier);
+		      if ( id < 0 ) {
+			  id = Number(identifier);
+		      }
+		      return Math.min(id,topics.length-1);
+		  }
+	      }
+	  }
+	  return 0;
+      }
+
+      function nextTopic() {
+	  if ( topicId >= topics.length-1 ) {
+	      alert("You already reached the last slide deck!");
+	  }
+	  else {
+	      window.location.href = getURL(topicId+1);
+	  }
+	  return false;
+      }
+
+      function getURL(id) {
+	  var urlparts= window.location.href.split('?');
+	  if ( id === undefined ) {
+	      return urlparts[0];
+	  }
+	  return urlparts[0] + '?' + "topic=" + topics[id].folder;
+      }
+
+      function getPath() {
+	  return topics[topicId].folder;
+      }
+
+      function getTopic() {
+	  return topics[topicId].topic;
+      }
+
+    </script>
+  </body>
+</html>

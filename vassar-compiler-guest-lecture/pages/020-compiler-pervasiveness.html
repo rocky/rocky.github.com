@@ -1,0 +1,83 @@
+<h1>The Pervasiveness of Compilers</h1>
+<section data-state="no-toc-progress">
+  <br>
+  <img src="images/compiling-python-3.13.png" alt="Building Python3"
+       style="vertical-align: middle">
+  <p>My laptop user process tree building Python 3.13</p>
+
+  <aside class="notes">
+    <font size="4.0em">
+    <p>
+      When I was getting my computer-science degree in college, there
+      were a number courses on topics that <em>did</em> not have much
+      bearing on my current day-to-day use of computers. However, I
+      use a <em>compiler</em> virtually every day I program.
+      </p>
+
+      <p><em>This</em> screen shot shows a snapsot of the user
+      processes on my laptop in building Python 3.13. New releases
+      come out 3 or 4 times a year.</p>
+
+    <p>The stuff in bright green on the right,
+      [Right-CTRL Left click to Zoom],
+
+      These are currently <em>running</em> process taking up CPU
+      time. You might not be able to read the process names, but most
+      of those green processes say "cc1", which is early phase of
+      running the "gcc" compiler toolchain.  You'll also see one
+      assembler process "Ayee-Ess" which is the GNU x86 assembler,
+      running a later phase of gcc tool chain.
+
+      <div style="color: blue; background-color: LightYellow">
+	[DOWN] 2.1 ⟶ /2.2
+      </div>
+    </p>
+    </font>
+  </aside>
+</section>
+<section>
+  <br>
+  <img src="images/vscode-ocaml-view.png" alt="Viewing OCaml code"
+       style="vertical-align: middle">
+  <p>Browsing code (OCaml, of course)</p>
+  <aside class="notes">
+    <p>
+      Even when I am not fully compiling code, but just looking at my
+      code or someone else's code, there is a compiler running in the
+      background that is gathering bits of information which is either
+      presented on screen, or <em>might</em> be at the click of a
+      button.
+    </p>
+    <p>The code in this slide is part of the modified 331 compiler
+    that I will be talking about later.
+      <div style="color: blue; background-color: LightYellow">
+	[DOWN] 2.2 ⟶ 2.3
+      </div>
+    </p>
+  </aside>
+</section>
+<section>
+  <br>
+  <img src="images/amazon-pets.png" alt="Amazon Site"
+       style="vertical-align: middle">
+  <p>Popular e-commerce sites that are using continuous integration and deployment.
+  <p>
+  <aside class="notes">
+    <p>
+      And even if you are not a computer scientist or programmer, when
+      you browse an e-comerce site that is under constant development,
+      like Amazon.com, compilers are continually getting run in the
+      process of testing and deploying code to web-sites.
+    </p>
+    <p>
+      And even if the website did not run a <em>compiler</em> to build
+      and test the site, the <em>browser</em> on your laptop or mobile
+      phone may have a compiler running that is turning Javascript
+      into WASM (Web assembly). It does this to make your browser work
+      faster.
+      <div style="color: blue; background-color: LightYellow">
+	[NEXT] 2.3 ⟶ 3.1
+      </div>
+    </p>
+  </aside>
+</section>

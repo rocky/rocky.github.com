@@ -1,0 +1,208 @@
+<h1>Decompilation</h1>
+<section>
+  <div align="left">
+    <p>A decompiler for language <em>L</em> is a <em>compiler</em> that
+      translates the <em>output</em> language of a compiler (back) into a
+      <em>input</em> language <em>L.</em>
+    <p>There are <em>general-purpose</em> decompilers
+      that don't care (or know much) about specific compilers and
+      there are special purpose compilers that are custom to a
+      particular compiler.</p>
+    <p>I will talk about special-purpose compilers.</p>
+  </div>
+
+  <aside class="notes">
+    <p>The topic I have described here &mdash; how to keep track of
+    position information &mdash; is not mentioned any of the compiler
+    books shown before. So I guess it should not be surprising this is
+    also not taught in compiler courses. And so I guess it is not
+    surprising that compiler can sometimes be weak in providing
+    support for debuggers.
+    </p>
+
+
+    <p>If you happen to come across a system, what can you do? Is
+    there some tool that you can use so you don't have to understand the
+    program in assembly code produced by a compiler?
+    </p>
+
+    <p>A decompiler can help here. It can translate the machine code
+    back into source code. A decompiler can also help with the
+    line-number granularity problem we saw before where you want to
+    know more specifically where you are in a line.
+    </p>
+
+    <p>You can also think of a decompiler as trying to glue back
+    together a clay pot that has been dropped and shattered into
+    pieces. If the pot shattered into only a few pieces, it is not
+    that difficult to reconstruct the pot to its original form.
+    </p>
+
+    <p>In the particular case of the 331 language compiler, this is
+    the situation. When you look at the transformation rules that go
+    from source code to AST to "expr" to assembly instructions, the
+    transformations are pretty simple; sometimes they are
+    one-to-one as we will soon see.
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN] 16.1 ⟶ 16.2
+    </div>
+    </p>
+  </aside>
+
+</section>
+<section>
+      <pre>
+	<code
+   	  data-line-numbers="1-100|3,4,19,20"
+	  data-ln-start-from="69",
+	  class="hljs ocaml",
+	  style="width: 1200px; max-height: 600px;">...
+type instr =
+  | IAdd (s, d) -> sprintf "add %s, %s" (arg_to_string s) (arg_to_string d)
+  | ISub (s, d) -> sprintf "sub %s, %s" (arg_to_string s) (arg_to_string d)
+  | IMov (s, d) -> sprintf "mov %s, %s" (arg_to_string s) (arg_to_string d)
+  | ICmp (x, y) -> sprintf "cmp %s, %s" (arg_to_string x) (arg_to_string y)
+  | IJmp l -> sprintf "jmp %s" l
+  | IJe l -> sprintf "je %s" l
+  | IJne l -> sprintf "jne %s" l
+  | IJge l -> sprintf "jge %s" l
+  | IJle l -> sprintf "jle %s" l
+  | ILab l -> sprintf "%s: " l
+  | IRet -> "ret"
+  ...
+let rec expr_to_instrs (e : expr) (env : tenv) (si : int) : instr list = ...
+  | EOp (op, variable, source_position) ->
+      let new_instr =
+        match op with
+        | Inc -> [ IAdd (Const 1, Reg Rax) ]
+        | Dec -> [ ISub (Const 1, Reg Rax) ]
+...
+	</code>
+      </pre>
+    </p>
+</div>
+
+  <aside class="notes">
+    <p>I am not going to say a lot about decompilers, or even
+    special-purpose decompilers. To do this justice would take even
+    longer than what I did for getting position information into
+    executables, which I did not do justice to.
+    </p>
+
+    <p>But I would like to try to give <em>some</em> idea of that kind
+      of thing that can be done in a special purpose decompiler for
+      331.  Surprisingly, the situation found in 331 <em>does</em>
+      happen somewhat frequently. There are insteresting and deeper
+      reasons for this that may not be apparent.
+    </p>
+    <p>
+      Here is some of the 331 compiler code:
+      <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN] 16.2 ⟶ 16.2
+      </div>
+    </p>
+    <p>
+      What is weird here is that an x86 "add" or "sub" instruction
+      comes from only one place! For an x86 "add" it has to come from
+      a 331-language "inc" function call. And for x86 "sub", it has to
+      come from a 331-language "(dec)" function call.
+    </p>
+    <p>
+      So now let us look at some code produced by 331...
+      <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN] 16.2 ⟶ 16.3
+      </div>
+    </p>
+</section>
+<section>
+  <h2>x86 Assembly Code from the 331 compiler</h2>
+  <div align="left">
+    <p>
+      <pre>
+	<code
+   	  data-line-numbers="1-100|18|8,10-14"
+	  class="hljs x86asm",
+	  style="width: 800px; max-height: 800px;"># compound_expr.s
+  .text
+  .globl our_code_starts_here
+  our_code_starts_here:
+  mov $5, %rax
+  mov %rax, -8(%rsp)
+  mov -8(%rsp), %rax
+  mov %rax, -16(%rsp)
+  mov $6, %rax
+  cmp %rax, -16(%rsp)
+  mov $0, %rax
+  jge after0
+  mov $1, %rax
+  after0:
+  cmp $0, %rax
+  je else1
+  mov -8(%rsp), %rax
+  add $1, %rax
+  jmp after2
+  else1:
+  mov $7, %rax
+  after2:
+  ret</code>
+      </pre>
+    </p>
+  </div>
+  <aside class="notes">
+    <font size="4.0em">
+    <p>
+      Here is a more involved piece of code that I had at one time
+      considered showing. You can find it in the github repository.
+      <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN line highlight] 16.3 ⟶ 16.3
+      </div>
+    </p>
+    <p>
+      Notice that has an add in there! So we know that the source code
+      instruction for that comes from an "inc" instruction. We just
+      need to figure out what the variable is that is getting
+      incremented. And that appears in instructions before. So
+      getting of the operand of "inc" needs to be pattern matched.
+    </p>
+
+    <p>
+      That is great for "inc", but what about the other 331 language
+      constructs? There are patterns in there for those as well, it's
+      just harder to see.
+      <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN] 16.3 ⟶ 16.3
+      </div>
+    </p>
+
+    <p>
+      This pattern comes <em>uniquely</em> from the Greater-Than
+      comparison. You will find only one place in code generation
+      where there is a move of the integer 1 into the AX register.  It
+      might happen from some other code, but it <em>must</em> happen
+      in a compare for this 331 compiler. Those other instructions
+      that are highlighted are other parts of the DNA for comparison
+      instructions.
+    </p>
+
+    <p>The greyed out instruction at 9 does not have to be a single
+    instruction, just something that is getting a value from
+    somewhere. So what we can do is write a grammar to parse the
+    assembly instructions just like the source code!</p>
+    <p>I have glossed over lots of details. Things are a little
+    weirder and something just different. But the overall strategy
+    where one tokenizes, and then parses, and abstracts and then
+    constructs output from this internal representation can be done
+    very much the same way it is done in a compiler.
+      <div style="color: blue; background-color:
+		  LightYellow"> [NEXT] 16.3 ⟶ 17.1
+      </div>
+    <p>
+
+  </aside>
+  </font>
+</section>

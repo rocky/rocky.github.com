@@ -1,0 +1,135 @@
+<h1>Object to executable</h1>
+<section>
+  <h2>A 331 compiler pipeline run for program <tt>inc.331</tt></h2>
+  <div align="left">
+    <p>
+      <pre>
+	<code
+   	  data-line-numbers="1-100|1|2-3|4-9|8|10-20|16-19|21|1,23-24"
+	  class="hljs console",
+	  style="width: 1200px; max-height: 700px;">$ make inc.run
+../compile331 inc.331 > inc.s
+as -g -c inc.s -o inc.o
+./make-main-for-331.sh "-v"   inc.331
+Substituted part of main-for-inc.c
+/* Dummy main program for inc.331 language code. */
+/* We include inc.331.h in order to have this file available inside debug tables. */
+#include "inc.331.h"
+...
+make inc.331.h
+make[1]: Entering directory '/tmp/vassar-cs331-lec10/example'
+./make-debug-include.sh "-v"   inc.331
+Input 311-language file inc.331:
+(inc 1)
+
+Created file inc.331.h:
+     1	 /* inc.331 code starts in the line below:
+     2	(inc 1)
+     3	*/
+make[1]: Leaving directory '/tmp/vassar-cs331-lec10/example'
+gcc  -z noexecstack -o inc.run main-for-inc.c inc.o
+rm main-for-inc.c
+$ ./inc.run
+2
+$ </code>
+      </pre>
+    </p>
+  </div>
+<aside class="notes">
+  <p>
+    To recap, we have now tracked passing position information from
+    the scanner and parser through to the object deck. The last step
+    is to run a linker with the 331 and some boilerplate main
+    code. This is done using "gcc" which a command that not only
+    compiles a C main program but also links in the object code that
+    comes 331.
+  </p>
+
+  <p>
+    Here, I want to take a step back and go through the entire 331
+    compilation process. In this we will fill in the gaps from last
+    slide when working with the object decks.
+    <div style="color: blue; background-color:
+		  LightYellow">
+      [DOWN for line highlight] 13.1 ⟶ 13.1
+    </div>
+  </p>
+
+  <p>
+    We kick everything off using GNU Make:
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN for line highlight] 13.1 ⟶ 13.1
+    </div>
+  </p>
+  <p>
+    As before the first step is to create a GNU assembler file from
+    the 331 source text.
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN for line highlight] 13.1 ⟶ 13.1
+    </div>
+  </p>
+  <p>
+    Next, we create a custom main program in C as a wrapper to our 331
+    code. Before, we used the same C program independent of the 331
+    program that was getting compiled. Here, would like to show the
+    source code associated with our position, and we can only do that
+    if the main program refers to this file in some way. What we do is
+    add C "#include" for the 331 program.
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN for line highlight] 13.1 ⟶ 13.1
+    </div>
+  </p>
+  <p>
+    We can't really include the 331 program as is. So instead we will
+    wrap the code a c comment. And then we can include that
+    substituted file instead. That is why we have the ".h" appended.
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN for line highlight] 13.1 ⟶ 13.1
+    </div>
+  </p>
+  <p>
+    So now we need to make the file "inc.331.h"
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN for line highlight] 13.1 ⟶ 13.1
+    </div>
+    And this is calls a bash script <tt>make-debug-include.sh</tt> to
+    do this
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN for line highlight] 13.1 ⟶ 13.1
+    </div>
+  </p>
+  <p>
+  And now we have our 331 code wrapped in a C comment. So what was on
+  line 1 is now on line 2.
+  </p>
+  <p>
+    Finally, we are ready for the last step.
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN for line highlight] 13.1 ⟶ 13.1
+      [NEXT] 13.1 ⟶ 13.2
+    </div>
+  </p>
+  <p>
+    Here we run "gcc" to both compile a C file and link in our
+    331-derived object dec. The "-z noexecstack" switch is to silence
+    a warning about about how we are linking everything together which
+    apparently is not totally Kosher. The line "rm" line after "gcc"
+    gcc is running on its own and I don't know why.</p>
+  <p>
+    And <em>FINALLY</em> we can run the code. When we do, we affirm
+    that 1 plus 1 is still two in the 331 language.
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN for line highlight] 13.1 ⟶ 13.1
+      [NEXT] 13.1 ⟶ 13.2
+    </div>
+  </p>
+</aside>
+</section>

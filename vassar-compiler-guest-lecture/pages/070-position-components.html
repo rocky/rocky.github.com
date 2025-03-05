@@ -1,0 +1,161 @@
+<section>
+
+  <h1>Positions: Location, Location, Location...</h1>
+  <br/>
+
+  <div align="left" class="fragment">
+  <p>In everyday life, a location (which I will call a <em>position</em>) is a street address:</p>
+  <p>
+  1600 Pennsylvania Avenue, Apartment 4F</br>
+  Washington D.C. 20000</br>
+  </p>
+  </div>
+
+  <br/>
+
+  <div align="left">
+  <p class="fragment">A <em>position</em> can be broken down into
+  several parts, but I will focus on just two parts:
+    <ol align="left">
+      <li class="fragment">&nbsp; A <em>container</em></li>
+      <li class="fragment">&nbsp; A <em>location</em> inside the container</li>
+    </ol>
+  </p>
+  </div>
+
+  <aside class="notes">
+    <font size="3.0em">
+    <p>
+      We now have a <em>general</em> idea of what we need to do: associate
+      specific spots in the assembly code with specific spots the
+      source code.
+    </p>
+
+    <p align="left">But what is a position?
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN fragment reveal] 7.1 ⟶ 7.1
+      </div>
+    </p>
+    <p>It is analogous to a street address.
+       A position can be broken into down parts, ...
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN fragment reveal] 7.1 ⟶ 7.1
+      </div>
+      but I will focus on two top-level pieces...
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN fragment reveal] 7.1 ⟶ 7.1
+      </div>
+    </p>
+
+    <p>The first piece of information I will call
+      a <em>container</em>. In the example above, it is
+      the <em>bottom-most</em> portion. "Washington D.C. Twenty Thousand".
+    </p>
+    <p>
+      The most common example of a container for a <em>program</em> is
+      a <em>file name</em>. But we will go into this in more detail soon,
+      and I'll ask for thoughts on <em>other</em> kinds of containers for
+      programs. So think about this, and how they can arise.
+      <div style="color: blue; background-color:
+		LightYellow">
+	[DOWN fragment reveal] 7.1 ⟶ 7.1
+      </div>
+    </p>
+
+    <p>The second group of information inside a position, is probably
+         the thing that most people naturally think of...
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN fragment reveal] 7.1 ⟶ 7.1
+      </div>
+      a place or <em>location</em> inside a container.
+    </p>
+    <p>So now let's break down what a container is...
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[NEXT] 7.1 ⟶ 8.1
+      </div>
+    </p>
+    </font>
+  </aside>
+</section>
+
+<section>
+  <h1>What are Containers?</h1>
+
+  <p align="left">Some possibilities:
+    <ul>
+      <li>a file in a file system,</li>
+      <li class="fragment">a stream from a socket or piped into a compiler,</li>
+      <li class="fragment">a piece of an "archive"-format file:
+          Java classfile <tt>jar</tt>, Python <tt>wheel</tt>
+          (<tt>zip</tt>), or machine-code library, etc.,</li>
+      <li class="fragment">a string or AST data-structure created inside a program
+          at runtime, e.g. HTML templating system for Web framework, an
+          AI auto-learning system</li>
+    </ul>
+  </p>
+
+  <aside class="notes">
+    <font size="4.em">
+    <p>Program source code comes from <em>somewhere</em>. It is useful
+    for the programmer and IDE's to know <em>where</em> it came
+    from. So what are some possibilities? As I said before, a file in
+    the file system is the most common possibility. Any other
+    suggestions? [Solicit ideas...]
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN fragment reveal] 7.2 ⟶ 7.2
+    </div>
+    </p>
+
+    <p>a stream from a socket which might happen in remote
+      execution. Or a stream piped into a compiler
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN fragment reveal] 7.2 ⟶ 7.2
+    </div>
+    </p>
+
+    <p>a piece of an archive-format file. In Java this is called "class file" or
+      <tt>jar</tt> file and is encoded like a <tt>zip</tt>
+      file. Python <tt>wheels</tt> are zip files too.  Machine code
+      libraries are collections too, they are in a format called
+      "archive" and are built using the command Aee R in Linux. Note:
+      the word, "jar" used by Java the word is a modification of (Aee
+  v      R) in machine code. So "jar" stands for "Java archive" and you
+      may have heard about a "tar" file which stands for "tape
+      archive" even though nowadays physical tapes are no longer used.
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN fragment reveal] 7.2 ⟶ 7.2
+    </div>
+    </p>
+
+    <p>Another possibility is a string or AST data-structure created
+      inside a program at runtime, for example an HTML templating
+      system for Web framework, or AI self-modying code in an
+      auto-learning system.
+    </p>
+
+    <p>In the 331 language, programs come from a file stored in your
+      file system. So we won't dwell further on the containers. But
+         note that while locations inside a container change bit, the
+      container itself doesn't change that often. This is useful to
+      keep in mind when designing a data structure for positions.
+    </p>
+
+    <p>In the 331 language, there is only one container. The standard
+    runtime data format which we will talk about later, provides for
+    file path. It also understands that file paths are contained inside a
+    directory.
+    <div style="color: blue; background-color:
+		LightYellow">
+      [NEXT] 7.2 ⟶ 8.1
+    </div>
+    </p>
+</aside>
+</section>

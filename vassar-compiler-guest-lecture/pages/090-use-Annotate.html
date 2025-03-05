@@ -1,0 +1,340 @@
+<h1>Adding Position Information to 331</h1>
+<section>
+
+  <div align="left">
+  <h2>Our Plan</h2>
+  <p>
+    Pass position information from the scanner through to
+    the executable.</p>
+
+  <p><br>
+    <tt>
+    (parse) ⟶ (sexp_to_expr) ⟶ (expr_to_instrs) ⟶ object.o ⟶ .run
+    </tt>
+  </p>
+
+  </div>
+  <aside class="notes">
+    <p>Our plan is simple... we just propagate position information
+      through the compiler digestive system and it comes out the other side.
+    </p>
+    <p>To start out though, we we need to ask the Sexp library scanner
+      and to save position information in its returned "sexp". Then,
+      we pass this "annotated" sexp to our to AST building routine
+      "sexp_to_expr"; and then through "expr_to_instr" to get the
+      information into x86 assembly. This is then run through the GNU
+      assembler (which in the old days was called "gas"), and the
+      information passes into an object deck.  Finally, the gcc linker
+      gets the information into the executable.
+    </p>
+    <p>Having the position information inside executable, a debugger
+      can then access this if the program crashes.
+    <div style="color: blue; background-color:
+		LightYellow">
+    [DOWN Fragment] 9.1 ⟶ 9.2
+    </div>
+    </p>
+  </aside>
+</section>
+
+<section>
+  <div align="left">
+    <h2>Sexp.Annotated</h2>
+
+
+    <div class="asciicast">
+      <!--
+	  {
+	  "URL": "cast/Sexp.cast",
+	  "idle_time_limit": 0.5,
+	  "font-size": "18px",
+	  "start":12,
+	  "speed":1.5,
+	  "poster": "npt:1:23"
+	  }
+	-->
+    </div>
+  </p>
+
+
+  </div>
+  <aside class="notes">
+    <p>The OCaml sexplib module provides an <code>Sexp</code> with
+    additional position information. This is done using a sub-module
+     <tt>Sexp</tt> called <tt>Sexp.Annotated</tt>.
+    </p>
+
+    <p>Let us see what happens when I use this... [HIT PLAY and wait to end]</p>
+    <div style="color: blue; background-color:
+		  LightYellow">
+      [DOWN] 9.2 ⟶ 9.3
+
+    </p>
+  </aside>
+</section>
+<section>
+  <div align="left">
+    <h2>Sexp.Annotated output</h2>
+
+      <pre>
+	<code
+	  data-line-numbers="1-24|7-15|8-13|9-10|11-13"
+	  class="hljs ocaml",
+	  style="width: 1200px; max-height: 600px;"># Sexp.of_string "true";;
+- : Sexp.t = Sexp.Atom "true"
+
+# Sexp.Annotated.of_string "true";;
+- : Sexp.Annotated.t =
+  Sexp.Annotated.Atom
+   (
+     {
+       Sexp.Annotated.start_pos = {
+         Sexp.Annotated.line = 1; col = 0; offset = 0};
+       end_pos = {
+         Sexp.Annotated.line = 1; col = 3; offset = 3}
+     },
+     Sexplib.Type.Atom "true"
+  )
+#
+      </code>
+    </pre>
+  </p>
+
+
+  </div>
+  <aside class="notes">
+    <p>Here, I have just copied and formatted the output from the OCaml session we just ran.</p>
+
+    <p>The <em>essential</em> difference in data structure between
+      Sexp and Sexp.Annotated is that
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN line highlight] 9.3 ⟶ 9.3
+      </div>
+      the Sexp.Annotated Atom is now a <em>tuple</em> and the first
+      element of the tuple
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN line highlight] 9.3 ⟶ 9.3
+      </div>
+      is now a <em>position record</em>.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN line highlight] 9.3 ⟶ 9.3
+      </div>
+    </p>
+
+    <p> The first part of this tuple contains a <em>start</em>
+    position
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN line highlight] 9.3 ⟶ 9.3
+      </div>
+      and an <em>end</em> position
+    </p>
+
+    <p>Now let us look at the OCaml definition inside <tt>sexp_intf.ml</tt>
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[NEXT] 7.2 ⟶ 8.1
+      </div>
+    </p>
+  </aside>
+</section>
+
+<section>
+  <p line-height="40px">
+    <h2>Sexp.Annotated definitions (from <tt>sexp_intf.ml</tt>)</h2>
+
+    <p align="left">
+      <pre>
+	<code
+ 	  data-line-numbers="1-100|16-19|10-14|3-8",
+	  data-ln-start-from="134",
+	  class="hljs ocaml",
+	  style="width: 1200px; max-height: 600px;">(** Module for parsing S-expressions annotated with location information *)
+  module Annotated : sig
+    (** Position information for annotated S-expressions *)
+    type pos = Pre_sexp.Annotated.pos =
+      { line : int
+      ; col : int
+      ; offset : int
+      }
+
+    (** Range information for annotated S-expressions *)
+    type range = Pre_sexp.Annotated.range =
+      { start_pos : pos
+      ; end_pos : pos
+      }
+
+    (** S-expression annotated with location information *)
+    type t = Pre_sexp.Annotated.t =
+      | Atom of range * Type.t
+      | List of range * t list * Type.t
+	</code>
+      </pre>
+    </p>
+
+  <aside class="notes">
+    <p>I will summarize what we see here, but based on the discussion
+    before, I think the structure is pretty straightforward.</p>
+
+    <p>I know OCaml very little; probably not as good as many in the
+      audience. So I will not try describe the code in detail.
+
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN for line highlight] 9.4 ⟶ 9.4
+      </div>
+
+      Note that is the there a type defined in <tt>Sexp.Annotate</tt>
+      called "Tee". It can be either an Atom or a List. This is
+      the same situation as in the parent module, Sexp, that the 331
+      compiler has been using. Both Atoms and Lists are tuple objects,
+      the <em>first</em> element contains a <em>range</em>. We saw
+      that before for in object shown before. The same kind if thing
+      also happens in a List.
+
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN for line highlight] 9.4 ⟶ 9.4
+      </div>
+
+      And a range is a record with a "pos" type for
+      a start position and an end position.
+    </p>
+
+    <p>And a "pos" type here is a record with 3 things:
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN for line highlight] 9.4 ⟶ 9.4
+      </div>
+      a line number, a column number, and an "offset".
+    </p>
+
+    <p>We will not use the "offset" value. It is the number of bytes
+      from the start of the source-code string to the place in the
+      source code where this object ends.
+    </p>
+    <p>
+      Nowhere in sexplib do we have a place to store a
+      container, that I can see. So that is be done outside of this
+      library.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN] 9.4 ⟶ 9.5
+      </div>
+    </p>
+
+  </aside>
+</section>
+
+<section>
+  <p line-height="40px">
+    <h2>Using Sexp.Annotate in the 331 Compiler</h2>
+
+    <p align="left">
+      We simply change <span class="hljs-type">Sexp</span>
+      to <span class="hljs-type">Sexp.Annotated</span>:
+
+      <pre>
+	<code
+   	  data-line-numbers="1-100|2-5|19-21|11-12,20|16|11"
+	  data-ln-start-from="24",
+	  class="hljs ocaml",
+	  style="width: 1200px; max-height: 600px;">...
+(* A position range in the source text.
+   This is a tuple of start and end line + column positions.
+*)
+type source_position_type = Sexp.Annotated.range
+...
+
+(* Note: we add "_with_position" in case you want to be able to use
+   sexpr_to_expr as well.
+*)
+let rec sexp_to_expr_with_position (sexp_annotated : Sexp.Annotated.t) ...
+let parse_with_position (s : string) : expr =
+  (* "parse()" but saving position information.  First, turn a string
+     into an S-expression using sexplib.  Then turn a position-annotated
+     S-expression into our AST intermediate representation "expr".  *)
+  sexp_to_expr_with_position (Sexp.Annotated.of_string s)
+...
+
+(* compiles a source program to an x86 string. *)
+let compile_with_position (program : string) (source_file_path : string) :
+	</code>
+      </pre>
+    </p>
+
+    <aside class="notes">
+      <font size="4.0em">
+      <p>Here is an excerpt from modified
+      compiler, <tt>compile331.ml</tt>. There are too many small
+      changes to go over in full, but you can look on github for the
+      full code.
+	<div style="color: blue; background-color:
+		  LightYellow">
+	  [DOWN line highlight] 9.5 ⟶ 9.5
+	</div>
+
+      </p>
+
+      <p>At the top on line 28, I made a type alias
+	for <tt>Sexp.Annotate.range</tt>. The word "range" just feels
+	a little too vague, and I think "source position" is clearer.
+      </p>
+
+      <p>Now let us jump to the bottom on line 43, and the definition
+	of <tt>compile_with_position</tt>.
+	<div style="color: blue; background-color:
+		  LightYellow">
+	  [DOWN for line highlight] 9.5 ⟶ 9.5
+   	</div>
+
+	We have to keep track of the container name ourself, so I
+	added a parameter (or a closure),
+	<tt>source_file_path</tt> for that.
+	<div style="color: blue; background-color:
+		    LightYellow">
+	  [DOWN for line highlight] 9.5 ⟶ 9.5
+	</div>
+      </p>
+      <p>In a number of functions I added <tt>with_position</tt> suffix.
+	In developing, I wanted to be able to run both the unmodified and modified versions of
+	the 331 parser side by side.
+	<div style="color: blue; background-color:
+		    LightYellow">
+	  [DOWN for line highlight] 9.5 ⟶ 9.5
+	</div>
+
+      </p>
+
+      <p>Inside the body of <tt>parse_with_position</tt>, the only
+	change aside the name change, is to use
+	the <tt>Sexp.Annotated</tt> module instead of the
+	parent <tt>Sexp</tt> module.
+	<div style="color: blue; background-color:
+		    LightYellow">
+	  [DOWN for line highlight] 9.5 ⟶ 9.5
+	</div>
+      </p>
+
+      <p>There are a lot of changes in change <tt>sexp_to_expr</tt>
+      since the type <tt>sexp</tt> changes. I do not show the code
+      here; changes track the <tt>sexp</tt> structure changes.
+      </p>
+
+      <p>As I said before I added a <tt>_with_position</tt> suffix to
+	the name. But for other functions like
+	<tt>expr_to_instrs</tt> which handles creates x86 assembly,
+	I did not change the name or bother having two versions
+	around. I just modified the code.
+	<div style="color: blue; background-color:
+		  LightYellow">
+	  [NEXT] 9.4 ⟶ 10.1
+	</div>
+      </p>
+    </aside>
+    </font>
+
+</section>

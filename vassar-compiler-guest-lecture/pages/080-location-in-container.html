@@ -1,0 +1,267 @@
+<section>
+
+  <h1>Using a line number only in a position</h1>
+  <br/>
+  <p align="left">1: Fair fa' your honest, sonsie face,<br>
+    2: Great chieftain o the puddin'-race!</p>
+
+  <p align="left">1: Good luck to you and your honest, plump face,<br>
+    2: Great chieftain of the sausage race!</p>
+
+  <aside class="notes">
+    <p>
+      As we saw in the side-by-side translation, we can choose which
+      places to mark correspondence, which are often at major sentence
+      or phrase-like boundaries. And by doing this, we can avoid some of
+      the thornier problems of implicit x86 instructions that don't
+      have any direct correspondence in the 331 source code.
+    </p>
+
+    <p>But what information do we need to capture to describe a
+      <em>position</em> inside a container? In older compilers, a
+      position was a line number in a source file. In
+      fact, <code>gdb</code> <em>still</em> retains a strong
+      line-number orientation for specifying breakpoints. In
+      particular, you can't specify a column number in a <tt>gdb</tt>
+      breakpoint, only line numbers. On the other
+      hand, <tt>ocamldebug</tt> and the debugger we will use
+      today <tt>lldb</tt> allow you to give a <em>column number</em>
+      in addition to a line number.
+    </p>
+
+    <p>Using just a line number has problems. Can someone suggest
+      problems in noting a position as a line number inside some
+      container? [If no response: think about using a line number as a
+      position in 331 programs?]</p>
+
+    <div style="color: blue; background-color:
+		LightYellow">
+      [NEXT] 8.1 ⟶ 8.2
+    </div>
+    </p>
+  </aside>
+</section>
+<section>
+  <h1>Capturing correspondences within a line</h1>
+  <br/>
+  <p align="left">1:
+    <font color="#FB00F1">Far fa'</font>
+    <font color="#18C0FD">your</font>
+    <font color="#C4FF09">honest</font>
+    <font color="#FB7708">sonsie</font>
+    <font color="red">face</font><br>
+  <p align="left">1:
+    <font color="#FB00F1">Good luck</font>
+    to you and
+    <font color="#18C0FD">your</font>
+    <font color="#C4FF09">honest</font>
+    <font color="#FB7708">plump</font>
+    <font color="red">face</font><br>
+  </p>
+
+  <aside class="notes">
+    <p>As you can see here there is a richess we can get if we look at
+    a finer granularity than just a single line.<p>
+    <p>In fact, in the 331 compiler that I am
+    using, <em>everything</em> is on the same line!
+
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN] 8.2 ⟶ 8.3
+    </div>
+    </p>
+  </aside>
+</section>
+<section>
+  <h1>Indicating 331 positions</h1>
+  <p align="left">What kinds of errors might occur in:
+    <pre>
+      <code
+	class="hljs scheme",
+	style="width: 1200px; max-height: 600px;">
+(inc total)
+      </code>
+    </pre>
+    ?
+  </p>
+
+  <div class="fragment">
+  <p align="left"> You might want to mark places for these errors:
+    <ul>
+      <li><span class="hljs-name">inc</span> is not valid function name</li>
+      <li><em>total</em> is not valid variable name</li>
+      <li>calling <tt>(<span class="hljs-name">inc</span> total)</tt> is not valid, e.g. variable <em>total</em> is bound to a string</li>
+      <li>the <tt>(<span class="hljs-name">inc</span> total)</tt> call happens, but there is an error in returning a value</li>
+    </ul>
+  </p>
+  </div>
+
+  <aside class="notes">
+    <p>The kinds of positions we want to mark, is heavily dependent on the kinds of <em>errors</em> we might encounter.
+      So what kinds of errors could we get for this code <tt>(inc total</tt>)?
+
+    [Collect ideas]
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN fragment reveal] 8.3 ⟶ 8.3
+    </div>
+    </p>
+
+    <p>Here are some possibilities that I came up with:
+    <ul>
+      <li><span class="hljs-name">inc</span> is not valid function name</li>
+      <li><em>total</em> is not valid variable name</li>
+      <li>calling <tt>(<span class="hljs-name">inc</span> total)</tt> is not valid. For example, variable <em>total</em> is bound to a string</li>
+      <li>the <tt>(<span class="hljs-name">inc</span> total)</tt> call happens, but there is an error in returning a value</li>
+    </ul>
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN] 8.3 ⟶ 8.4
+    </div>
+    </p>
+
+  </aside>
+
+</section>
+<section>
+  <h1>Using a line and column number in a position</h1>
+  <p align="left">For the kinds of that errors might occur in:
+    <pre>
+      <code
+	class="hljs scheme",
+	style="width: 1200px; max-height: 600px;">
+(inc total)
+      </code>
+    </pre>
+  </p>
+
+  <p align="left">
+    we could represent this using a line and column number like this:
+
+    <pre>
+      <code
+	data-line-numbers="1-8|1-2,7-8|7-8"
+	class="hljs scheme",
+	style="width: 1200px; max-height: 600px;">(inc total)   ; problem with using "inc"
+ ^
+(inc total)   ; problem using "total"
+     ^
+(inc total)   ; problem in returning the value
+          ^
+(inc total)   ; problem calling (inc total)
+^</code>
+    </pre>
+  </p>
+  <div class="fragment">
+  <p align="left">Or should that last line be:
+    <pre>
+      <code
+	class="hljs scheme",
+	style="width: 1200px; max-height: 600px;">
+(inc total)   ; problem calling (inc total)
+    ^
+      </code>
+    </pre>
+  </div>
+
+  </p>
+  <aside class="notes">
+    <font size="4.0em">
+    <p>Here is what we get when we mark locations using a line and
+    column position.  Clearly this is much better than just saying
+    that there is an error at a particular line number, since all 331
+    code is on a the same single line!
+      <div style="color: blue; background-color:
+		  LightYellow">
+      [DOWN line-highlight] 8.4 ⟶ 8.4
+      </div>
+    </p>
+
+    <p>But if you don't look closely, it is easy to confuse what is
+      intended by the mark on line 1 and the mark on line 7.
+      <div style="color: blue; background-color:
+		  LightYellow">
+      [DOWN line highlight][DOWN] 8.4 ⟶ 8.4
+      </div>
+    </p>
+
+    <p>Using only a line and column number, there can be some
+      <em>ambiguity</em>, while at the same time, having a bit
+      of <em>arbitrariness</em> as to which single column gets marked.
+      </div>
+    </p>
+
+    <p>I suppose, with practice you could get used to this kind of
+    thing. But it reminds me of the old story of the Jewish tailor
+    when confronted with a suit he altered where the left sleeve was
+    shorter than the right sleeve. He remarked that all you got to do is cock
+    your left shoulder a little bit and bend your elbow. [DEMONSTRATE
+    WITH SHOULDER and ELBOW]</p>
+
+    <p>I think we can do better...
+    <div style="color: blue; background-color:
+		LightYellow">
+      [DOWN] 8.4 ⟶ 8.5
+    </div>
+    </p>
+    </font>
+  </aside>
+
+
+</section>
+
+<section>
+  <h1>Using a range in a position</h1>
+  <p align="left">The kinds of errors that might occur in:
+    <pre>
+      <code
+	class="hljs scheme",
+	style="width: 1200px; max-height: 600px;">
+(inc total)
+      </code>
+    </pre>
+  </p>
+
+  <p align="left">
+    We could represent the different kinds of errors using a range like this:
+
+    <pre>
+      <code
+	class="hljs scheme",
+	data-line-numbers="1-10|1-2,7-8"
+	style="width: 1200px; max-height: 600px;">(inc total)   ; problem with using "inc"
+ ---
+(inc total)   ; problem using "total"
+     -----
+(inc total)   ; problem in returning the value
+-----------
+(inc total)   ; problem calling (inc total) with all parameters
+ ---------
+(inc total)   ; problem calling (inc total) with "total" parameters
+    ------
+      </code>
+    </pre>
+  </p>
+  <p align="left">
+    Personally, I think positions are a lot clearer using ranges.
+  </p>
+
+  <aside class="notes">
+    <p>Here now is what we get when we mark using a ranges:
+      <div style="color: blue; background-color:
+		  LightYellow">
+      [DOWN line highlight] 8.5 ⟶ 8.5
+    </div>
+    </p>
+
+    <p>The situation disambiguating the function name with the function
+      <em>along with</em> parameters is more apparent here. Personally, I think all of
+      the positions are a bit more clear for these kinds of errors.
+      <div style="color: blue; background-color:
+		  LightYellow">
+      [NEXT] 8.5 ⟶ 9.1
+      </div>
+    </p>
+  </aside>
+
+</section>

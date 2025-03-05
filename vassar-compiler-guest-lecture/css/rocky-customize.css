@@ -1,0 +1,59 @@
+.reveal h1 {
+  text-align: left;
+  text-transform: none;
+  font-size: var(--r-heading4-size);
+  text-shadow: var(--r-heading4-text-shadow);
+}
+
+.reveal h2 {
+  text-align: left;
+  text-transform: none;
+  font-size: var(--r-heading5-size);
+  text-shadow: var(--r-heading5-text-shadow);
+}
+
+// $heading1Size: 1.0em;
+// $heading2Size: 1.6em;
+// $heading3Size: 1.3em;
+// $heading4Size: 1.0em;
+
+.p {
+    align: left
+}
+
+header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    text-align:center;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align:center;
+}
+
+.video-stepper {
+    position: relative;
+}
+
+// Video controls
+// https://stackoverflow.com/questions/38187779/stepping-through-a-video-file-with-reveal-js
+video.video-step {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+video.video-step.front {
+    z-index: 10;
+}
+
+video.placeholder {
+    visibility: hidden;
+}
+
+.speaker-controls {
+    font-size: 1.0em;
+}

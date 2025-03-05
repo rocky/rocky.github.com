@@ -1,0 +1,74 @@
+<h1>Position Information, Debugging and Decompilation for the 331 Language</h1>
+
+<section>
+  <p align="left">Here is a broad outline of talk today:
+    <ul>
+      <li>Describe what a "position" is and the challenges in marking code associations</li>
+      <li>Modify the 331 Compiler to produce better position reporting,
+	pass this information along so a debugger can use itli>
+      <li>Modify the 331 Compiler to produce better position reporting,
+	pass this information along so a debugger can use it</li>
+      <li>Demo the above</li>
+      <li>Show how we might recreate source text from x86 instructions (decompile).
+    </ul>
+  </p>
+  <aside class="notes">
+    <p>
+      In today's lecture, I describe how to modify the 331 compiler to
+      make it easier to use from a debugger. In fact, The code I
+      will use and talk about, you can get it from github, and later
+      we will run the code from a debugger and step through the
+      code.<p>
+    <p>
+      The main, and rather small thing need we will do, is add
+      <em>position</em> information into a debug table in the
+      executable. The debugger then reads this when it loads
+      the program.
+
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN] 4.1 ⟶ 4.2
+      </div>
+    </p>
+  </aside>
+</section>
+<section>
+  <p align="left">Some Popular Compiler Books:<br/>
+    <img src="images/compilers/dragon-1st-ed.jpg" alt="dragon-book-1st"
+	 style="vertical-align: middle" height="200">
+    <img src="images/compilers/dragon-book2.jpg" alt="dragon-book-2nd"
+	 style="vertical-align: middle" height="200">
+    <img src="images/compilers/dragon-book.jpg" alt="Dragon Book"
+	 style="vertical-align: middle" height="200">
+    <img src="images/compilers/appel-compiler.jpg" alt="appel-c"
+	 style="vertical-align: middle" height="200">
+    <img src="images/compilers/appel-java.jpg" alt="appel-java"
+	 style="vertical-align: middle" height="200">
+    <img src="images/compilers/appel-ml.jpg" alt="appel-ml"
+	 style="vertical-align: middle" height="200">
+    <img src="images/compilers/jeremy-siek.jpg" alt="siek"
+	 style="vertical-align: middle" height="200">
+  </p>
+  <p class="fragment" align="left">... that mention neither debuggers,
+  decompilers, nor runtime support for debugging.</em></p>
+<aside class="notes">
+  <p>
+    Here are some popular books on compilers. I would <em>love</em> to
+    report that what I am going to say here you can find in greater
+    detail in <em>any</em> of these compiler books, .
+    <div style="color: blue; background-color:
+   		LightYellow">
+      [DOWN Fragment] 4.2 ⟶ 4.2
+    </div>
+  </p>
+
+  <p>But you can't. And that's one reason I am here.</p>
+
+  <p>But before we dive into the details, ... a little story!<p>
+    <div style="color: blue; background-color:
+		LightYellow">
+      [NEXT] 4.2 ⟶ 5.1
+    </div>
+
+</aside>
+</section>
