@@ -7,9 +7,9 @@
   <p line-height="40px">
     <pre>
       <code
+	data-line-numbers="1-24|3",
 	class="hljs x86asm",
-	style="width: 1200px; max-height: 600px;">
-   0x0000555555555179  <+0>:  mov    $0x5,%rax
+	style="width: 1200px; max-height: 600px;">   0x0000555555555179  <+0>:  mov    $0x5,%rax
    0x0000555555555180  <+7>:  mov    %rax,-0x8(%rsp)
 => 0x0000555555555185 <+12>:  mov    -0x8(%rsp),%rax
    0x000055555555518a <+17>:  mov    %rax,-0x10(%rsp)
@@ -39,8 +39,10 @@
     </p>
 
     <p>Here is some x86 code produced by a 331 compiler. The position
-    we are at is marked on the left by an arrow. The address ends in
-    "55185". It is a <code>mov</code> instruction.</p>
+      we are at is marked on the left by an arrow.
+      <div style="color: blue; background-color: LightYellow">
+	[DOWN] 6.1 ⟶ 6.2
+      </div>
 
     <p>By the way, this instruction is probably several <em>micro</em>
     instructions in the underlying x86 CPU chip. On a RISC
@@ -101,8 +103,9 @@
     at the end of the corresponding English lines.</p>
 
   <p>I, and probably others, have used this kind beginning/end
-     heuristic to help decipher compiled assembly code. But there are
-     a couple of caveats here, which I will describe next...
+     heuristic to help match up compiled assembly code with its
+     corresponding source text. But there are a couple of caveats
+     here, which I will describe next...
 
     <div style="color: blue; background-color: LightYellow">
       [DOWN] 6.2 ⟶ 6.3
@@ -139,7 +142,7 @@
       or <em>parameter</em> attached to the noun. So think of "mango"
       as analogous to a 331-language <em>function</em> name or an x86
       assembly
-      <em>instruction</em> name. And think of "fragrant" or "fragrante"
+      <em>instruction</em> name. And think of "fragrant" or "fragante"
       as a parameter <em>value</em> or as an instruction <em>operand</em>.
     </p>
 

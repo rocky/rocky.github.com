@@ -26,6 +26,7 @@
     </p>
   </div>
   <aside class="notes">
+    <font size="3.0em">
     <p>While I won't go into all of the changes to propagate position
       from the AST into assembly instructions and then into the
       executable.  But I will follow the path down for one
@@ -47,7 +48,7 @@
       "Loc". we have to decide here is <em>where</em> before which
       instruction we want to mark the position in the instruction
       stream. I think the right place is just before the x86 ADD
-      instruction if we have "inc", or boefore the x86 SUB
+      instruction if we have "inc", or before the x86 SUB
       instruction if we have "dec".
     </p>
     <p>
@@ -63,6 +64,7 @@
 	[NEXT] 11.1 ⟶ 12
       </div>
     </p>
+    </font>
   </aside>
 </section>
 <section>
@@ -89,6 +91,7 @@ let instr_to_string (i : instr) : string =
     </p>
   </div>
   <aside class="notes">
+    <font size="3.0em">
     <p>While I won't go into all of the changes propagating position in
       from the AST into assembly instruction and then into the executable, I will
       I will follow the path down for built-in-function.
@@ -130,5 +133,6 @@ let instr_to_string (i : instr) : string =
 	[NEXT] 11.1 ⟶ 12
       </div>
     </p>
+    </font>
   </aside>
 </section>
