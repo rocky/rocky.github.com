@@ -1,0 +1,320 @@
+<section>
+  <h1>Python Disassembly</h1>
+  <p>
+    Python Disassemblers:
+    <ul>
+      <li>Python's <em>dis</em> module</li>
+      <li class="fragment">Python's <em>pydisasm</em></li>
+      <li class="fragment"><em>pycdas</em> from <em>pycdc</em></li>
+    </ul>
+  </p>
+  <aside class="notes">
+    <font size="3.0em">
+    <p>
+      With the previous introduction to Python bytecode, we in a
+      better position to dig deeper in to Python bytecode. Next we are going
+      to disassemble some Python bytecode.
+    </p>
+
+    <p>
+      There are three Python disassemblers I know about. The first
+      comes with Python and is called <i>dis</i>. CPython is, by far,
+      the most popular version of Python. If you have CPython
+      installed, the <em>dis</em> module is system installed.  If your
+      Python system does not have the <em>dis</em> module or it
+      doesn't work that is probably because the system does not use
+      Python-like bytecode. Python implementations that are based on
+      JVM, graal and the older Jython, are like this.
+    </p>
+
+    <p>
+      One big problem using Python's <i>dis</i> is that it can only
+      decompile the version of Python that the interpreter is
+      running. As I mentioned before in installing Python,
+      you <em>could</em> work around this by installing several
+      versions of Python. But another problem with using <i>dis</i> is
+      that it can't handle a Python byecode <em>file</em> out of the
+      box. You'd have to write some additional Python to read in the
+      file and pass <i>dis</i> some unmarshalled code objects.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN to pydisasm] 11.1 ⟶ 11.1
+      </div>
+
+    </p>
+
+    <p>
+      To get around these problems here, I suggest using <i>pydisasm</i> which we
+      have already used.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN to pycdas] 11.1 ⟶ 11.1
+      </div>
+    </p>
+
+    <p>
+      There is one other cross-version disassembler I know of
+      called <em>pycdas</em>.  It comes with a decompiler
+      called <em>pycdc</em>. This code is written in C++.  If you want
+      to try to use that you can, but for here, let's simpilify things
+      and stick with <i>pydisasm</i>.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN] 11.1 ⟶ 11.2
+      </div>
+    </p>
+    </font>
+  </aside>
+</section>
+<section>
+  <h1>Disassembly using
+    <code
+      class="hljs-title"
+      style="font-size: smaller">
+      pydisasm
+    </code>from
+    <a href="https://pypi.org/project/xdis/"
+       style="font-size: smaller">
+      xdis
+    </a>
+  </h1>
+
+  <p class="small" line-height="30px">
+    <code  class="hljs language-shell";
+	   style="width: 800px; font-size: 0.50em;">
+      <span class="hljs-meta prompt_">$</span>
+      <span class="hljs-title">pydisasm</span> <span class="hljs-variable">five.cpython-313.pyc</span>
+    </code>
+
+    <pre class="fragment">
+      <code
+	class="hljs language-pyasm"
+	style="max-height: 800px; width: 1100px;"># pydisasm version 6.1.7.dev0
+# Python bytecode 3.13.0 (3571)
+# Disassembled from Python 3.13.7 (main, Aug 17 2025, 17:14:11) [GCC 13.3.0]
+# Timestamp in code: 1757539791 (2025-09-10 17:29:51)
+# Source code size mod 2**32: 39 bytes
+# Method Name:       &lt;module&gt;
+# Filename:          five.py
+# Argument count:    0
+# Position-only argument count: 0
+# Keyword-only arguments: 0
+# Number of locals:  0
+# Stack size:        4
+# Flags:             0x00000000 (0x0)
+# First Line:        1
+# Constants:
+#    0: &lt;code object five at 0x7f5b199eaa70, file "five.py", line 1&gt;
+#    1: None
+# Names:
+#    0: five
+#    1: print
+  0:           0 RESUME               0
+
+  1:           2 LOAD_CONST           (&lt;code object five at 0x7f5b199eaa70, file "five.py", line 1&gt;)
+               4 MAKE_FUNCTION
+               6 STORE_NAME           (five)
+
+  3:           8 LOAD_NAME            (print)
+              10 PUSH_NULL
+              12 LOAD_NAME            (five)
+              14 PUSH_NULL
+              16 CALL                 (0 positional)
+              24 CALL                 (1 positional)
+              32 POP_TOP
+              34 RETURN_CONST         (None)
+
+
+# Method Name:       five
+# Filename:          five.py
+# Argument count:    0
+# Position-only argument count: 0
+# Keyword-only arguments: 0
+# Number of locals:  0
+# Stack size:        1
+# Flags:             0x00000003 (NEWLOCALS | OPTIMIZED)
+# First Line:        1
+# Constants:
+#    0: None
+#    1: 5
+  1:           0 RESUME               0
+
+  2:           2 RETURN_CONST         (5)
+      </code>
+    </pre>
+  </p>
+
+  <aside class="notes">
+    <div style="color: blue; background-color:
+    LightYellow">#/11.2</div>
+    <p>
+      To disassemble Python bytecode, just run <em>pydisasm</em> with
+      the bytecode file like this. The format of the output can be changed using,
+      the <em>--format</em> option with the short option letter <em>-F</em>.
+    </p>
+    <p>To get help, add option <em>--help</em>. Play around with some options.
+      <div style="color: blue; background-color: LightYellow">[DOWN to show output]
+	#/11.2 ⟶ #/11.3
+      </div>
+    </p>
+
+    <p>
+      This is the kind of output you see here, without the nice looking
+      colors in the slide. Play around with running this command, and let me
+      know when you are ready for some exercises.
+      <div style="color: blue; background-color: LightYellow">[WAIT] #/11.2 ⟶ #12.1
+      </div>
+    </p>
+
+  </aside>
+</section>
+<section>
+  <h1>Python disassembly exercises</h1>
+  <div style="font-size: smaller;">
+    <p class="fragment">
+      Disassemble the <em>five()</em> function
+      of <em>five-*.py</em> that you can.<br><em>Note: the option "<code style="font-size: smaller">--method five</code>"
+      option of pydisasm allows disassembly of just that function.</em>
+    </p>
+    <p class="fragment">
+      How many different bytecode sequences appear? Give the
+      Python version for each different sequence.
+    </p>
+  </div>
+  <aside class="notes">
+    <p>
+      Okay some simple exercises using <em>pydisasm</em>. Fully
+      disassemble the five bytecode that we saw before. Basically, all
+      you have to do is take off the <em>-F</em> option, or change it
+      to something else.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN] 11.3 ⟶ 11.3
+      </div>
+    </p>
+
+    <p>
+      There is also a <em>--method</em> option that will filter output
+      to just a function or a method, five. If you want, use that as well.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[DOWN to question] 11.3 ⟶ 11.3
+      </div>
+    </p>
+
+    <p>
+      How many different bytecode sequences appear?
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[WAIT and then DOWN to answers] 11.3 ⟶ 11.3
+      </div>
+    </p>
+    At least 6, probably more. 3.11-3.13 style, 3.6-3.10 style, 2.7 pyston, 2.x-3.6 style?, 3.11 graal.
+    3.14 - 3.15.
+      <div style="color: blue; background-color:
+		  LightYellow">
+	[NEXT for specifics] 11.3 ⟶ 11.4
+      </div>
+
+    </p>
+  </aside>
+</section>
+<section>
+  <h1>Variation in Python bytecode for "return 5"</h1>
+  <p class="small" line-height="30px">
+    <pre>
+      <code
+	class="hljs language-pyasm"
+	style="max-height: 800px; width: 1100px;"># Python 1.x- 1.5
+               0 |7f 00 01| SET_LINENO           1
+
+  1:           3 |7f 00 02| SET_LINENO           2
+
+  2:           6 |64 00 01| LOAD_CONST           (5) ; TOS = 5
+               9 |53      | RETURN_VALUE         return 5
+              10 |64 00 00| LOAD_CONST           (None) ; TOS = None
+              13 |53      | RETURN_VALUE         return None
+      </code>
+    </pre>
+  </p>
+
+  <p class="small" line-height="30px">
+    <pre class="fragment">
+      <code
+	class="hljs language-pyasm"
+	style="max-height: 800px; width: 1100px;"># Python 2.x- 3.5 including PyPY
+  2:           0 |64 00 01| LOAD_CONST        (5) ; TOS = 5
+               3 |53      | RETURN_VALUE      return 5
+      </code>
+    </pre>
+  </p>
+
+  <p class="small" line-height="30px">
+    <pre class="fragment">
+      <code
+	class="hljs language-pyasm"
+	style="max-height: 800px; width: 1100px;"># Python 3.6 - 3.10 including PyPY
+  2:           0 |64 01| LOAD_CONST           (5) ; TOS = 5
+               2 |53 00| RETURN_VALUE         return 5
+      </code>
+    </pre>
+  </p>
+
+  <p class="small" line-height="30px">
+    <pre class="fragment">
+      <code
+	class="hljs language-pyasm"
+	style="max-height: 800px; width: 1100px;"># Python 3.11 - 3.13 including PyPy
+  1:           0 |97 00| RESUME               0
+
+  2:           2 |79 01| RETURN_CONST         (5)
+      </code>
+    </pre>
+  </p>
+
+  <p class="small" line-height="30px">
+    <pre class="fragment">
+      <code
+	class="hljs language-pyasm"
+	style="max-height: 800px; width: 1100px;"># Python 3.14 - 3.15
+  1:          RESUME                   0
+              LOAD_SMALL_INT           5
+              RETURN_VALUE
+      </code>
+    </pre>
+  </p>
+
+  <aside class="notes">
+    <div style="color: blue; background-color:
+    LightYellow">#/11.4</div>
+    <p>
+      In Python 1.x line numbers were indicated as instructions. Note also that there was some dead code inserted at offset 10.
+    </p>
+      <div style="color: blue; background-color: LightYellow">[DOWN to Python 2.3-3.5]
+	#/11.4 ⟶ #/11.4
+      </div>
+    </p>
+
+    <p>
+      In Python 2 up to Python 3.5, the sequence stayed the same for
+      the longest period.  Here it is. Note that instructions came in two sizes &mdash; there were one-byte instructions and 3-byte instructions.
+      <div style="color: blue; background-color: LightYellow">[DOWN to Python 3.6] #/11.4 ⟶ #11.4
+      </div>
+    </p>
+
+    <p>
+      Starting in Python 3.6, instructions were fixed at two bytes.
+      So although the actual instructions are the same,
+      the <em>encoding</em> changes.
+      <div style="color: blue; background-color: LightYellow">[DOWN to Python 3.11] #/11.4 ⟶ #11.4
+      </div>
+    </p>
+
+    <p>
+      And starting in Python 3.11, there are still two instructions, but they are both <em>different</em>. The <em>RESUME</em> instruction is telling the interpreter that it's okay to start JITing instructions from this point. And the <em>LOAD_CONST</em> and <em>RETURN_VALUE</em> instructions are not folded into one instruction <em>RETURN_CONST</em>.
+      <div style="color: blue; background-color: LightYellow">[DOWN] #/11.4 ⟶ #12.1
+      </div>
+    </p>
+
+  </aside>
+</section>

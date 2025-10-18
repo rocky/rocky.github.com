@@ -1,0 +1,202 @@
+<!doctype html>
+<!-- Slides for BSides NYC October 18, 2025 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Workshop on Python Bytecode</title>
+
+    <meta name="description" content="Slides">
+    <meta name="author" content="Rocky Bernstein">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <meta name="author" content="Rocky Bernstein">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" type="text/html" href="plugin/asciinema/asciinema-player.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+    <link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="plugin/highlight/monokai-rocky.css"> <!-- This is the theme for the code highlighting -->
+    <!-- <link rel="stylesheet" href="plugin/highlight/github-dark.css"> --> <!-- An alternative code theme I didn't like as much -->
+    <link rel="stylesheet" type="text/css" href="./plugin/asciinema/asciinema-player.css" />
+
+    <!-- This is a modified theme for asciinema to git better with reveal.js's night theme -->
+    <link rel="stylesheet" type="text/css" href="./plugin/asciinema/reveal-asciinema-theme.css" />
+    <link rel="stylesheet" href="css/rocky-customize.css">
+
+    <!-- In order to include buttons for opening and closing the notes
+    canvas or the chalkboard you should make sure that font-awesome is
+    available. The easiest way is to include -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins/menu/font-awesome/css/fontawesome.css">
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-external="pages/010-title-page.html"></section>
+        <section data-external="pages/020-introduction.html"></section>
+        <section data-external="pages/030-who-am-I-and-why-this.html"></section>
+        <section data-external="pages/040-survey.html"></section>
+        <section data-external="pages/050-outline.html"></section>
+        <section data-external="pages/060-Python-setup.html"></section>
+        <section data-external="pages/070-identifying-Python-bytecode.html"></section>
+        <section data-external="pages/080-answers-for-bytecode-identification.html"></section>
+        <section data-external="pages/090-Emerging-patterns.html"></section>
+        <section data-external="pages/100-Python-VM.html"></section>
+        <section data-external="pages/110-Python-Disassembly.html"></section>
+        <section data-external="pages/120-Decompilation.html"></section>
+        <section data-external="pages/130-bytecode-tracing.html"></section>
+        <section data-external="pages/140-python-vm.html"></section>
+        <section data-external="pages/150-trepan3k.html"></section>
+        <section data-external="pages/160-modifying-bytecode.html"></section>
+        <section data-external="pages/170-bytecode-in-general.html"></section>
+        <section data-external="pages/180-ethics.html"></section>
+        <section data-external="pages/190-thanks-and-survey.html"></section>
+	<section data-external="pages/9999-references.html"></section>
+      </div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+    <script src="./plugin/anything/plugin.js"></script>
+    <script src="./plugin/highlight/highlight-pp.js"></script>
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/search/search.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/asciinema/asciinema-player.js"></script>
+
+    <!-- <\!-- Font awesome is used by Chalkboard plugin -\-> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+
+    <!-- Custom controls plugin is used for opening and closing annotation modes-->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/customcontrols/plugin.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/customcontrols/style.css">
+
+    <!-- <\!-- Chalkboard plugin -\-> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/plugin.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/style.css"> -->
+
+
+    <!-- Load content plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/loadcontent/plugin.js"></script>
+
+    <!-- Menu plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js-menu@2.1.0/menu.js"></script>
+    <link href=" https://cdn.jsdelivr.net/npm/reveal.js-menu@2.1.0/menu.css " rel="stylesheet">
+
+    <script>
+
+      // list of topics
+      // the src must be found within the folder, folders must be distinct!
+      var topics = [
+        { topic: "Anything", src: "index.html", folder: "anything" },
+      ];
+
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+	  width: 1280,
+	  height: 1050,
+	  controls: true,
+	  progress: true,
+	  history: false,
+	  center: true,
+	  mouseWheel: true,
+	  previewLinks: true,
+	  hash: true,
+	  slideNumber: true,
+	  transition: 'slide', // none/fade/slide/convex/concave/zoom,
+	  menu: {
+	      themes: false,
+	      transitions: false,
+	      markers: true,
+	      hideMissingTitles: true,
+	  },
+	  anything: [
+              {className: "asciicast",
+               initialize: (function(container, options) {
+		   // Defaults for the asciinema player
+		   const defaults = {'font-size': "14px", theme: "asciinema", start : 0, "idle_time_limit": 2};
+
+		   options = {...defaults, ...options};
+		   //  console.log(options.URL, container, options);
+		   const player = asciinema.player.js.CreatePlayer(container, options.URL, options);
+		   //  console.log(player);
+               })
+                   },
+	  ],
+	  // chalkboard: {
+	  //     storage: null,
+	  //     // src: getPath() + "/playback/chalkboard.json",
+	  //     theme: "blackboard"
+	  //     //			theme: "whiteboard"
+	  // },
+	  // customcontrols: {
+	  //     controls: [
+	  // 	  { icon: '<i class="fa fa-pen-square"></i>',
+	  // 	    title: 'Toggle chalkboard (B)',
+	  // 	    action: 'RevealChalkboard.toggleChalkboard();'
+	  // 	  },
+	  // 	  { icon: '<i class="fa fa-pen"></i>',
+	  // 	    title: 'Toggle notes canvas (C)',
+	  // 	    action: 'RevealChalkboard.toggleNotesCanvas();'
+	  // 	  },
+	  //     ]
+	  // },
+	  // Learn about plugins: https://revealjs.com/plugins/
+	  plugins: [
+	      RevealAnything,
+	      // RevealChalkboard,
+	      RevealCustomControls,
+	      RevealHighlight,
+	      RevealLoadContent,
+              RevealMarkdown,
+              RevealMath.MathJax3,
+	      RevealNotes,
+	      RevealSearch,
+	      RevealZoom,
+          ],
+          dependencies: [
+	      {
+		  src: 'plugin/asciinema/asciinema-player.js',
+		  src: 'plugin/anything/anything.js',
+		  src: 'plugin/math/plugin.js',
+		  src: 'plugin/external/external.js',
+		  condition: function() {
+		      return !!document.querySelector( '[data-external],[data-external-replace]' );
+		  }
+	      },
+	  ]
+	  }
+      );
+      Reveal.configure({
+          // showNotes: 'separate-page',
+	  keyboard: {
+	      40: 'next', // go the right slide when the "5" key is pressed
+	      // 82: 'right', // go the right slide when the "5" key is pressed
+	      // 78: 'right', // go the right slide when the "n" key is pressed
+	      49: 'prev', // go the right slide when the "1" key is pressed
+	      50: 'next', // go the right slide when the "2" key is pressed
+	      51: 'prev', // go the right slide when the "3" key is pressed
+	      52: 'next', // go the right slide when the "4" key is pressed
+              32: function() { // spacebar (key code 32)
+                  if (video.paused) {
+                      video.play();
+                  } else {
+                      video.pause();
+                  }
+              }
+
+	  }
+      });
+
+    </script>
+  </body>
+</html>

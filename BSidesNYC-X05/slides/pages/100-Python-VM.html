@@ -1,0 +1,217 @@
+<section>
+  <h1>Python interpreter vs. C static compile</h1>
+  <span class="small">
+    <div id="left">
+      <h2>Python source text:</h2>
+      <pre style="line-height: 30px; font-size: 0.60em; margin-left: 0px;">
+	<code class="hljs language-python"
+	      style="width: 450px;">def five():
+    return 5
+print(five())</code>
+      </pre>
+    </div>
+
+    <div id="right">
+      <h2 style="margin-left: 24px;">C source text:</h2>
+      <pre style="line-height: 30px; font-size: 0.60em">
+	<code class="hljs language-C">#include &lt;stdio.h&gt;
+int five() {
+  return 5;
+}
+int main(int argc, const char ** argv) {
+  printf("%d\n", five());
+}</code>
+      </pre>
+    </div>
+
+  </span>
+  <aside class="notes">
+    <p>
+      <div style="color: blue; background-color: LightYellow">#/10
+      </div>
+      Now that we've identified Python bytecode in all of its forms, it
+      is time to dig a little deeper into Python and see how its interpreter
+      works. And this information is generally common among interpreters.
+    </p>
+
+    <p>
+      To do this, I would like to compare and contrast it with C
+      code. So here are the two side by side. You will see that they
+      are pretty similar.  See <a href="https://github.com/rocky/0x05-py-bytecode-workshop?tab=readme-ov-file#101-python-interpreter-vs-c-static-compile">Slide 10.1</a> in the README for this text.
+      <div style="color: blue; background-color:
+		  LightYellow">[DOWN] [DOWN] #/10.1 ⟶ #/10.2
+		  </div>
+    </p>
+
+  </aside>
+</section>
+<section>
+  <h1>Python bytecode instructions vs. LLVM instructions</h1>
+  <span class="small">
+    <div>
+      <h2>Python bytecode instructions for the main body:</h2>
+      <pre style="line-height: 20px; font-size: 0.40em; margin-left: 0px;">
+	<code class="hljs language-pyasm"># ...
+# Constants:
+#    0: &lt;code object five at 0x78c311902a70, file "five.py", line 1&gt;
+#    1: None
+# Names:
+#    0: five, 1: print
+  0           RESUME                   0
+  1           LOAD_CONST               (&lt;code object five&gt;)
+              MAKE_FUNCTION
+              STORE_NAME               (five)
+  3           LOAD_NAME                (print)
+              PUSH_NULL
+              LOAD_NAME                (five)
+              PUSH_NULL
+              CALL                     (0 positional)
+              CALL                     (1 positional)
+              POP_TOP
+              RETURN_CONST             (None)
+	</code>
+      </pre>
+    </div>
+
+    <div class="fragment">
+      <h2>LLVM assembly for <code>main()</code>:</h2>
+      <pre style="line-height: 30px; font-size: 0.60em; margin-left: 0px;">
+	<code class="hljs language-llvm">; Function Attrs: noinline nounwind optnone uwtable
+define dso_local i32 @main(i32 noundef %0, ptr noundef %1) #0 {
+  %3 = alloca i32, align 4
+  %4 = alloca ptr, align 8
+  store i32 %0, ptr %3, align 4
+  store ptr %1, ptr %4, align 8
+  %5 = call i32 @five()
+  %6 = call i32 (ptr, ...) @printf(ptr noundef @.str, i32 noundef %5)
+  ret i32 0
+}</code>
+      </pre>
+    </div>
+
+  </span>
+  <aside class="notes">
+    <font size="2.0em">
+      <p>
+	<div style="color: blue; background-color: LightYellow">#/10.2
+	</div>
+      </p>
+      <p>
+	Here is some intermediate code for the <em>main</em> part of the <em>five.py</em>
+	code. The code the calls <i>five()</i> and prints its return value. I don't
+	have the code for the <i>five()</i> function here. There is a
+	bit of other stuff I've omitted to fit this on on slide.</p>
+
+      <p>
+	The first instruction <i>RESUME</i> is there simply as a
+	marker or indicator to Python 3.13's JIT routines that this is
+	a good place to start collecting information at run time; and
+	it is a good place for JITting to replace instructions
+	starting here with machine instructions. JIT stand for "Just
+	In Time" a form of dynamic compilation at runtime. In compiled
+	languages though, of course this kind of thing doesn't happen.
+      </p>
+
+      <p>
+	After that, the function <i>five()</i> is getting dynamically linked
+	into the main program using <i>MAKE_FUNCTION</i>. By doing this,
+	it can subsequently call the function <i>five</i>. Since <i>print</i>
+	is a builtin function, this kind of thing as already been done
+	for that. And next, we call the functions <i>five()</i>, followed
+	by a call to the function <i>print()</i>.
+      </p>
+
+      <p>
+	One thing to note here is that all instructions have at most one
+	operand.  And some instructions, like <i>PUSH_NULL</i>
+	and <i>POP_TOP</i>, do not have an operand. These instructions
+	and many of the other instructions have input and output to an
+	Python interpreter <i>execution stack</i>.
+      </p>
+      <p>
+	<em>Python's intermediate instruction set is stack based.</em>
+	<div style="color: blue; background-color: LightYellow">[DOWN to LLVM] #/10.1 ⟶ #/10.1
+	</div>
+      </p>
+
+      <p>
+	Now let's compare with the bottom LLVM code. The first thing that
+	is done is to allocate memory onto a call stack, and in doing this
+	the memory alignment of 4 bytes or 8 bytes is specified.
+      </p>
+      <p>
+	This LLVM code is somewhat hardware independent. However, in a
+	later phase of clang, it is turned turned into
+	machine-specific code in ELF executable format. The ELF binary
+	becomes the executable file that is run. In other words, you
+	don't run the C source text but run this executable file which
+	has which has hardware-specific code.
+      </p>
+      <p>
+	In Python though, the intermediate representation you see is
+	saved to disk.  You can run either the Python source code, or
+	the bytecode representation of it.
+      </p>
+
+      <p>
+	In either case, what we show above is a text representation of
+	the underlying structures. We have carved instructions out of a stream of bytes.
+	We will show how that is done in Python next.
+	<div style="color: blue; background-color: LightYellow">[NEXT]
+	  #/10.2 ⟶ #/10.3
+	</div>
+      </p>
+    </font>
+  </aside>
+</section>
+<section>
+  <h1>Python 3.13 bytecode</h1>
+  <span class="small">
+
+    <p>Bytecode file <code style="font-size: smaller">five.cpython-313.pyc</code>:
+      <pre><code class="hljs language-apache">00000020: 0000 0000 00f3 2400 0000 9500 5300 1a00  ......$.....S...
+00000030: 7200 5c01 2200 5c00 2200 3500 0000 0000  r.\.".\.".5.....
+00000040: 0000 3501 0000 0000 0000 2000 6701 2902  ..5....... .g.).</code>
+      </pre>
+    </p>
+
+    <p>Bytes interpreted as Python 3.13 intermediate instructions:
+      <pre style="line-height: 30px; font-size: 0.50em;">
+	<code style="max-height: 500px;" class="hljs language-pyasm"># ...
+# Names:
+#    0: five, 1: print
+  0:           0 |95 00| RESUME               0
+  1:           2 |53 00| LOAD_CONST           (&lt;code object five&gt;)
+               4 |1a 00| MAKE_FUNCTION
+               6 |72 00| STORE_NAME           (five) ; five =
+  3:           8 |5c 01| LOAD_NAME            (print)
+              10 |22 00| PUSH_NULL
+              12 |5c 00| LOAD_NAME            (five)
+              14 |22 00| PUSH_NULL
+              16 |35 00| CALL                 (0 positional)
+              24 |35 01| CALL                 (1 positional)
+              32 |20 00| POP_TOP
+              34 |67 01| RETURN_CONST         (None)
+	</code>
+      </pre>
+    </p>
+
+  </span>
+<aside class="notes">
+  <p>
+    <div style="color: blue; background-color: LightYellow">#/10.3
+    </div>
+    On the top is a portion of the full bytecode that I showed earlier. Here, I just show the
+    portion of the file that has the instructions interpreted below.
+  </p>
+
+  <p>From code <i>bytes</i> we carve out <i>instructions</i>. The term
+  "bytecode"  became popular with the introduction of Java, although
+  the concept had existed before in languages like Lisp, Self and Smalltalk.
+  </p>
+    <div style="color: blue; background-color: LightYellow">[NEXT]
+      #/10.3 ⟶ #/11.1
+    </div>
+  </p>
+  </aside>
+</section>

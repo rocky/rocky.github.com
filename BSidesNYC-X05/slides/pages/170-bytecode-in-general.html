@@ -1,0 +1,86 @@
+<section>
+  <h1>Bytecode in General</h1>
+  <p>
+    Bytecode is used in Java, Lua, Ethereum, Ruby, Smalltalk, various Lisps.
+  </p>
+
+  <p>
+  </p>
+
+  <aside class="notes">
+    <font size="4.0em">
+      <p>Here, I want to briefly compare, or put in place, Python
+      Bytecode with other Bytecode.
+      </p>
+      <p>The idea of <em>bytecode</em> goes back, as far as I can tell
+      with the language from Xerox PARC called <em>Self</em> in 1987
+      and and <em>SmallTalk</em> circa 1969 to 1972. Nicklaus Wirth
+      undoubtedly got the idea for Pascal P-Code (the P stands for
+      "Portable").
+      </p>
+      <p>Lisp, with its old lineage, is also no stranger to bytecode.
+	Emacs Lisp which I've looked at, keeps more information in the
+	evaluatation stack than Python currently does, and this makes
+	decompilation harder, especially for LLMs which have trouble with
+	counting and pairing expressions.
+      </p>
+      <p>
+	In the future
+	though, with the introduction to JITing and the introduction
+	of the RESUME instruction, Python may evolve look more like
+	Emacs Lisp.
+      </p>
+      <p>The term "bytecode" however came in vogue with the
+	introduction of Java. Bytecode in Java is both
+	stack-based <em>and</em> it has registers. But the language
+	feels to me a little more low level in that machine word sizes
+	do appear in the language, and there is that notion of
+	registers.
+      </p>
+      <p>Ethereum which supports cryptocurrency and smart contracts,
+      is also a thing out of the Hitchiker Guide to the Galaxy. There
+      is this virtual machine seen by all users that is supposed to
+      represent the state of all financial transactions, contracts,
+      etc. The language that this virtual machine runs is EVM
+      bytecode. It too is stack based. Currently, there is no serious
+      decompiler for this, but I think there could be one along the
+      lines of what is done in Python compilers.
+      </p>
+
+	<div style="color: blue; background-color:
+		    LightYellow">
+	  [NEXT] 16.1 ⟶ 16.2
+	</div>
+      </p>
+    </font>
+  </aside>
+</section>
+<section>
+  <h1>Bytecode Security</h1>
+  <p>
+    Bytecode can be reversed. In some cases it is easy to do, in some
+    cases it can be hard. If you only need short-term security &mdash;
+    it needs to be secure for most casual use that can't be reversed
+    in a few hours/days/months &mdash; Python bytecode might be
+    okay. But for long-term security, Python bytecode can be reversed.
+  </p>
+
+  <p>
+  </p>
+
+  <aside class="notes">
+    <font size="4.0em">
+      <p>
+	Bytecode can be reversed. In some cases it is easy to do, in some
+	cases it can be hard. If you only need short-term security &mdash;
+	it needs to be secure for most casual use that can't be reversed
+	in a few hours/days/months &mdash; Python bytecode might be
+	okay. But For long-term security, Python bytecode can be reversed.
+	<div style="color: blue; background-color:
+		    LightYellow">
+	  [NEXT] 17.1 ⟶ 18.1
+	</div>
+      </p>
+    </font>
+  </aside>
+</section>
