@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="author" href="mailto:webmasters@gnu.org" />
+<link rel="icon" type="image/png" href="/graphics/gnu-head-mini.png" />
+<meta name="ICBM" content="42.355469,-71.058627" />
+<link rel="stylesheet" type="text/css" href="/layout.min.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/print.min.css" media="print" />
+
+
+
+<title>Summer of Code project suggestions for GNU</title>
+<meta http-equiv="Keywords" content="GNU, FSF, Free Software Foundation, Linux, Emacs, GCC, UNIX, Free Software, Operating System, GNU Kernel, Hurd, GNU Hurd" />
+<meta http-equiv="Description" content="Since 1983, developing the free UNIX style operating system GNU, so that computer users can have the freedom to share and improve the software they use." />
+<!-- start of server/banner.html -->
+<!-- start of head-include-2.html -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- end of head-include-2.html -->
+
+</head>
+<body>
+<div class="inner">
+<!-- start of server/body-include-1.html -->
+<div id="top">
+<a class="skip" href="#content"><b>Skip to main text</b></a>
+</div>
+
+<div id="fsf-frame" role="complementary">
+<form id="fssbox" action="https://my.fsf.org/civicrm/profile/create?reset=1&amp;gid=31"
+      method="post">
+ <div>
+  <input name="postURL" type="hidden" value="" />
+  <input type="hidden" name="group[25]" value="1" />
+  <input name="cancelURL" type="hidden" value="https://crm.fsf.org/civicrm/profile?reset=1&amp;gid=31" />
+  <input name="_qf_default" type="hidden" value="Edit:cancel" />
+  <label for="frmEmail">
+   <a href="//www.fsf.org/fss">Free Software Supporter</a>:
+  </label>
+  <input type="text" id="frmEmail" name="email-Primary" size="18" maxlength="80"
+         value="email address" onfocus="this.value=''"/>
+  <input type="submit" name="_qf_Edit_next" value="Sign up" />
+ </div>
+</form>
+
+<div id="join-fsf" class="button"><a
+href="https://www.fsf.org/associate/support_freedom?referrer=4052">JOIN&nbsp;THE&nbsp;FSF</a>
+</div>
+</div>
+
+<div id="header" role="banner">
+<p id="gnu-banner">
+ <a href="/">
+ <img src="/graphics/heckert_gnu.transp.small.png" height="48" width="49"
+      alt="&nbsp;[A GNU head]&nbsp;" /><strong>GNU</strong> <span
+ class="hide">Operating System</span></a><br />
+ <small id="fsf-support">Supported by the
+ <a href="#mission-statement">Free Software Foundation</a></small>
+</p>
+
+<div id="switches">
+<!-- begin search button -->
+ <div  id="search-button" class="switch">
+  <a href="//www.gnu.org/cgi-bin/estseek.cgi">
+  <img id="search-icon" height="30" width="30"
+       src="/graphics/icons/search.png"
+       alt="&nbsp;[Search www.gnu.org]&nbsp;" /></a>
+ </div>
+<!-- end search button -->
+
+</div>
+</div>
+<!-- end of server/body-include-1.html -->
+
+<!-- start of server/body-include-2 -->
+
+
+<div style="clear: both"></div>
+
+<div id="navigation" role="navigation">
+ <a id="more-links" href="#navigation" title="More...">
+   <span>Site navigation</span></a>
+ <a id="less-links" href="#content"><b>Skip</b></a>
+ <ul>
+
+   <li id="tabAboutGNU"><a href="/gnu/gnu.html">ABOUT&nbsp;GNU</a></li>
+
+
+  <li id="tabPhilosophy"><a href="/philosophy/philosophy.html">PHILOSOPHY</a></li>
+
+
+  <li id="tabLicenses"><a href="/licenses/licenses.html">LICENSES</a></li>
+
+
+  <li id="tabEducation"><a href="/education/education.html">EDUCATION</a></li>
+
+
+  <li id="tabSoftware" class="active">
+     <span class='no-display'>=</span>
+    <a href="/software/software.html">SOFTWARE</a>
+    <span class="gnun-split"></span>
+     <span class='no-display'>=</span>
+  </li>
+
+
+  <li id="tabDistros"><a href="/distros/distros.html">DISTROS</a></li>
+
+
+  <li id="tabDoc"><a href="/doc/doc.html">DOCS</a></li>
+
+
+  <li id="tabMalware"><a href="/proprietary/proprietary.html">MALWARE</a></li>
+
+
+  <li id="tabHelp"><a href="/help/help.html">HELP&nbsp;GNU</a></li>
+
+
+  <li id="tabAV"><a href="/audio-video/audio-video.html">AUDIO&nbsp;&amp;&nbsp;VIDEO</a></li>
+
+
+  <li id="tabArt"><a href="/graphics/graphics.html">GNU&nbsp;ART</a></li>
+
+
+  <li id="tabFun"><a href="/fun/humor.html">FUN</a></li>
+
+
+  <li id="tabPeople"><a href="/people/people.html">GNU'S&nbsp;WHO?</a></li>
+
+  <li><a href="//directory.fsf.org">SOFTWARE&nbsp;DIRECTORY</a></li>
+  <li><a href="https://h-node.org/">HARDWARE</a></li>
+  <li><a href="/server/sitemap.html">SITEMAP</a></li>
+ </ul>
+ <div style="clear: both"></div>
+</div><!-- /"navigation -->
+<!-- end of server/body-include-2 -->
+
+<div id="content" role="main">
+<!-- end of server/banner.html -->
+
+
+<h1>Summer of Code projects for GNU</h1>
+
+<p>
+  This page has the project suggestions for GNU's participation in
+  <a href="https://developers.google.com/open-source/gsoc/">Google Summer of Code 2025</a>.
+</p>
+
+<div id="urgent">
+<strong>STUDENTS - BEFORE YOU SUBMIT YOUR PROJECT
+PROPOSAL</strong>:<br/>
+<p>
+  Please read the <a href="guidelines.html">GNU Project's guidelines
+for Summer of Code projects</a>.
+</p>
+<p>
+  Most importantly, please make sure you include all the information
+  requested.  If you have questions, please ask <a
+  href="mailto:summer-of-code@gnu.org">summer-of-code@gnu.org</a> (list
+  info <a href="http://lists.gnu.org/mailman/listinfo/summer-of-code/">here</a>).
+</p>
+<p>
+  <b>Please note that you are not bound to use these ideas, you can
+  propose a new project.  It is a good idea to find a mentor and
+  discuss the idea before submit it.</b>
+</p>
+</div>
+
+<hr/>
+<h2>Projects and Ideas</h2>
+
+<p>
+  GNU is a large and complex project, and thus is subdivided into
+  packages, which are relatively independent projetcts. In Summer of
+  Code, GNU acts as an umbrella organization for its packages. The
+  ideas here are grouped by package.  Many packages have more than one
+  suggestion, or even their own ideas page.
+</p>
+
+<p>
+The libcdio package contains a library for CD-ROM and CD image access. Applications wishing to be oblivious of the OS- and device-dependent properties of a CD-ROM or of the specific details of various CD-image formats may benefit from using this library.
+</p>
+<p>
+A library for working with ISO-9660 filesystems libiso9660 is included. A generic interface for issuing MMC (multimedia commands) is also part of the libcdio library.
+</p>
+<p>
+Also included is a library for working with ISO-9660 filesystems.
+</p>
+<p>
+The CD-DA error/jitter correction library from cdparanoia is included as a separate library licenced under GPL v2.
+</p>
+
+<ul>
+  <li><strong>Project idea:</strong> Port one or more parts of this code to Rust. A part could be <i>libiso9660</i>, ISO-9660 file reading, or <i>cd-paranoia</i> CD error/jitter correction.
+  <li><strong>Project site:</strong> <a href="https://github.com/libcdio">https://github.com/libcdio</a>
+  </li>
+  <li><strong>Contact:</strong> <a href="mailto:libcdio-devel@gnu.org">libcdio-devel@gnu.org</a>.
+  </li>
+</ul>
+
+
+<p>
+Updated:
+<!-- timestamp start -->
+$Date: 2025/02/11 20:23:28 $
+<!-- timestamp end -->
+</p>
+
+</div>
+</div>
+</body>
+</html>
